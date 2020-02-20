@@ -2,7 +2,6 @@
 Java wrapper for the [smash.gg](https://smash.gg) [GraphQL API](https://developer.smash.gg/docs/intro)
 
 ## Download
-### Download:
 This repo is published as a snapshot on Sonatype OSS. You can download it [here](https://oss.sonatype.org/content/repositories/snapshots/com/github/gpluscb/gg-java/).\
 If you are using Maven, add the following to your repositories in your pom.xml:
 ```xml
