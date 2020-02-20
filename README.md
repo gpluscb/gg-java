@@ -2,7 +2,39 @@
 Java wrapper for the [smash.gg](https://smash.gg) [GraphQL API](https://developer.smash.gg/docs/intro)
 
 ## Download
-You'll need to build the project yourself for now.
+### Download:
+This repo is published as a snapshot on Sonatype OSS. You can download it [here](https://oss.sonatype.org/content/repositories/snapshots/com/github/gpluscb/gg-java/).\
+If you are using Maven, add the following to your repositories in your pom.xml:
+```xml
+<repository>
+    <id>oss.sonatype.org-snapshot</id>
+    <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+```
+And this to your dependencies:
+```xml
+<dependency>
+    <groupId>com.github.gpluscb</groupId>
+    <artifactId>gg-java</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+</dependency>
+```
+If you are using Gradle, add the following to your repositories in your build.gradle:
+```gradle
+maven {
+    url 'https://oss.sonatype.org/content/repositories/snapshots/'
+}
+```
+And this to your dependencies:
+```gradle
+implementation group: 'com.github.gpluscb', name: 'ChallongeListener', version: '1.0.0-SNAPSHOT'
+```
 
 ## Usage
 ```java
@@ -48,7 +80,6 @@ GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucket
 *I have done some testing with the rate limit system. It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
 
 ## TODO
-* Uploading this thing to a maven repo
 * More efficient way to add variables
 * Documentation
 * Proper configurable logging
