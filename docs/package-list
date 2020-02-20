@@ -1,6 +1,2 @@
 com.github.gpluscb.ggjava.api
 com.github.gpluscb.ggjava.api.exception
-com.github.gpluscb.ggjava.internal
-com.github.gpluscb.ggjava.internal.exception
-com.github.gpluscb.ggjava.internal.request
-com.github.gpluscb.ggjava.internal.utils
