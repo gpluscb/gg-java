@@ -51,7 +51,7 @@ public interface GGClient {
 	}
 
 	/**
-	 * Shuts down the client gracefully.
+	 * Shuts down the client gracefully. Already enqueued requests will still be executed.
 	 */
 	void shutdown();
 
