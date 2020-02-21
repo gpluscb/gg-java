@@ -32,7 +32,7 @@ maven {
 ```
 And this to your dependencies:
 ```gradle
-implementation group: 'com.github.gpluscb', name: 'ChallongeListener', version: '1.0.0-SNAPSHOT'
+implementation group: 'com.github.gpluscb', name: 'gg-java', version: '1.0.0-SNAPSHOT'
 ```
 
 ## Usage

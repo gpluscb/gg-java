@@ -84,6 +84,8 @@ javadoc {
     if(JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
+    
+    exclude('com/github/gpluscb/ggjava/internal')
 }
 
 task sourceJar(type: Jar) {
