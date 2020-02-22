@@ -49,11 +49,13 @@ public class GGClientImpl implements GGClient {
 	
 	private boolean makeRequest(@Nonnull GGRequest request) {
 		try {
-			System.out.println("Request sent at " + System.currentTimeMillis());
-			request.getFuture().complete(requester.sendRequest(request.getQuery(), request.getVariables()));
+			requester.sendRequest(request.getQuery(), request.getVariables()).get();
 			return false;
-		} catch(Throwable t) {
-			return handleFailure(t, request);
+		} catch(ExecutionException e) {
+			return handleFailure(e.getCause(), request);
+		} catch(InterruptedException e) {
+			System.err.println("Thread was interrupted while waiting for server response, retrying");
+			return true;
 		}
 	}
 	
