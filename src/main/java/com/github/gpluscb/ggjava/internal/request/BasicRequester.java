@@ -11,7 +11,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import okhttp3.*;
@@ -35,42 +35,15 @@ public class BasicRequester {
 	}
 	
 	@Nonnull
-	public JsonObject sendRequest(@Nonnull String query, @Nullable JsonObject variables) throws Throwable {
-		Request request = makeRequest(query, variables);
-		try(Response response = client.newCall(request).execute()) {
-			ResponseBody body = response.body();
-			if(body == null)
-				throw new RequestFailureException("No response body received");
-			
-			JsonObject jsonResponse = JsonParser.parseString(body.string()).getAsJsonObject();
-			
-			if(!response.isSuccessful()) {
-				switch(response.code()) {
-					case 401:
-						throw new UnauthorizedException(jsonResponse.getAsJsonPrimitive("message").getAsString());
-					case 429:
-						throw new RateLimitException(jsonResponse.getAsJsonPrimitive("message").getAsString());
-					default:
-						throw new RequestFailureException("Unsuccessful response received: " + response);
-				}
-			}
-			
-			ErrorResponseException errorResponse = getErrorResponse(jsonResponse);
-			
-			if(errorResponse == null)
-				return jsonResponse;
-			else
-				throw errorResponse;
-		}
-	}
-	
-	public void sendRequestAsync(@Nonnull String query, @Nullable JsonObject variables, @Nonnull Consumer<? super JsonObject> onSuccess, @Nonnull Consumer<? super Throwable> onFailure) {
+	public CompletableFuture<JsonObject> sendRequest(@Nonnull String query, @Nullable JsonObject variables) {
+		CompletableFuture<JsonObject> ret = new CompletableFuture<>();
+		
 		try {
 			Request request = makeRequest(query, variables);
 			client.newCall(request).enqueue(new okhttp3.Callback() {
 				@Override
 				public void onFailure(@Nonnull Call call, @Nonnull IOException e) {
-					onFailure.accept(new RequestFailureException(e));
+					ret.completeExceptionally(new RequestFailureException(e));
 				}
 				
 				@Override
@@ -78,7 +51,7 @@ public class BasicRequester {
 					try {
 						ResponseBody body = response.body();
 						if(body == null) {
-							onFailure.accept(new RequestFailureException("No response body received"));
+							ret.completeExceptionally(new RequestFailureException("No response body received"));
 							return;
 						}
 						
@@ -87,16 +60,21 @@ public class BasicRequester {
 						if(!response.isSuccessful()) {
 							switch(response.code()) {
 								case 401:
-									onFailure.accept(new UnauthorizedException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
+									ret.completeExceptionally(new UnauthorizedException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
 									break;
 								case 429:
-									onFailure.accept(new RateLimitException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
+									ret.completeExceptionally(new RateLimitException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
 									break;
 								default:
-									onFailure.accept(new RequestFailureException("Unsuccessful response received: " + response));
+									ret.completeExceptionally(new RequestFailureException("Unsuccessful response received: " + response));
 									break;
 							}
 							
+							return;
+						}
+						
+						if(jsonResponse.has("success") && !jsonResponse.getAsJsonPrimitive("success").getAsBoolean()) {
+							ret.completeExceptionally(new RequestFailureException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
 							return;
 						}
 						
@@ -104,21 +82,24 @@ public class BasicRequester {
 						
 						if(errorResponse == null) {
 							try {
-								onSuccess.accept(jsonResponse);
+								ret.complete(jsonResponse);
 							} catch(Throwable t) {
-								onFailure.accept(t);
+								ret.completeExceptionally(t);
 							}
 						} else
-							onFailure.accept(errorResponse);
+							ret.completeExceptionally(errorResponse);
 					} catch(Throwable t) {
 						System.err.print("Failed to handle server response: ");
 						t.printStackTrace();
+						ret.completeExceptionally(t);
 					}
 				}
 			});
 		} catch(Throwable t) {
-			onFailure.accept(t);
+			ret.completeExceptionally(t);
 		}
+		
+		return ret;
 	}
 	
 	@Nullable

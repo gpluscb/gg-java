@@ -42,23 +42,25 @@ public class GGClientImpl implements GGClient {
 		
 		GGRequest request = new GGRequest(query, variables, ret);
 		
-		limiter.enqueue(retries -> makeRequest(request) && retries < maxRetries);
+		limiter.enqueue(retries -> makeRequest(request, retries));
 		
 		return ret;
 	}
 	
-	private boolean makeRequest(@Nonnull GGRequest request) {
+	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
 		try {
-			System.out.println("Request sent at " + System.currentTimeMillis());
-			request.getFuture().complete(requester.sendRequest(request.getQuery(), request.getVariables()));
+			requester.sendRequest(request.getQuery(), request.getVariables()).get();
 			return false;
-		} catch(Throwable t) {
-			return handleFailure(t, request);
+		} catch(ExecutionException e) {
+			return handleFailure(e.getCause(), request, retries);
+		} catch(InterruptedException e) {
+			System.err.println("Thread was interrupted while waiting for server response, retrying");
+			return true;
 		}
 	}
 	
-	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request) {
-		if(failure instanceof RateLimitException) {
+	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, @Nonnegative int retries) {
+		if(failure instanceof RateLimitException && retries < maxRetries) {
 			// Rate limit, rescheduling
 			System.err.printf("Ran into rate limit: %s%n", failure.getMessage());
 			
