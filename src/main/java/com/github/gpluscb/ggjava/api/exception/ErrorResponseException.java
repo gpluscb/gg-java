@@ -10,7 +10,8 @@ public class ErrorResponseException extends RequestFailureException {
 	private final List<GGError> errors;
 	
 	/**
-	 * @throws IllegalArgumentException if errors is null
+	 * @throws IllegalArgumentException
+	 * 		if errors is null
 	 */
 	public ErrorResponseException(@Nonnull List<GGError> errors) {
 		Checks.nonNull(errors, "errors");
@@ -19,7 +20,8 @@ public class ErrorResponseException extends RequestFailureException {
 	}
 	
 	/**
-	 * @throws IllegalArgumentException if errors is null
+	 * @throws IllegalArgumentException
+	 * 		if errors is null
 	 */
 	public ErrorResponseException(String message, @Nonnull List<GGError> errors) {
 		super(message);
@@ -30,7 +32,8 @@ public class ErrorResponseException extends RequestFailureException {
 	}
 	
 	/**
-	 * @throws IllegalArgumentException if errors is null
+	 * @throws IllegalArgumentException
+	 * 		if errors is null
 	 */
 	public ErrorResponseException(String message, Throwable cause, @Nonnull List<GGError> errors) {
 		super(message, cause);
@@ -41,7 +44,8 @@ public class ErrorResponseException extends RequestFailureException {
 	}
 	
 	/**
-	 * @throws IllegalArgumentException if errors is null
+	 * @throws IllegalArgumentException
+	 * 		if errors is null
 	 */
 	public ErrorResponseException(Throwable cause, @Nonnull List<GGError> errors) {
 		super(cause);

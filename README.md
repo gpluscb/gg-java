@@ -2,7 +2,8 @@
 Java wrapper for the [smash.gg](https://smash.gg) [GraphQL API](https://developer.smash.gg/docs/intro)
 
 ## Download
-This repo is published as a snapshot on Sonatype OSS. You can download it [here](https://oss.sonatype.org/content/repositories/snapshots/com/github/gpluscb/gg-java/).\
+This repo is published as a snapshot on Sonatype OSS. You can download it [here](https://oss.sonatype.org/content/repositories/snapshots/com/github/gpluscb/gg-java/).
+
 If you are using Maven, add the following to your repositories in your pom.xml:
 ```xml
 <repository>
@@ -49,6 +50,7 @@ client.request(testQuery)
 	.exceptionally(t -> {t.printStackTrace(); return null;});
 client.shutdown();
 ```
+
 The [smash.gg API docs](https://developer.smash.gg/docs/intro) will be an useful resource, especially the [GraphQL reference](https://developer.smash.gg/reference).
 For a tutorial on how to construct the GraphQL queries, visit https://graphql.org/learn/.
 
@@ -76,11 +78,13 @@ For example if you want to adhere to a 80/40s bucket:
 ```java
 GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucketBuilder().tasksPerPeriod(80).period(40000L).build()).build();
 ```
+
 *I have done some testing with the rate limit system. It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
 
 ## TODO
 * More efficient way to add variables
-* Documentation
+* Better Exceptions
+* More/better documentation
 * Proper configurable logging
 * Generally better code structure (whatever that means)
 * Have the response in Java Objects instead of a JsonObject (see [feature-entities](https://github.com/gpluscb/gg-java/tree/feature-entities) branch), a lot of the code will be generated

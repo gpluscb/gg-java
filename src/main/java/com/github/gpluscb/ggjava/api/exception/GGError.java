@@ -8,12 +8,13 @@ public class GGError {
 	@Nullable
 	private final String message;
 	
-	public GGError(@Nonnull String message) {
+	public GGError(@Nullable String message) {
 		Checks.nonNull(message, "message");
 		
 		this.message = message;
 	}
 	
+	@Nullable
 	public String getMessage() {
 		return message;
 	}

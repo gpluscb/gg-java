@@ -5,7 +5,8 @@ import javax.annotation.Nonnull;
 
 public class ComplexityLimitException extends RequestFailureException {
 	/**
-	 * @throws IllegalArgumentException if message is null or empty
+	 * @throws IllegalArgumentException
+	 * 		if message is null or empty
 	 */
 	public ComplexityLimitException(@Nonnull String message) {
 		super(message);

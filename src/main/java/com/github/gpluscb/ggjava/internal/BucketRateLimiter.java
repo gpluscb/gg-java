@@ -100,12 +100,15 @@ public class BucketRateLimiter implements RateLimiter {
 		taskCompletionTimes.offer(System.currentTimeMillis());
 		
 		// Keep the earliest element at numTasks before the next one
-		if(taskCompletionTimes.size() > tasksPerPeriod) taskCompletionTimes.remove();
+		if(taskCompletionTimes.size() > tasksPerPeriod)
+			taskCompletionTimes.remove();
 		
 		long cumulativeBackoff = requestCumulativeBackoff();
 		
-		if(reschedule) handleRateLimit(cumulativeBackoff);
-		else handleTaskSuccess(cumulativeBackoff);
+		if(reschedule)
+			handleRateLimit(cumulativeBackoff);
+		else
+			handleTaskSuccess(cumulativeBackoff);
 	}
 	
 	// The cycle goes #enqueue -(only if the rest of the chain is not going on already)> #scheduleTask -> #nextTask -> #scheduleTask -> etc.
@@ -120,7 +123,8 @@ public class BucketRateLimiter implements RateLimiter {
 			tasks.remove();
 			
 			// Stop if no more tasks are present
-			if(tasks.isEmpty()) return;
+			if(tasks.isEmpty())
+				return;
 		}
 		
 		scheduleTask(requestWaitTime(cumulativeBackoff));
@@ -143,9 +147,11 @@ public class BucketRateLimiter implements RateLimiter {
 		
 		// Don't remove task, redo it after the backoff
 		// The backoff is respected in cumulative backoff list, so in requestWaitTime as well but only if this condition is met
-		if(didNumTasksAlready) scheduleTask(requestWaitTime(cumulativeBackoff));
-		// Else requestWaitTime has no way to respect the backoffList, so we back off manually by our exponential backoff
-		else scheduleTask(backoff);
+		if(didNumTasksAlready)
+			scheduleTask(requestWaitTime(cumulativeBackoff));
+			// Else requestWaitTime has no way to respect the backoffList, so we back off manually by our exponential backoff
+		else
+			scheduleTask(backoff);
 		
 		// Print after schedule to have as few instructions as possible between request of backoff time and scheduling
 		// Printing exponentialBackoff because the task will always be scheduled after that much time
@@ -155,7 +161,8 @@ public class BucketRateLimiter implements RateLimiter {
 	@Nonnegative
 	private long requestWaitTime(@Nonnegative long cumulativeBackoff) {
 		// If we did not do numTasks tasks yet, there is nothing to worry about
-		if(!completionTimesFilled()) return 0;
+		if(!completionTimesFilled())
+			return 0;
 		
 		long current = System.currentTimeMillis();
 		
@@ -191,7 +198,8 @@ public class BucketRateLimiter implements RateLimiter {
 			cumulativeBackoff += backoff.requestBackoffTime();
 			
 			// Remove if no longer valid
-			if(!backoff.isValid()) backoffList.remove(i--);
+			if(!backoff.isValid())
+				backoffList.remove(i--);
 		}
 		
 		return cumulativeBackoff;
@@ -215,13 +223,19 @@ public class BucketRateLimiter implements RateLimiter {
 		// TODO: More beautiful
 		new Thread(() -> {
 			try {
-				while(!tasks.isEmpty()) Thread.sleep(50);
+				while(!tasks.isEmpty())
+					Thread.sleep(50);
 				
 				scheduler.shutdown();
 			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
 		}, "ShutdownHandler").start();
+	}
+	
+	@Override
+	public boolean isShutDown() {
+		return isShutDown;
 	}
 	
 	private class Backoff {
