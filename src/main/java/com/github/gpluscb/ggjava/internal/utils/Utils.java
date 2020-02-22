@@ -4,7 +4,8 @@ import javax.annotation.Nonnull;
 
 public class Utils {
 	/**
-	 * @throws IllegalArgumentException if string is null
+	 * @throws IllegalArgumentException
+	 * 		if string is null
 	 */
 	public static String firstCharLowercase(@Nonnull String string) {
 		Checks.nonNull(string, "string");
@@ -13,7 +14,8 @@ public class Utils {
 	}
 	
 	/**
-	 * @throws IllegalArgumentException if string is null
+	 * @throws IllegalArgumentException
+	 * 		if string is null
 	 */
 	public static String firstCharUppercase(@Nonnull String string) {
 		Checks.nonNull(string, "string");

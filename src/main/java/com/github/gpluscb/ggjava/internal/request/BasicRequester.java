@@ -57,8 +57,10 @@ public class BasicRequester {
 			
 			ErrorResponseException errorResponse = getErrorResponse(jsonResponse);
 			
-			if(errorResponse == null) return jsonResponse;
-			else throw errorResponse;
+			if(errorResponse == null)
+				return jsonResponse;
+			else
+				throw errorResponse;
 		}
 	}
 	
@@ -121,7 +123,8 @@ public class BasicRequester {
 	
 	@Nullable
 	private ErrorResponseException getErrorResponse(@Nonnull JsonObject jsonResponse) {
-		if(!jsonResponse.has("errors")) return null;
+		if(!jsonResponse.has("errors"))
+			return null;
 		
 		List<GGError> errors = new ArrayList<>();
 		
@@ -135,7 +138,8 @@ public class BasicRequester {
 	private Request makeRequest(@Nonnull String query, @Nullable JsonObject variables) {
 		JsonObject jsonBody = new JsonObject();
 		jsonBody.addProperty("query", query);
-		if(variables != null) jsonBody.add("variables", variables);
+		if(variables != null)
+			jsonBody.add("variables", variables);
 		
 		RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
 		

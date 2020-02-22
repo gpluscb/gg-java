@@ -33,9 +33,6 @@ public class GGClientImpl implements GGClient {
 		requester = new BasicRequester(token, client);
 	}
 	
-	/**
-	 * The returned CompletableFuture will be completed with the response on the requester thread. If you don't use async methods and block, no requests will be sent during execution of your code.
-	 */
 	@Nonnull
 	@Override
 	public CompletableFuture<JsonObject> request(@Nonnull String query, @Nullable JsonObject variables) {
@@ -78,8 +75,8 @@ public class GGClientImpl implements GGClient {
 		limiter.shutdown();
 	}
 	
-	@Nonnull
-	public RateLimiter getLimiter() {
-		return limiter;
+	@Override
+	public boolean isShutDown() {
+		return limiter.isShutDown();
 	}
 }

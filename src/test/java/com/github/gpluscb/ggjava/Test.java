@@ -19,11 +19,10 @@ public class Test {
 			int i_ = i;
 			
 			limiter.enqueue(retries -> {
-					System.out.printf("No. %d started: %d", i_ + 1, System.currentTimeMillis());
-					System.out.printf(" | finished: %d%n", System.currentTimeMillis());
-					return i_ + 1 == 10 || i_ + 1 == 100 && retries < 1; // Only retry request No. 10 and 100 once
-				}
-			);
+				System.out.printf("No. %d started: %d", i_ + 1, System.currentTimeMillis());
+				System.out.printf(" | finished: %d%n", System.currentTimeMillis());
+				return i_ + 1 == 10 || i_ + 1 == 100 && retries < 1; // Only retry request No. 10 and 100 once
+			});
 		}
 		
 		limiter.shutdown();
@@ -39,9 +38,10 @@ public class Test {
 		
 		for(int i = 0; i < 100; i++) {
 			int i_ = i;
-			client.request(testQuery)
-					.thenAccept(r -> System.out.println("No. " + (i_ + 1) + " finished at " + System.currentTimeMillis()))
-					.exceptionally(t -> {t.printStackTrace(); return null;});
+			client.request(testQuery).thenAccept(r -> System.out.println("No. " + (i_ + 1) + " finished at " + System.currentTimeMillis())).exceptionally(t -> {
+				t.printStackTrace();
+				return null;
+			});
 		}
 		
 		client.shutdown();

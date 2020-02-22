@@ -77,8 +77,10 @@ public class SimpleRateLimiter implements RateLimiter {
 	}
 	
 	private void completeTask(@Nonnull IntToBooleanFunction task) {
-		if(task.applyAsBoolean(numRetries)) handleRateLimit();
-		else nextRequest();
+		if(task.applyAsBoolean(numRetries))
+			handleRateLimit();
+		else
+			nextRequest();
 	}
 	
 	private void handleRateLimit() {
@@ -104,7 +106,8 @@ public class SimpleRateLimiter implements RateLimiter {
 			tasks.remove();
 			
 			// Stop if no more requests are present
-			if(tasks.isEmpty()) return;
+			if(tasks.isEmpty())
+				return;
 		}
 		
 		scheduleRequest();
@@ -137,7 +140,8 @@ public class SimpleRateLimiter implements RateLimiter {
 		// TODO: More beautiful
 		new Thread(() -> {
 			try {
-				while(!tasks.isEmpty()) Thread.sleep(100);
+				while(!tasks.isEmpty())
+					Thread.sleep(100);
 				
 				scheduler.shutdown();
 			} catch(InterruptedException e) {
@@ -146,8 +150,8 @@ public class SimpleRateLimiter implements RateLimiter {
 		}, "ShutdownHandler").start();
 	}
 	
-	@Nonnegative
-	public long getLimit() {
-		return limit;
+	@Override
+	public boolean isShutDown() {
+		return isShutDown;
 	}
 }
