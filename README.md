@@ -81,6 +81,9 @@ GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucket
 
 *I have done some testing with the rate limit system. It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
 
+### Docs
+The docs can be found on the github-pages site [here](https://gpluscb.github.io/gg-java).
+
 ## TODO
 * More efficient way to add variables
 * Better Exceptions (keep stack trace context)
