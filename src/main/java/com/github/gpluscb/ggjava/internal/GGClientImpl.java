@@ -47,7 +47,7 @@ public class GGClientImpl implements GGClient {
 		return ret;
 	}
 	
-	private boolean makeRequest(@Nonnull GGRequest request, int retries) {
+	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
 		try {
 			requester.sendRequest(request.getQuery(), request.getVariables()).get();
 			return false;
@@ -59,7 +59,7 @@ public class GGClientImpl implements GGClient {
 		}
 	}
 	
-	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, int retries) {
+	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, @Nonnegative int retries) {
 		if(failure instanceof RateLimitException && retries < maxRetries) {
 			// Rate limit, rescheduling
 			System.err.printf("Ran into rate limit: %s%n", failure.getMessage());
