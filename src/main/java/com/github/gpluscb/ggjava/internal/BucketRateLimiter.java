@@ -155,7 +155,7 @@ public class BucketRateLimiter implements RateLimiter {
 		
 		// Print after schedule to have as few instructions as possible between request of backoff time and scheduling
 		// Printing exponentialBackoff because the task will always be scheduled after that much time
-		System.err.printf("Backing off for %dms at " + System.currentTimeMillis() + "%n", exponentialBackoff);
+		System.err.printf("Backing off for %dms%n", exponentialBackoff);
 	}
 	
 	@Nonnegative
