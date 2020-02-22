@@ -55,12 +55,17 @@ public class BasicRequester {
 				}
 			}
 			
+			if(jsonResponse.has("success") && !jsonResponse.getAsJsonPrimitive("success").getAsBoolean())
+				throw new RequestFailureException(jsonResponse.getAsJsonPrimitive("message").getAsString());
+			
 			ErrorResponseException errorResponse = getErrorResponse(jsonResponse);
 			
 			if(errorResponse == null)
 				return jsonResponse;
 			else
 				throw errorResponse;
+		} catch(IOException e) {
+			throw new RequestFailureException(e);
 		}
 	}
 	
@@ -100,6 +105,11 @@ public class BasicRequester {
 							return;
 						}
 						
+						if(jsonResponse.has("success") && !jsonResponse.getAsJsonPrimitive("success").getAsBoolean()) {
+							onFailure.accept(new RequestFailureException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
+							return;
+						}
+						
 						ErrorResponseException errorResponse = getErrorResponse(jsonResponse);
 						
 						if(errorResponse == null) {
@@ -113,6 +123,7 @@ public class BasicRequester {
 					} catch(Throwable t) {
 						System.err.print("Failed to handle server response: ");
 						t.printStackTrace();
+						onFailure.accept(t);
 					}
 				}
 			});
