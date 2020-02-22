@@ -83,7 +83,7 @@ GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucket
 
 ## TODO
 * More efficient way to add variables
-* Better Exceptions
+* Better Exceptions (keep stack trace context)
 * More/better documentation
 * Proper configurable logging
 * Generally better code structure (whatever that means)
