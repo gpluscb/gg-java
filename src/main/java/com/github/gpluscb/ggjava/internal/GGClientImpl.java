@@ -75,6 +75,7 @@ public class GGClientImpl implements GGClient {
 	@Override
 	public void shutdown() {
 		limiter.shutdown();
+		requester.shutdown();
 	}
 	
 	@Override
