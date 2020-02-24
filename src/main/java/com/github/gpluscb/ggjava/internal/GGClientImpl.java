@@ -49,7 +49,7 @@ public class GGClientImpl implements GGClient {
 	
 	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
 		try {
-			requester.sendRequest(request.getQuery(), request.getVariables()).get();
+			request.getFuture().complete(requester.sendRequest(request.getQuery(), request.getVariables()).get());
 			return false;
 		} catch(ExecutionException e) {
 			return handleFailure(e.getCause(), request, retries);
