@@ -18,7 +18,7 @@ public class ListResponse<E extends AbstractGGResponseObject> extends AbstractGG
 		value = null;
 	}
 	
-	public ListResponse(@Nonnull EntityType type, List<E> value) {
+	public ListResponse(@Nonnull EntityType type, @Nonnull List<E> value) {
 		super(type, true);
 		Checks.nonNull(value, "value");
 		// Only allow provided elements in
