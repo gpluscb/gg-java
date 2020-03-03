@@ -4,5 +4,5 @@ import javax.annotation.Nonnull;
 
 public interface GGEntity {
 	@Nonnull
-	EntityType getType();
+	EntityType getGGEntityType();
 }

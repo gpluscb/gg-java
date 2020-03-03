@@ -8,7 +8,7 @@ public class IntResponse extends BasicResponse<Integer> implements GGInt {
 	public IntResponse() {
 		super(EntityType.INT);
 	}
-	
+
 	public IntResponse(int value) throws IllegalArgumentException {
 		super(EntityType.INT, value);
 	}

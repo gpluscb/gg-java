@@ -3,7 +3,6 @@ package com.github.gpluscb.ggjava.entity.object.input.scalars;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.input.BasicInput;
 import com.github.gpluscb.ggjava.entity.object.scalars.GGInt;
-import javax.annotation.Nonnull;
 
 public class IntInput extends BasicInput<Integer> implements GGInt {
 	/**

@@ -1,9 +1,9 @@
 package com.github.gpluscb.ggjava.entity.object.input.enums;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
-import javax.annotation.Nonnull;
-
 import com.github.gpluscb.ggjava.entity.enums.ActivityState;
+
+import javax.annotation.Nonnull;
 
 public class ActivityStateInput extends EnumInput<ActivityState> {
 	/**

@@ -1,11 +1,10 @@
 package com.github.gpluscb.ggjava.entity.object.input.scalars;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
+import com.github.gpluscb.ggjava.entity.object.input.InputVariable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.github.gpluscb.ggjava.entity.object.input.InputVariable;
-import com.github.gpluscb.ggjava.entity.object.scalars.GGBoolean;
 
 public class BooleanVariable extends InputVariable<BooleanInput> {
 	/**
@@ -21,7 +20,7 @@ public class BooleanVariable extends InputVariable<BooleanInput> {
 	public BooleanVariable(@Nonnull String name, boolean required) {
 		super(EntityType.BOOLEAN, name, required);
 	}
-	
+
 	/**
 	 * @throws IllegalArgumentException if name is null
 	 */

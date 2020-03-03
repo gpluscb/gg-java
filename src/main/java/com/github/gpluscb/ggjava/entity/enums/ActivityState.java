@@ -1,6 +1,7 @@
 package com.github.gpluscb.ggjava.entity.enums;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
+
 import javax.annotation.Nonnull;
 
 public enum ActivityState implements GGEnum {
@@ -32,10 +33,10 @@ public enum ActivityState implements GGEnum {
 	 * Activity is queued to run
 	 */
 	QUEUED;
-	
+
 	@Nonnull
 	@Override
-	public EntityType getType() {
+	public EntityType getGGEntityType() {
 		return EntityType.ACTIVITY_STATE;
 	}
 }

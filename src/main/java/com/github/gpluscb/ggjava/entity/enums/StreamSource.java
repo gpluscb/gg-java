@@ -1,6 +1,7 @@
 package com.github.gpluscb.ggjava.entity.enums;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
+
 import javax.annotation.Nonnull;
 
 public enum StreamSource implements GGEnum {
@@ -20,10 +21,10 @@ public enum StreamSource implements GGEnum {
 	 * Stream is on a mixer.com channel
 	 */
 	MIXER;
-	
+
 	@Nonnull
 	@Override
-	public EntityType getType() {
+	public EntityType getGGEntityType() {
 		return EntityType.STREAM_SOURCE;
 	}
 }

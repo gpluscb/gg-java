@@ -1,6 +1,7 @@
 package com.github.gpluscb.ggjava.entity.enums;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
+
 import javax.annotation.Nonnull;
 
 public enum Comparator implements GGEnum {
@@ -9,10 +10,10 @@ public enum Comparator implements GGEnum {
 	EQUAL,
 	LESS_THAN_OR_EQUAL,
 	LESS_THAN;
-	
+
 	@Nonnull
 	@Override
-	public EntityType getType() {
+	public EntityType getGGEntityType() {
 		return EntityType.COMPARATOR;
 	}
 }

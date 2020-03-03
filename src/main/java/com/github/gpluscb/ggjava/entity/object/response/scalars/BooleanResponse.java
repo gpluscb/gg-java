@@ -7,7 +7,7 @@ public class BooleanResponse extends ScalarResponse<Boolean> implements GGBoolea
 	public BooleanResponse() {
 		super(EntityType.BOOLEAN);
 	}
-	
+
 	public BooleanResponse(boolean value) {
 		super(EntityType.BOOLEAN, value);
 	}

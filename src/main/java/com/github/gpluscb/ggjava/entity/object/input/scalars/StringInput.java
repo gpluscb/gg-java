@@ -3,6 +3,7 @@ package com.github.gpluscb.ggjava.entity.object.input.scalars;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.input.BasicInput;
 import com.github.gpluscb.ggjava.entity.object.scalars.GGString;
+
 import javax.annotation.Nonnull;
 
 public class StringInput extends BasicInput<String> implements GGString {

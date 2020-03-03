@@ -7,40 +7,40 @@ import com.github.gpluscb.ggjava.entity.object.response.enums.BracketTypeRespons
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.scalars.GGInt;
 
+import javax.annotation.Nonnull;
+
 public abstract class BracketConfigResponse extends AbstractGGResponseObject {
 	private final IntResponse id;
 	private final BracketTypeResponse bracketType;
-	
-	public BracketConfigResponse() {
-		super(EntityType.BRACKET_TYPE);
+
+	public BracketConfigResponse(@Nonnull EntityType type) {
+		super(type);
 		id = null;
 		bracketType = null;
 	}
-	
-	public BracketConfigResponse(IntResponse id, BracketTypeResponse bracketType) {
-		super(EntityType.BRACKET_TYPE, true);
+
+	public BracketConfigResponse(@Nonnull EntityType type, IntResponse id, BracketTypeResponse bracketType) {
+		super(type, true);
 		this.id = id;
 		this.bracketType = bracketType;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */
 	public GGInt getId() {
 		checkProvided();
-		id.checkProvided();
 		return id;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */
 	public BracketTypeResponse getBracketTypeResponse() {
 		checkProvided();
-		bracketType.checkProvided();
 		return bracketType;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */

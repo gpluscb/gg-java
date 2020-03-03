@@ -6,22 +6,24 @@ import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject
 import com.github.gpluscb.ggjava.entity.object.response.enums.BracketTypeResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 
+import javax.annotation.Nonnull;
+
 public abstract class MatchConfigResponse extends AbstractGGResponseObject {
 	private final IntResponse id;
 	private final BracketTypeResponse bracketType;
-	
-	public MatchConfigResponse() {
-		super(EntityType.MATCH_CONFIG);
+
+	public MatchConfigResponse(@Nonnull EntityType type) {
+		super(type);
 		id = null;
 		bracketType = null;
 	}
-	
-	public MatchConfigResponse(IntResponse id, BracketTypeResponse bracketType) {
-		super(EntityType.MATCH_CONFIG, true);
+
+	public MatchConfigResponse(@Nonnull EntityType type, IntResponse id, BracketTypeResponse bracketType) {
+		super(type, true);
 		this.id = id;
 		this.bracketType = bracketType;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */
@@ -30,7 +32,7 @@ public abstract class MatchConfigResponse extends AbstractGGResponseObject {
 		id.checkProvided();
 		return id;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */
@@ -39,7 +41,7 @@ public abstract class MatchConfigResponse extends AbstractGGResponseObject {
 		bracketType.checkProvided();
 		return bracketType;
 	}
-	
+
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */

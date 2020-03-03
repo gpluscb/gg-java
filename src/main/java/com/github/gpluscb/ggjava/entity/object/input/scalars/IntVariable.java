@@ -1,11 +1,10 @@
 package com.github.gpluscb.ggjava.entity.object.input.scalars;
 
 import com.github.gpluscb.ggjava.entity.EntityType;
+import com.github.gpluscb.ggjava.entity.object.input.InputVariable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.github.gpluscb.ggjava.entity.object.input.InputVariable;
-import com.github.gpluscb.ggjava.entity.object.scalars.GGInt;
 
 public class IntVariable extends InputVariable<IntInput> {
 	/**
@@ -21,7 +20,7 @@ public class IntVariable extends InputVariable<IntInput> {
 	public IntVariable(@Nonnull String name, boolean required) {
 		super(EntityType.INT, name, required);
 	}
-	
+
 	/**
 	 * @throws IllegalArgumentException if name is null
 	 */
