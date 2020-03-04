@@ -1,5 +1,10 @@
 package com.github.gpluscb.ggjava.entity;
 
+import com.github.gpluscb.ggjava.entity.object.GGObject;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public enum EntityType {
 	// Scalars
 	BOOLEAN,
@@ -114,4 +119,24 @@ public enum EntityType {
 	UPDATE_PHASE_SEED_INFO,
 	UPDATE_PHASE_SEEDING_OPTIONS,
 	WAVE_UPSERT_INPUT;
+
+	@Nonnull
+	private Class<? extends GGEntity> clazz;
+
+	EntityType(@Nonnull Class<? extends GGEntity> clazz) {
+		this.clazz = clazz;
+	}
+
+	@Nonnull
+	public Class<? extends GGEntity> getClazz() {
+		return clazz;
+	}
+
+	@Nullable
+	public static EntityType getByClazz(Class<? extends GGEntity> clazz) {
+		for(EntityType type : values())
+			if(type.getClazz().equals(clazz)) return type;
+
+		return null;
+	}
 }
