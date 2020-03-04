@@ -30,6 +30,7 @@ public abstract class AbstractGGResponseObject extends AbstractGGObject implemen
 	/**
 	 * @throws IllegalStateException if provided is false
 	 */
+	@Override
 	public void checkProvided() throws IllegalStateException {
 		if (!provided) throw new IllegalStateException("This is not provided");
 	}

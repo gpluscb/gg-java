@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class ListResponse<E extends AbstractGGResponseObject> extends AbstractGGResponseObject implements List<E> {
+public class ListResponse<E extends GGResponseObject> extends AbstractGGResponseObject implements List<E> {
 	private final List<E> value;
 
 	public ListResponse(@Nonnull EntityType type) {
