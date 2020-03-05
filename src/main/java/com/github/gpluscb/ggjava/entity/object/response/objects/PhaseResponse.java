@@ -14,51 +14,83 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class PhaseResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final BracketTypeResponse bracketType;
+	private final IntResponse groupCount;
+	private final BooleanResponse isExhibition;
+	private final StringResponse name;
 	private final IntResponse numSeeds;
 	private final SeedConnectionResponse paginatedSeeds;
 	private final PhaseGroupConnectionResponse phaseGroups;
 	private final SeedConnectionResponse seeds;
 	private final SetConnectionResponse sets;
 	private final ListResponse<WaveResponse> waves;
-	private final IntResponse groupCount;
-	private final StringResponse name;
-	private final BooleanResponse isExhibition;
-	private final BracketTypeResponse bracketType;
 
 	public PhaseResponse() {
 		super(EntityType.PHASE);
 
 		id = null;
+		bracketType = null;
+		groupCount = null;
+		isExhibition = null;
+		name = null;
 		numSeeds = null;
 		paginatedSeeds = null;
 		phaseGroups = null;
 		seeds = null;
 		sets = null;
 		waves = null;
-		groupCount = null;
-		name = null;
-		isExhibition = null;
-		bracketType = null;
 	}
 
-	public PhaseResponse(IDResponse id, IntResponse numSeeds, SeedConnectionResponse paginatedSeeds, PhaseGroupConnectionResponse phaseGroups, SeedConnectionResponse seeds, SetConnectionResponse sets, ListResponse<WaveResponse> waves, IntResponse groupCount, StringResponse name, BooleanResponse isExhibition, BracketTypeResponse bracketType) {
+	public PhaseResponse(IDResponse id, BracketTypeResponse bracketType, IntResponse groupCount, BooleanResponse isExhibition, StringResponse name, IntResponse numSeeds, SeedConnectionResponse paginatedSeeds, PhaseGroupConnectionResponse phaseGroups, SeedConnectionResponse seeds, SetConnectionResponse sets, ListResponse<WaveResponse> waves) {
 		super(EntityType.PHASE, true);
 		this.id = id;
+		this.bracketType = bracketType;
+		this.groupCount = groupCount;
+		this.isExhibition = isExhibition;
+		this.name = name;
 		this.numSeeds = numSeeds;
 		this.paginatedSeeds = paginatedSeeds;
 		this.phaseGroups = phaseGroups;
 		this.seeds = seeds;
 		this.sets = sets;
 		this.waves = waves;
-		this.groupCount = groupCount;
-		this.name = name;
-		this.isExhibition = isExhibition;
-		this.bracketType = bracketType;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
+	}
+
+	/**
+	 * The bracket type of this phase.
+	 */
+	public BracketTypeResponse getBracketType() {
+		checkProvided();
+		return bracketType;
+	}
+
+	/**
+	 * Number of phase groups in this phase
+	 */
+	public IntResponse getGroupCount() {
+		checkProvided();
+		return groupCount;
+	}
+
+	/**
+	 * Is the phase an exhibition or not.
+	 */
+	public BooleanResponse getIsExhibition() {
+		checkProvided();
+		return isExhibition;
+	}
+
+	/**
+	 * Name of phase e.g. Round 1 Pools
+	 */
+	public StringResponse getName() {
+		checkProvided();
+		return name;
 	}
 
 	/**
@@ -102,37 +134,5 @@ public class PhaseResponse extends AbstractGGResponseObject {
 	public ListResponse<WaveResponse> getWaves() {
 		checkProvided();
 		return waves;
-	}
-
-	/**
-	 * Number of phase groups in this phase
-	 */
-	public IntResponse getGroupCount() {
-		checkProvided();
-		return groupCount;
-	}
-
-	/**
-	 * Name of phase e.g. Round 1 Pools
-	 */
-	public StringResponse getName() {
-		checkProvided();
-		return name;
-	}
-
-	/**
-	 * Is the phase an exhibition or not.
-	 */
-	public BooleanResponse getIsExhibition() {
-		checkProvided();
-		return isExhibition;
-	}
-
-	/**
-	 * The bracket type of this phase.
-	 */
-	public BracketTypeResponse getBracketType() {
-		checkProvided();
-		return bracketType;
 	}
 }

@@ -10,38 +10,46 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  * A user
  */
 public class UserResponse extends AbstractGGResponseObject {
-	private final IDResponse id;
-	private final ListResponse<ImageResponse> images;
-	private final PlayerResponse player;
-	private final AddressResponse location;
 	private final ListResponse<ProfileAuthorizationResponse> authorizations;
-	private final StringResponse name;
-	private final StringResponse slug;
+	private final IDResponse id;
 	private final StringResponse bio;
+	private final ListResponse<ImageResponse> images;
+	private final AddressResponse location;
+	private final StringResponse name;
+	private final PlayerResponse player;
+	private final StringResponse slug;
 
 	public UserResponse() {
 		super(EntityType.USER);
 
-		id = null;
-		images = null;
-		player = null;
-		location = null;
 		authorizations = null;
-		name = null;
-		slug = null;
+		id = null;
 		bio = null;
+		images = null;
+		location = null;
+		name = null;
+		player = null;
+		slug = null;
 	}
 
-	public UserResponse(IDResponse id, ListResponse<ImageResponse> images, PlayerResponse player, AddressResponse location, ListResponse<ProfileAuthorizationResponse> authorizations, StringResponse name, StringResponse slug, StringResponse bio) {
+	public UserResponse(ListResponse<ProfileAuthorizationResponse> authorizations, IDResponse id, StringResponse bio, ListResponse<ImageResponse> images, AddressResponse location, StringResponse name, PlayerResponse player, StringResponse slug) {
 		super(EntityType.USER, true);
-		this.id = id;
-		this.images = images;
-		this.player = player;
-		this.location = location;
 		this.authorizations = authorizations;
-		this.name = name;
-		this.slug = slug;
+		this.id = id;
 		this.bio = bio;
+		this.images = images;
+		this.location = location;
+		this.name = name;
+		this.player = player;
+		this.slug = slug;
+	}
+
+	/**
+	 * Authorizations to external services (i.e. Twitch, Twitter)
+	 */
+	public ListResponse<ProfileAuthorizationResponse> getAuthorizations() {
+		checkProvided();
+		return authorizations;
 	}
 
 	public IDResponse getId() {
@@ -49,17 +57,14 @@ public class UserResponse extends AbstractGGResponseObject {
 		return id;
 	}
 
+	public StringResponse getBio() {
+		checkProvided();
+		return bio;
+	}
+
 	public ListResponse<ImageResponse> getImages() {
 		checkProvided();
 		return images;
-	}
-
-	/**
-	 * player for user
-	 */
-	public PlayerResponse getPlayer() {
-		checkProvided();
-		return player;
 	}
 
 	/**
@@ -71,14 +76,6 @@ public class UserResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Authorizations to external services (i.e. Twitch, Twitter)
-	 */
-	public ListResponse<ProfileAuthorizationResponse> getAuthorizations() {
-		checkProvided();
-		return authorizations;
-	}
-
-	/**
 	 * Public facing user name that respects user publishing settings
 	 */
 	public StringResponse getName() {
@@ -86,13 +83,16 @@ public class UserResponse extends AbstractGGResponseObject {
 		return name;
 	}
 
+	/**
+	 * player for user
+	 */
+	public PlayerResponse getPlayer() {
+		checkProvided();
+		return player;
+	}
+
 	public StringResponse getSlug() {
 		checkProvided();
 		return slug;
-	}
-
-	public StringResponse getBio() {
-		checkProvided();
-		return bio;
 	}
 }

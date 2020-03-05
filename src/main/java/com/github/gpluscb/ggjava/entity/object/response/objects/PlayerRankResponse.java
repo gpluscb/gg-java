@@ -11,32 +11,27 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class PlayerRankResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final StringResponse title;
 	private final IntResponse rank;
+	private final StringResponse title;
 
 	public PlayerRankResponse() {
 		super(EntityType.PLAYER_RANK);
 
 		id = null;
-		title = null;
 		rank = null;
+		title = null;
 	}
 
-	public PlayerRankResponse(IDResponse id, StringResponse title, IntResponse rank) {
+	public PlayerRankResponse(IDResponse id, IntResponse rank, StringResponse title) {
 		super(EntityType.PLAYER_RANK, true);
 		this.id = id;
-		this.title = title;
 		this.rank = rank;
+		this.title = title;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
-	}
-
-	public StringResponse getTitle() {
-		checkProvided();
-		return title;
 	}
 
 	/**
@@ -45,5 +40,10 @@ public class PlayerRankResponse extends AbstractGGResponseObject {
 	public IntResponse getRank() {
 		checkProvided();
 		return rank;
+	}
+
+	public StringResponse getTitle() {
+		checkProvided();
+		return title;
 	}
 }

@@ -4,12 +4,12 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.enums.BracketType;
 import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.enums.BracketTypeResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 
 import javax.annotation.Nonnull;
 
 public abstract class MatchConfigResponse extends AbstractGGResponseObject {
-	private final IntResponse id;
+	private final IDResponse id;
 	private final BracketTypeResponse bracketType;
 
 	public MatchConfigResponse(@Nonnull EntityType type) {
@@ -18,7 +18,7 @@ public abstract class MatchConfigResponse extends AbstractGGResponseObject {
 		bracketType = null;
 	}
 
-	public MatchConfigResponse(@Nonnull EntityType type, IntResponse id, BracketTypeResponse bracketType) {
+	public MatchConfigResponse(@Nonnull EntityType type, IDResponse id, BracketTypeResponse bracketType) {
 		super(type, true);
 		this.id = id;
 		this.bracketType = bracketType;
@@ -27,7 +27,7 @@ public abstract class MatchConfigResponse extends AbstractGGResponseObject {
 	/**
 	 * @throws IllegalStateException if this is not provided
 	 */
-	public IntResponse getId() {
+	public IDResponse getId() {
 		checkProvided();
 		id.checkProvided();
 		return id;

@@ -10,8 +10,8 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class ShopResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final ShopOrderMessageConnectionResponse messages;
 	private final ShopLevelConnectionResponse levels;
+	private final ShopOrderMessageConnectionResponse messages;
 	private final StringResponse name;
 	private final StringResponse slug;
 
@@ -19,17 +19,17 @@ public class ShopResponse extends AbstractGGResponseObject {
 		super(EntityType.SHOP);
 
 		id = null;
-		messages = null;
 		levels = null;
+		messages = null;
 		name = null;
 		slug = null;
 	}
 
-	public ShopResponse(IDResponse id, ShopOrderMessageConnectionResponse messages, ShopLevelConnectionResponse levels, StringResponse name, StringResponse slug) {
+	public ShopResponse(IDResponse id, ShopLevelConnectionResponse levels, ShopOrderMessageConnectionResponse messages, StringResponse name, StringResponse slug) {
 		super(EntityType.SHOP, true);
 		this.id = id;
-		this.messages = messages;
 		this.levels = levels;
+		this.messages = messages;
 		this.name = name;
 		this.slug = slug;
 	}
@@ -39,14 +39,14 @@ public class ShopResponse extends AbstractGGResponseObject {
 		return id;
 	}
 
-	public ShopOrderMessageConnectionResponse getMessages() {
-		checkProvided();
-		return messages;
-	}
-
 	public ShopLevelConnectionResponse getLevels() {
 		checkProvided();
 		return levels;
+	}
+
+	public ShopOrderMessageConnectionResponse getMessages() {
+		checkProvided();
+		return messages;
 	}
 
 	public StringResponse getName() {

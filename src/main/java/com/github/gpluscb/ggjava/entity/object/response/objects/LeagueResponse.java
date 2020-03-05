@@ -9,295 +9,146 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
  * A league
  */
 public class LeagueResponse extends AbstractGGResponseObject {
-	private final IDResponse id;
-	private final ListResponse<ImageResponse> images;
-	private final StringResponse slug;
-	private final IntResponse entrantCount;
-	private final IntResponse numUniquePlayers;
-	private final EventConnectionResponse events;
-	private final ListResponse<VideogameResponse> videogames;
-	private final StandingConnectionResponse standings;
-	private final EventOwnerConnectionResponse eventOwners;
-	private final StringResponse adminUrl;
 	private final StringResponse addrState;
+	private final IDResponse id;
 	private final StringResponse city;
-	private final JSONResponse attendeeFieldConfig;
-	private final StringResponse contactEmail;
-	private final StringResponse contactPhone;
-	private final StringResponse contactTwitter;
 	private final StringResponse countryCode;
 	private final TimestampResponse createdAt;
 	private final StringResponse currency;
-	private final JSONResponse customMarkdown;
-	private final StringResponse details;
-	private final StringResponse emailDirections;
-	private final StringResponse emailInstructions;
-	private final StringResponse emailNote;
 	private final TimestampResponse endAt;
-	private final JSONResponse generatedTabs;
-	private final StringResponse gettingThere;
-	private final StringResponse hashtag;
-	private final BooleanResponse hasOnlineEvents;
-	private final BooleanResponse hideAdmins;
-	private final BooleanResponse includeQRCheckIn;
-	private final BooleanResponse includeQRCode;
-	private final BooleanResponse isOnline;
+	private final IntResponse entrantCount;
+	private final EventOwnerConnectionResponse eventOwners;
+	private final TimestampResponse eventRegistrationClosesAt;
+	private final EventConnectionResponse events;
+	private final IntResponse finalEventId;
 	private final BooleanResponse hasOfflineEvents;
+	private final BooleanResponse hasOnlineEvents;
+	private final StringResponse hashtag;
+	private final ListResponse<ImageResponse> images;
+	private final BooleanResponse isOnline;
 	private final FloatResponse lat;
 	private final TournamentLinksResponse links;
 	private final FloatResponse lng;
 	private final StringResponse mapsPlaceId;
 	private final StringResponse name;
-	private final BooleanResponse notifyAdmins;
-	private final IntResponse ownerId;
+	private final IntResponse numProgressingToFinalEvent;
+	private final IntResponse numUniquePlayers;
 	private final StringResponse postalCode;
 	private final StringResponse primaryContact;
 	private final StringResponse primaryContactType;
-	private final StringResponse prizes;
 	private final JSONResponse publishing;
-	private final StringResponse qrCodeRedirect;
-	private final StringResponse qrCodeRedirectType;
-	private final StringResponse region;
-	private final StringResponse defaultTab;
+	private final TimestampResponse registrationClosesAt;
 	private final StringResponse rules;
 	private final StringResponse shortSlug;
-	private final IntResponse reminderInterval;
+	private final BooleanResponse showStandings;
+	private final StringResponse slug;
+	private final StandingConnectionResponse standings;
 	private final TimestampResponse startAt;
 	private final IntResponse state;
+	private final TimestampResponse teamCreationClosesAt;
 	private final StringResponse timezone;
 	private final IntResponse tournamentType;
 	private final TimestampResponse updatedAt;
 	private final StringResponse url;
 	private final StringResponse venueAddress;
 	private final StringResponse venueName;
-	private final TimestampResponse eventRegistrationClosesAt;
-	private final TimestampResponse registrationClosesAt;
-	private final TimestampResponse teamCreationClosesAt;
-	private final StringResponse onsitePaymentMode;
-	private final StringResponse paypalMode;
-	private final StringResponse stripeMode;
-	private final StringResponse paypalUser;
-	private final StringResponse stripeUserId;
-	private final BooleanResponse approved;
-	private final BooleanResponse showStandings;
-	private final IntResponse finalEventId;
-	private final IntResponse numProgressingToFinalEvent;
+	private final ListResponse<VideogameResponse> videogames;
 
 	public LeagueResponse() {
 		super(EntityType.LEAGUE);
 
-		id = null;
-		images = null;
-		slug = null;
-		entrantCount = null;
-		numUniquePlayers = null;
-		events = null;
-		videogames = null;
-		standings = null;
-		eventOwners = null;
-		adminUrl = null;
 		addrState = null;
+		id = null;
 		city = null;
-		attendeeFieldConfig = null;
-		contactEmail = null;
-		contactPhone = null;
-		contactTwitter = null;
 		countryCode = null;
 		createdAt = null;
 		currency = null;
-		customMarkdown = null;
-		details = null;
-		emailDirections = null;
-		emailInstructions = null;
-		emailNote = null;
 		endAt = null;
-		generatedTabs = null;
-		gettingThere = null;
-		hashtag = null;
-		hasOnlineEvents = null;
-		hideAdmins = null;
-		includeQRCheckIn = null;
-		includeQRCode = null;
-		isOnline = null;
+		entrantCount = null;
+		eventOwners = null;
+		eventRegistrationClosesAt = null;
+		events = null;
+		finalEventId = null;
 		hasOfflineEvents = null;
+		hasOnlineEvents = null;
+		hashtag = null;
+		images = null;
+		isOnline = null;
 		lat = null;
 		links = null;
 		lng = null;
 		mapsPlaceId = null;
 		name = null;
-		notifyAdmins = null;
-		ownerId = null;
+		numProgressingToFinalEvent = null;
+		numUniquePlayers = null;
 		postalCode = null;
 		primaryContact = null;
 		primaryContactType = null;
-		prizes = null;
 		publishing = null;
-		qrCodeRedirect = null;
-		qrCodeRedirectType = null;
-		region = null;
-		defaultTab = null;
+		registrationClosesAt = null;
 		rules = null;
 		shortSlug = null;
-		reminderInterval = null;
+		showStandings = null;
+		slug = null;
+		standings = null;
 		startAt = null;
 		state = null;
+		teamCreationClosesAt = null;
 		timezone = null;
 		tournamentType = null;
 		updatedAt = null;
 		url = null;
 		venueAddress = null;
 		venueName = null;
-		eventRegistrationClosesAt = null;
-		registrationClosesAt = null;
-		teamCreationClosesAt = null;
-		onsitePaymentMode = null;
-		paypalMode = null;
-		stripeMode = null;
-		paypalUser = null;
-		stripeUserId = null;
-		approved = null;
-		showStandings = null;
-		finalEventId = null;
-		numProgressingToFinalEvent = null;
+		videogames = null;
 	}
 
-	public LeagueResponse(IDResponse id, ListResponse<ImageResponse> images, StringResponse slug, IntResponse entrantCount, IntResponse numUniquePlayers, EventConnectionResponse events, ListResponse<VideogameResponse> videogames, StandingConnectionResponse standings, EventOwnerConnectionResponse eventOwners, StringResponse adminUrl, StringResponse addrState, StringResponse city, JSONResponse attendeeFieldConfig, StringResponse contactEmail, StringResponse contactPhone, StringResponse contactTwitter, StringResponse countryCode, TimestampResponse createdAt, StringResponse currency, JSONResponse customMarkdown, StringResponse details, StringResponse emailDirections, StringResponse emailInstructions, StringResponse emailNote, TimestampResponse endAt, JSONResponse generatedTabs, StringResponse gettingThere, StringResponse hashtag, BooleanResponse hasOnlineEvents, BooleanResponse hideAdmins, BooleanResponse includeQRCheckIn, BooleanResponse includeQRCode, BooleanResponse isOnline, BooleanResponse hasOfflineEvents, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, BooleanResponse notifyAdmins, IntResponse ownerId, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, StringResponse prizes, JSONResponse publishing, StringResponse qrCodeRedirect, StringResponse qrCodeRedirectType, StringResponse region, StringResponse defaultTab, StringResponse rules, StringResponse shortSlug, IntResponse reminderInterval, TimestampResponse startAt, IntResponse state, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, TimestampResponse eventRegistrationClosesAt, TimestampResponse registrationClosesAt, TimestampResponse teamCreationClosesAt, StringResponse onsitePaymentMode, StringResponse paypalMode, StringResponse stripeMode, StringResponse paypalUser, StringResponse stripeUserId, BooleanResponse approved, BooleanResponse showStandings, IntResponse finalEventId, IntResponse numProgressingToFinalEvent) {
+	public LeagueResponse(StringResponse addrState, IDResponse id, StringResponse city, StringResponse countryCode, TimestampResponse createdAt, StringResponse currency, TimestampResponse endAt, IntResponse entrantCount, EventOwnerConnectionResponse eventOwners, TimestampResponse eventRegistrationClosesAt, EventConnectionResponse events, IntResponse finalEventId, BooleanResponse hasOfflineEvents, BooleanResponse hasOnlineEvents, StringResponse hashtag, ListResponse<ImageResponse> images, BooleanResponse isOnline, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, IntResponse numProgressingToFinalEvent, IntResponse numUniquePlayers, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, JSONResponse publishing, TimestampResponse registrationClosesAt, StringResponse rules, StringResponse shortSlug, BooleanResponse showStandings, StringResponse slug, StandingConnectionResponse standings, TimestampResponse startAt, IntResponse state, TimestampResponse teamCreationClosesAt, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, ListResponse<VideogameResponse> videogames) {
 		super(EntityType.LEAGUE, true);
-		this.id = id;
-		this.images = images;
-		this.slug = slug;
-		this.entrantCount = entrantCount;
-		this.numUniquePlayers = numUniquePlayers;
-		this.events = events;
-		this.videogames = videogames;
-		this.standings = standings;
-		this.eventOwners = eventOwners;
-		this.adminUrl = adminUrl;
 		this.addrState = addrState;
+		this.id = id;
 		this.city = city;
-		this.attendeeFieldConfig = attendeeFieldConfig;
-		this.contactEmail = contactEmail;
-		this.contactPhone = contactPhone;
-		this.contactTwitter = contactTwitter;
 		this.countryCode = countryCode;
 		this.createdAt = createdAt;
 		this.currency = currency;
-		this.customMarkdown = customMarkdown;
-		this.details = details;
-		this.emailDirections = emailDirections;
-		this.emailInstructions = emailInstructions;
-		this.emailNote = emailNote;
 		this.endAt = endAt;
-		this.generatedTabs = generatedTabs;
-		this.gettingThere = gettingThere;
-		this.hashtag = hashtag;
-		this.hasOnlineEvents = hasOnlineEvents;
-		this.hideAdmins = hideAdmins;
-		this.includeQRCheckIn = includeQRCheckIn;
-		this.includeQRCode = includeQRCode;
-		this.isOnline = isOnline;
+		this.entrantCount = entrantCount;
+		this.eventOwners = eventOwners;
+		this.eventRegistrationClosesAt = eventRegistrationClosesAt;
+		this.events = events;
+		this.finalEventId = finalEventId;
 		this.hasOfflineEvents = hasOfflineEvents;
+		this.hasOnlineEvents = hasOnlineEvents;
+		this.hashtag = hashtag;
+		this.images = images;
+		this.isOnline = isOnline;
 		this.lat = lat;
 		this.links = links;
 		this.lng = lng;
 		this.mapsPlaceId = mapsPlaceId;
 		this.name = name;
-		this.notifyAdmins = notifyAdmins;
-		this.ownerId = ownerId;
+		this.numProgressingToFinalEvent = numProgressingToFinalEvent;
+		this.numUniquePlayers = numUniquePlayers;
 		this.postalCode = postalCode;
 		this.primaryContact = primaryContact;
 		this.primaryContactType = primaryContactType;
-		this.prizes = prizes;
 		this.publishing = publishing;
-		this.qrCodeRedirect = qrCodeRedirect;
-		this.qrCodeRedirectType = qrCodeRedirectType;
-		this.region = region;
-		this.defaultTab = defaultTab;
+		this.registrationClosesAt = registrationClosesAt;
 		this.rules = rules;
 		this.shortSlug = shortSlug;
-		this.reminderInterval = reminderInterval;
+		this.showStandings = showStandings;
+		this.slug = slug;
+		this.standings = standings;
 		this.startAt = startAt;
 		this.state = state;
+		this.teamCreationClosesAt = teamCreationClosesAt;
 		this.timezone = timezone;
 		this.tournamentType = tournamentType;
 		this.updatedAt = updatedAt;
 		this.url = url;
 		this.venueAddress = venueAddress;
 		this.venueName = venueName;
-		this.eventRegistrationClosesAt = eventRegistrationClosesAt;
-		this.registrationClosesAt = registrationClosesAt;
-		this.teamCreationClosesAt = teamCreationClosesAt;
-		this.onsitePaymentMode = onsitePaymentMode;
-		this.paypalMode = paypalMode;
-		this.stripeMode = stripeMode;
-		this.paypalUser = paypalUser;
-		this.stripeUserId = stripeUserId;
-		this.approved = approved;
-		this.showStandings = showStandings;
-		this.finalEventId = finalEventId;
-		this.numProgressingToFinalEvent = numProgressingToFinalEvent;
-	}
-
-	public IDResponse getId() {
-		checkProvided();
-		return id;
-	}
-
-	public ListResponse<ImageResponse> getImages() {
-		checkProvided();
-		return images;
-	}
-
-	/**
-	 * The slug used to form the url
-	 */
-	public StringResponse getSlug() {
-		checkProvided();
-		return slug;
-	}
-
-	public IntResponse getEntrantCount() {
-		checkProvided();
-		return entrantCount;
-	}
-
-	public IntResponse getNumUniquePlayers() {
-		checkProvided();
-		return numUniquePlayers;
-	}
-
-	/**
-	 * Paginated list of events in a league
-	 */
-	public EventConnectionResponse getEvents() {
-		checkProvided();
-		return events;
-	}
-
-	public ListResponse<VideogameResponse> getVideogames() {
-		checkProvided();
-		return videogames;
-	}
-
-	/**
-	 * Paginated list of standings
-	 */
-	public StandingConnectionResponse getStandings() {
-		checkProvided();
-		return standings;
-	}
-
-	public EventOwnerConnectionResponse getEventOwners() {
-		checkProvided();
-		return eventOwners;
-	}
-
-	/**
-	 * Build Tournament admin URL
-	 */
-	public StringResponse getAdminUrl() {
-		checkProvided();
-		return adminUrl;
+		this.videogames = videogames;
 	}
 
 	public StringResponse getAddrState() {
@@ -305,35 +156,14 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return addrState;
 	}
 
+	public IDResponse getId() {
+		checkProvided();
+		return id;
+	}
+
 	public StringResponse getCity() {
 		checkProvided();
 		return city;
-	}
-
-	/**
-	 * Attendee requirements for this tournament
-	 */
-	public JSONResponse getAttendeeFieldConfig() {
-		checkProvided();
-		return attendeeFieldConfig;
-	}
-
-	@Deprecated
-	public StringResponse getContactEmail() {
-		checkProvided();
-		return contactEmail;
-	}
-
-	@Deprecated
-	public StringResponse getContactPhone() {
-		checkProvided();
-		return contactPhone;
-	}
-
-	@Deprecated
-	public StringResponse getContactTwitter() {
-		checkProvided();
-		return contactTwitter;
 	}
 
 	public StringResponse getCountryCode() {
@@ -354,34 +184,6 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return currency;
 	}
 
-	public JSONResponse getCustomMarkdown() {
-		checkProvided();
-		return customMarkdown;
-	}
-
-	/**
-	 * Deprecated
-	 */
-	public StringResponse getDetails() {
-		checkProvided();
-		return details;
-	}
-
-	public StringResponse getEmailDirections() {
-		checkProvided();
-		return emailDirections;
-	}
-
-	public StringResponse getEmailInstructions() {
-		checkProvided();
-		return emailInstructions;
-	}
-
-	public StringResponse getEmailNote() {
-		checkProvided();
-		return emailNote;
-	}
-
 	/**
 	 * When the tournament ends
 	 */
@@ -390,50 +192,38 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return endAt;
 	}
 
-	public JSONResponse getGeneratedTabs() {
+	public IntResponse getEntrantCount() {
 		checkProvided();
-		return generatedTabs;
+		return entrantCount;
 	}
 
-	public StringResponse getGettingThere() {
+	public EventOwnerConnectionResponse getEventOwners() {
 		checkProvided();
-		return gettingThere;
-	}
-
-	public StringResponse getHashtag() {
-		checkProvided();
-		return hashtag;
-	}
-
-	public BooleanResponse getHasOnlineEvents() {
-		checkProvided();
-		return hasOnlineEvents;
+		return eventOwners;
 	}
 
 	/**
-	 * Whether or not to hide the admins
+	 * When does event registration close
 	 */
-	public BooleanResponse getHideAdmins() {
+	public TimestampResponse getEventRegistrationClosesAt() {
 		checkProvided();
-		return hideAdmins;
-	}
-
-	public BooleanResponse getIncludeQRCheckIn() {
-		checkProvided();
-		return includeQRCheckIn;
-	}
-
-	public BooleanResponse getIncludeQRCode() {
-		checkProvided();
-		return includeQRCode;
+		return eventRegistrationClosesAt;
 	}
 
 	/**
-	 * True if tournament has at least one online event
+	 * Paginated list of events in a league
 	 */
-	public BooleanResponse getIsOnline() {
+	public EventConnectionResponse getEvents() {
 		checkProvided();
-		return isOnline;
+		return events;
+	}
+
+	/**
+	 * Hacked "progression" into this final event
+	 */
+	public IntResponse getFinalEventId() {
+		checkProvided();
+		return finalEventId;
 	}
 
 	/**
@@ -442,6 +232,29 @@ public class LeagueResponse extends AbstractGGResponseObject {
 	public BooleanResponse getHasOfflineEvents() {
 		checkProvided();
 		return hasOfflineEvents;
+	}
+
+	public BooleanResponse getHasOnlineEvents() {
+		checkProvided();
+		return hasOnlineEvents;
+	}
+
+	public StringResponse getHashtag() {
+		checkProvided();
+		return hashtag;
+	}
+
+	public ListResponse<ImageResponse> getImages() {
+		checkProvided();
+		return images;
+	}
+
+	/**
+	 * True if tournament has at least one online event
+	 */
+	public BooleanResponse getIsOnline() {
+		checkProvided();
+		return isOnline;
 	}
 
 	public FloatResponse getLat() {
@@ -473,16 +286,16 @@ public class LeagueResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Whether to send admin emails when a new person registers
+	 * Top X number of people in the standings who progress to final event
 	 */
-	public BooleanResponse getNotifyAdmins() {
+	public IntResponse getNumProgressingToFinalEvent() {
 		checkProvided();
-		return notifyAdmins;
+		return numProgressingToFinalEvent;
 	}
 
-	public IntResponse getOwnerId() {
+	public IntResponse getNumUniquePlayers() {
 		checkProvided();
-		return ownerId;
+		return numUniquePlayers;
 	}
 
 	public StringResponse getPostalCode() {
@@ -501,14 +314,6 @@ public class LeagueResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Deprecated
-	 */
-	public StringResponse getPrizes() {
-		checkProvided();
-		return prizes;
-	}
-
-	/**
 	 * Publishing settings for this tournament
 	 */
 	public JSONResponse getPublishing() {
@@ -516,32 +321,14 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return publishing;
 	}
 
-	public StringResponse getQrCodeRedirect() {
-		checkProvided();
-		return qrCodeRedirect;
-	}
-
-	public StringResponse getQrCodeRedirectType() {
-		checkProvided();
-		return qrCodeRedirectType;
-	}
-
 	/**
-	 * The region of the tournament
+	 * When does registration for the tournament end
 	 */
-	public StringResponse getRegion() {
+	public TimestampResponse getRegistrationClosesAt() {
 		checkProvided();
-		return region;
+		return registrationClosesAt;
 	}
 
-	public StringResponse getDefaultTab() {
-		checkProvided();
-		return defaultTab;
-	}
-
-	/**
-	 * [Deprecated] General tournament rules
-	 */
 	public StringResponse getRules() {
 		checkProvided();
 		return rules;
@@ -556,11 +343,24 @@ public class LeagueResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * The period of time before the start date to send a reminder email to registrants
+	 * Whether standings for this league should be visible
 	 */
-	public IntResponse getReminderInterval() {
+	public BooleanResponse getShowStandings() {
 		checkProvided();
-		return reminderInterval;
+		return showStandings;
+	}
+
+	public StringResponse getSlug() {
+		checkProvided();
+		return slug;
+	}
+
+	/**
+	 * Paginated list of standings
+	 */
+	public StandingConnectionResponse getStandings() {
+		checkProvided();
+		return standings;
 	}
 
 	/**
@@ -580,6 +380,14 @@ public class LeagueResponse extends AbstractGGResponseObject {
 	}
 
 	/**
+	 * When is the team creation deadline
+	 */
+	public TimestampResponse getTeamCreationClosesAt() {
+		checkProvided();
+		return teamCreationClosesAt;
+	}
+
+	/**
 	 * The timezone of the tournament
 	 */
 	public StringResponse getTimezone() {
@@ -587,6 +395,9 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return timezone;
 	}
 
+	/**
+	 * The type of tournament from TournamentType
+	 */
 	public IntResponse getTournamentType() {
 		checkProvided();
 		return tournamentType;
@@ -618,81 +429,8 @@ public class LeagueResponse extends AbstractGGResponseObject {
 		return venueName;
 	}
 
-	/**
-	 * When does event registration close
-	 */
-	public TimestampResponse getEventRegistrationClosesAt() {
+	public ListResponse<VideogameResponse> getVideogames() {
 		checkProvided();
-		return eventRegistrationClosesAt;
-	}
-
-	/**
-	 * When does registration for the tournament end
-	 */
-	public TimestampResponse getRegistrationClosesAt() {
-		checkProvided();
-		return registrationClosesAt;
-	}
-
-	/**
-	 * When is the team creation deadline
-	 */
-	public TimestampResponse getTeamCreationClosesAt() {
-		checkProvided();
-		return teamCreationClosesAt;
-	}
-
-	public StringResponse getOnsitePaymentMode() {
-		checkProvided();
-		return onsitePaymentMode;
-	}
-
-	public StringResponse getPaypalMode() {
-		checkProvided();
-		return paypalMode;
-	}
-
-	public StringResponse getStripeMode() {
-		checkProvided();
-		return stripeMode;
-	}
-
-	public StringResponse getPaypalUser() {
-		checkProvided();
-		return paypalUser;
-	}
-
-	public StringResponse getStripeUserId() {
-		checkProvided();
-		return stripeUserId;
-	}
-
-	public BooleanResponse getApproved() {
-		checkProvided();
-		return approved;
-	}
-
-	/**
-	 * Whether standings for this league should be visible
-	 */
-	public BooleanResponse getShowStandings() {
-		checkProvided();
-		return showStandings;
-	}
-
-	/**
-	 * Hacked "progression" into this final event
-	 */
-	public IntResponse getFinalEventId() {
-		checkProvided();
-		return finalEventId;
-	}
-
-	/**
-	 * Top X number of people in the standings who progress to final event
-	 */
-	public IntResponse getNumProgressingToFinalEvent() {
-		checkProvided();
-		return numProgressingToFinalEvent;
+		return videogames;
 	}
 }

@@ -10,33 +10,38 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
  */
 public class ProgressionResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final IntResponse originOrder;
 	private final PhaseResponse originPhase;
 	private final PhaseGroupResponse originPhaseGroup;
 	private final IntResponse originPlacement;
-	private final IntResponse originOrder;
 
 	public ProgressionResponse() {
 		super(EntityType.PROGRESSION);
 
 		id = null;
+		originOrder = null;
 		originPhase = null;
 		originPhaseGroup = null;
 		originPlacement = null;
-		originOrder = null;
 	}
 
-	public ProgressionResponse(IDResponse id, PhaseResponse originPhase, PhaseGroupResponse originPhaseGroup, IntResponse originPlacement, IntResponse originOrder) {
+	public ProgressionResponse(IDResponse id, IntResponse originOrder, PhaseResponse originPhase, PhaseGroupResponse originPhaseGroup, IntResponse originPlacement) {
 		super(EntityType.PROGRESSION, true);
 		this.id = id;
+		this.originOrder = originOrder;
 		this.originPhase = originPhase;
 		this.originPhaseGroup = originPhaseGroup;
 		this.originPlacement = originPlacement;
-		this.originOrder = originOrder;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
+	}
+
+	public IntResponse getOriginOrder() {
+		checkProvided();
+		return originOrder;
 	}
 
 	public PhaseResponse getOriginPhase() {
@@ -52,10 +57,5 @@ public class ProgressionResponse extends AbstractGGResponseObject {
 	public IntResponse getOriginPlacement() {
 		checkProvided();
 		return originPlacement;
-	}
-
-	public IntResponse getOriginOrder() {
-		checkProvided();
-		return originOrder;
 	}
 }

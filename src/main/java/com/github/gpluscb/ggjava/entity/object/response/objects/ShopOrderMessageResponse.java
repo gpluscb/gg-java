@@ -11,49 +11,33 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final FloatResponse total;
-	private final StringResponse message;
 	private final StringResponse gamertag;
+	private final StringResponse message;
 	private final StringResponse name;
+	private final FloatResponse total;
 
 	public ShopOrderMessageResponse() {
 		super(EntityType.SHOP_ORDER_MESSAGE);
 
 		id = null;
-		total = null;
-		message = null;
 		gamertag = null;
+		message = null;
 		name = null;
+		total = null;
 	}
 
-	public ShopOrderMessageResponse(IDResponse id, FloatResponse total, StringResponse message, StringResponse gamertag, StringResponse name) {
+	public ShopOrderMessageResponse(IDResponse id, StringResponse gamertag, StringResponse message, StringResponse name, FloatResponse total) {
 		super(EntityType.SHOP_ORDER_MESSAGE, true);
 		this.id = id;
-		this.total = total;
-		this.message = message;
 		this.gamertag = gamertag;
+		this.message = message;
 		this.name = name;
+		this.total = total;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
-	}
-
-	/**
-	 * The total order amount
-	 */
-	public FloatResponse getTotal() {
-		checkProvided();
-		return total;
-	}
-
-	/**
-	 * The order message
-	 */
-	public StringResponse getMessage() {
-		checkProvided();
-		return message;
 	}
 
 	/**
@@ -65,10 +49,26 @@ public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 	}
 
 	/**
+	 * The order message
+	 */
+	public StringResponse getMessage() {
+		checkProvided();
+		return message;
+	}
+
+	/**
 	 * The player's name. Returns null unless name & tag display is selected
 	 */
 	public StringResponse getName() {
 		checkProvided();
 		return name;
+	}
+
+	/**
+	 * The total order amount
+	 */
+	public FloatResponse getTotal() {
+		checkProvided();
+		return total;
 	}
 }

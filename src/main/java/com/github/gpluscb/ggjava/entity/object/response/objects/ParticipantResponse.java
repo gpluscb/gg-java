@@ -3,84 +3,64 @@ package com.github.gpluscb.ggjava.entity.object.response.objects;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.BooleanResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.JSONResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
 
 /**
  * A participant of a tournament; either a spectator or competitor
  */
 public class ParticipantResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final ListResponse<ImageResponse> images;
 	private final JSONResponse connectedAccounts;
 	private final ContactInfoResponse contactInfo;
 	private final StringResponse email;
 	private final ListResponse<EntrantResponse> entrants;
 	private final ListResponse<EventResponse> events;
-	private final PlayerResponse player;
-	private final BooleanResponse checkedIn;
-	private final TimestampResponse checkedInAt;
-	private final BooleanResponse claimed;
-	private final TimestampResponse createdAt;
 	private final StringResponse gamerTag;
-	private final IntResponse playerId;
-	private final StringResponse phoneNumber;
+	private final ListResponse<ImageResponse> images;
+	private final PlayerResponse player;
 	private final StringResponse prefix;
+	private final UserResponse user;
 	private final BooleanResponse verified;
-	private final IntResponse userId;
 
 	public ParticipantResponse() {
 		super(EntityType.PARTICIPANT);
 
 		id = null;
-		images = null;
 		connectedAccounts = null;
 		contactInfo = null;
 		email = null;
 		entrants = null;
 		events = null;
-		player = null;
-		checkedIn = null;
-		checkedInAt = null;
-		claimed = null;
-		createdAt = null;
 		gamerTag = null;
-		playerId = null;
-		phoneNumber = null;
+		images = null;
+		player = null;
 		prefix = null;
+		user = null;
 		verified = null;
-		userId = null;
 	}
 
-	public ParticipantResponse(IDResponse id, ListResponse<ImageResponse> images, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, StringResponse email, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, PlayerResponse player, BooleanResponse checkedIn, TimestampResponse checkedInAt, BooleanResponse claimed, TimestampResponse createdAt, StringResponse gamerTag, IntResponse playerId, StringResponse phoneNumber, StringResponse prefix, BooleanResponse verified, IntResponse userId) {
+	public ParticipantResponse(IDResponse id, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, StringResponse email, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, StringResponse gamerTag, ListResponse<ImageResponse> images, PlayerResponse player, StringResponse prefix, UserResponse user, BooleanResponse verified) {
 		super(EntityType.PARTICIPANT, true);
 		this.id = id;
-		this.images = images;
 		this.connectedAccounts = connectedAccounts;
 		this.contactInfo = contactInfo;
 		this.email = email;
 		this.entrants = entrants;
 		this.events = events;
-		this.player = player;
-		this.checkedIn = checkedIn;
-		this.checkedInAt = checkedInAt;
-		this.claimed = claimed;
-		this.createdAt = createdAt;
 		this.gamerTag = gamerTag;
-		this.playerId = playerId;
-		this.phoneNumber = phoneNumber;
+		this.images = images;
+		this.player = player;
 		this.prefix = prefix;
+		this.user = user;
 		this.verified = verified;
-		this.userId = userId;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
-	}
-
-	public ListResponse<ImageResponse> getImages() {
-		checkProvided();
-		return images;
 	}
 
 	/**
@@ -93,7 +73,10 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Contact Info selected during registration. Falls back to contact info on Player if necessary.
+	 *
+	 * @deprecated Use User.location
 	 */
+	@Deprecated
 	public ContactInfoResponse getContactInfo() {
 		checkProvided();
 		return contactInfo;
@@ -120,43 +103,6 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		return events;
 	}
 
-	public PlayerResponse getPlayer() {
-		checkProvided();
-		return player;
-	}
-
-	/**
-	 * If this participant was checked-in by admin
-	 */
-	public BooleanResponse getCheckedIn() {
-		checkProvided();
-		return checkedIn;
-	}
-
-	/**
-	 * The time this participant was checked-in by admin
-	 */
-	public TimestampResponse getCheckedInAt() {
-		checkProvided();
-		return checkedInAt;
-	}
-
-	/**
-	 * If this participant is claimed or not
-	 */
-	public BooleanResponse getClaimed() {
-		checkProvided();
-		return claimed;
-	}
-
-	/**
-	 * Unix time when participant was made
-	 */
-	public TimestampResponse getCreatedAt() {
-		checkProvided();
-		return createdAt;
-	}
-
 	/**
 	 * The tag that was used in registration e.g. Mang0
 	 */
@@ -165,20 +111,14 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		return gamerTag;
 	}
 
-	/**
-	 * Id of the player
-	 */
-	public IntResponse getPlayerId() {
+	public ListResponse<ImageResponse> getImages() {
 		checkProvided();
-		return playerId;
+		return images;
 	}
 
-	/**
-	 * Phone number of participant
-	 */
-	public StringResponse getPhoneNumber() {
+	public PlayerResponse getPlayer() {
 		checkProvided();
-		return phoneNumber;
+		return player;
 	}
 
 	/**
@@ -190,18 +130,18 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	}
 
 	/**
+	 * The user this participant is associated to.
+	 */
+	public UserResponse getUser() {
+		checkProvided();
+		return user;
+	}
+
+	/**
 	 * If this participant is verified as actually being in the tournament
 	 */
 	public BooleanResponse getVerified() {
 		checkProvided();
 		return verified;
-	}
-
-	/**
-	 * Id of user associated with this participant
-	 */
-	public IntResponse getUserId() {
-		checkProvided();
-		return userId;
 	}
 }

@@ -6,6 +6,7 @@ import com.github.gpluscb.ggjava.entity.object.response.enums.ComparatorResponse
 import com.github.gpluscb.ggjava.entity.object.response.enums.RaceLimitModeResponse;
 import com.github.gpluscb.ggjava.entity.object.response.enums.RaceTypeResponse;
 import com.github.gpluscb.ggjava.entity.object.response.interfaces.BracketConfigResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
@@ -34,7 +35,7 @@ public class RaceBracketConfigResponse extends BracketConfigResponse {
 		automaticEndTime = null;
 	}
 
-	public RaceBracketConfigResponse(IntResponse id, BracketTypeResponse bracketType, RaceTypeResponse raceType, StringResponse goalTargetValue, ComparatorResponse goalTargetComparator, RaceLimitModeResponse limitMode, IntResponse limitValue, TimestampResponse automaticStartTime, TimestampResponse automaticEndTime) {
+	public RaceBracketConfigResponse(IDResponse id, BracketTypeResponse bracketType, RaceTypeResponse raceType, StringResponse goalTargetValue, ComparatorResponse goalTargetComparator, RaceLimitModeResponse limitMode, IntResponse limitValue, TimestampResponse automaticStartTime, TimestampResponse automaticEndTime) {
 		super(EntityType.RACE_BRACKET_CONFIG, id, bracketType);
 		this.raceType = raceType;
 		this.goalTargetValue = goalTargetValue;

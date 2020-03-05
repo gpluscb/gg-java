@@ -12,51 +12,36 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class ShopLevelResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final ListResponse<ImageResponse> images;
-	private final StringResponse name;
-	private final FloatResponse goalAmount;
 	private final FloatResponse currAmount;
 	private final StringResponse description;
+	private final FloatResponse goalAmount;
+	private final ListResponse<ImageResponse> images;
+	private final StringResponse name;
 
 	public ShopLevelResponse() {
 		super(EntityType.SHOP_LEVEL);
 
 		id = null;
-		images = null;
-		name = null;
-		goalAmount = null;
 		currAmount = null;
 		description = null;
+		goalAmount = null;
+		images = null;
+		name = null;
 	}
 
-	public ShopLevelResponse(IDResponse id, ListResponse<ImageResponse> images, StringResponse name, FloatResponse goalAmount, FloatResponse currAmount, StringResponse description) {
+	public ShopLevelResponse(IDResponse id, FloatResponse currAmount, StringResponse description, FloatResponse goalAmount, ListResponse<ImageResponse> images, StringResponse name) {
 		super(EntityType.SHOP_LEVEL, true);
 		this.id = id;
-		this.images = images;
-		this.name = name;
-		this.goalAmount = goalAmount;
 		this.currAmount = currAmount;
 		this.description = description;
+		this.goalAmount = goalAmount;
+		this.images = images;
+		this.name = name;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
-	}
-
-	public ListResponse<ImageResponse> getImages() {
-		checkProvided();
-		return images;
-	}
-
-	public StringResponse getName() {
-		checkProvided();
-		return name;
-	}
-
-	public FloatResponse getGoalAmount() {
-		checkProvided();
-		return goalAmount;
 	}
 
 	public FloatResponse getCurrAmount() {
@@ -67,5 +52,20 @@ public class ShopLevelResponse extends AbstractGGResponseObject {
 	public StringResponse getDescription() {
 		checkProvided();
 		return description;
+	}
+
+	public FloatResponse getGoalAmount() {
+		checkProvided();
+		return goalAmount;
+	}
+
+	public ListResponse<ImageResponse> getImages() {
+		checkProvided();
+		return images;
+	}
+
+	public StringResponse getName() {
+		checkProvided();
+		return name;
 	}
 }

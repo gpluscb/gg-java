@@ -10,63 +10,83 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
  */
 public class SeedResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final JSONResponse checkedInParticipants;
+	private final EntrantResponse entrant;
+	private final IntResponse groupSeedNum;
+	private final BooleanResponse isBye;
 	private final PhaseResponse phase;
 	private final PhaseGroupResponse phaseGroup;
-	private final EntrantResponse entrant;
 	private final StringResponse placeholderName;
-	private final ListResponse<PlayerResponse> players;
-	private final ListResponse<StandingResponse> standings;
-	private final ProgressionResponse progressionSource;
-	private final IntResponse entrantId;
-	private final JSONResponse checkedInParticipants;
-	private final IntResponse seedNum;
 	private final IntResponse placement;
+	private final ListResponse<PlayerResponse> players;
 	private final IntResponse progressionSeedId;
-	private final BooleanResponse isBye;
-	private final IntResponse groupSeedNum;
+	private final ProgressionResponse progressionSource;
+	private final IntResponse seedNum;
+	private final ListResponse<StandingResponse> standings;
 
 	public SeedResponse() {
 		super(EntityType.SEED);
 
 		id = null;
+		checkedInParticipants = null;
+		entrant = null;
+		groupSeedNum = null;
+		isBye = null;
 		phase = null;
 		phaseGroup = null;
-		entrant = null;
 		placeholderName = null;
-		players = null;
-		standings = null;
-		progressionSource = null;
-		entrantId = null;
-		checkedInParticipants = null;
-		seedNum = null;
 		placement = null;
+		players = null;
 		progressionSeedId = null;
-		isBye = null;
-		groupSeedNum = null;
+		progressionSource = null;
+		seedNum = null;
+		standings = null;
 	}
 
-	public SeedResponse(IDResponse id, PhaseResponse phase, PhaseGroupResponse phaseGroup, EntrantResponse entrant, StringResponse placeholderName, ListResponse<PlayerResponse> players, ListResponse<StandingResponse> standings, ProgressionResponse progressionSource, IntResponse entrantId, JSONResponse checkedInParticipants, IntResponse seedNum, IntResponse placement, IntResponse progressionSeedId, BooleanResponse isBye, IntResponse groupSeedNum) {
+	public SeedResponse(IDResponse id, JSONResponse checkedInParticipants, EntrantResponse entrant, IntResponse groupSeedNum, BooleanResponse isBye, PhaseResponse phase, PhaseGroupResponse phaseGroup, StringResponse placeholderName, IntResponse placement, ListResponse<PlayerResponse> players, IntResponse progressionSeedId, ProgressionResponse progressionSource, IntResponse seedNum, ListResponse<StandingResponse> standings) {
 		super(EntityType.SEED, true);
 		this.id = id;
+		this.checkedInParticipants = checkedInParticipants;
+		this.entrant = entrant;
+		this.groupSeedNum = groupSeedNum;
+		this.isBye = isBye;
 		this.phase = phase;
 		this.phaseGroup = phaseGroup;
-		this.entrant = entrant;
 		this.placeholderName = placeholderName;
-		this.players = players;
-		this.standings = standings;
-		this.progressionSource = progressionSource;
-		this.entrantId = entrantId;
-		this.checkedInParticipants = checkedInParticipants;
-		this.seedNum = seedNum;
 		this.placement = placement;
+		this.players = players;
 		this.progressionSeedId = progressionSeedId;
-		this.isBye = isBye;
-		this.groupSeedNum = groupSeedNum;
+		this.progressionSource = progressionSource;
+		this.seedNum = seedNum;
+		this.standings = standings;
 	}
 
 	public IDResponse getId() {
 		checkProvided();
 		return id;
+	}
+
+	/**
+	 * Map of Participant ID to checked in boolean
+	 */
+	public JSONResponse getCheckedInParticipants() {
+		checkProvided();
+		return checkedInParticipants;
+	}
+
+	public EntrantResponse getEntrant() {
+		checkProvided();
+		return entrant;
+	}
+
+	public IntResponse getGroupSeedNum() {
+		checkProvided();
+		return groupSeedNum;
+	}
+
+	public BooleanResponse getIsBye() {
+		checkProvided();
+		return isBye;
 	}
 
 	public PhaseResponse getPhase() {
@@ -79,14 +99,14 @@ public class SeedResponse extends AbstractGGResponseObject {
 		return phaseGroup;
 	}
 
-	public EntrantResponse getEntrant() {
-		checkProvided();
-		return entrant;
-	}
-
 	public StringResponse getPlaceholderName() {
 		checkProvided();
 		return placeholderName;
+	}
+
+	public IntResponse getPlacement() {
+		checkProvided();
+		return placement;
 	}
 
 	/**
@@ -97,9 +117,9 @@ public class SeedResponse extends AbstractGGResponseObject {
 		return players;
 	}
 
-	public ListResponse<StandingResponse> getStandings() {
+	public IntResponse getProgressionSeedId() {
 		checkProvided();
-		return standings;
+		return progressionSeedId;
 	}
 
 	/**
@@ -110,41 +130,13 @@ public class SeedResponse extends AbstractGGResponseObject {
 		return progressionSource;
 	}
 
-	public IntResponse getEntrantId() {
-		checkProvided();
-		return entrantId;
-	}
-
-	/**
-	 * Map of Participant ID to checked in boolean
-	 */
-	public JSONResponse getCheckedInParticipants() {
-		checkProvided();
-		return checkedInParticipants;
-	}
-
 	public IntResponse getSeedNum() {
 		checkProvided();
 		return seedNum;
 	}
 
-	public IntResponse getPlacement() {
+	public ListResponse<StandingResponse> getStandings() {
 		checkProvided();
-		return placement;
-	}
-
-	public IntResponse getProgressionSeedId() {
-		checkProvided();
-		return progressionSeedId;
-	}
-
-	public BooleanResponse getIsBye() {
-		checkProvided();
-		return isBye;
-	}
-
-	public IntResponse getGroupSeedNum() {
-		checkProvided();
-		return groupSeedNum;
+		return standings;
 	}
 }

@@ -12,28 +12,25 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
  */
 public class StreamResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
-	private final StreamTypeResponse type;
-	private final StringResponse name;
 	private final BooleanResponse isOnline;
-	private final StringResponse externalStreamId;
+	private final StringResponse name;
+	private final StreamTypeResponse type;
 
 	public StreamResponse() {
 		super(EntityType.STREAM);
 
 		id = null;
-		type = null;
-		name = null;
 		isOnline = null;
-		externalStreamId = null;
+		name = null;
+		type = null;
 	}
 
-	public StreamResponse(IDResponse id, StreamTypeResponse type, StringResponse name, BooleanResponse isOnline, StringResponse externalStreamId) {
+	public StreamResponse(IDResponse id, BooleanResponse isOnline, StringResponse name, StreamTypeResponse type) {
 		super(EntityType.STREAM, true);
 		this.id = id;
-		this.type = type;
-		this.name = name;
 		this.isOnline = isOnline;
-		this.externalStreamId = externalStreamId;
+		this.name = name;
+		this.type = type;
 	}
 
 	public IDResponse getId() {
@@ -42,11 +39,11 @@ public class StreamResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * The name of the external service providing this auth i.e. "twitch"
+	 * Whether the stream is currently live. May be slightly delayed.
 	 */
-	public StreamTypeResponse getType() {
+	public BooleanResponse getIsOnline() {
 		checkProvided();
-		return type;
+		return isOnline;
 	}
 
 	/**
@@ -58,18 +55,10 @@ public class StreamResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Unix timestamp for when the token expires
+	 * The name of the external service providing this auth i.e. "twitch"
 	 */
-	public BooleanResponse getIsOnline() {
+	public StreamTypeResponse getType() {
 		checkProvided();
-		return isOnline;
-	}
-
-	/**
-	 * The id given by the external stream service i.e. twitch channelId
-	 */
-	public StringResponse getExternalStreamId() {
-		checkProvided();
-		return externalStreamId;
+		return type;
 	}
 }

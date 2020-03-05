@@ -6,7 +6,7 @@ import com.github.gpluscb.ggjava.entity.object.response.enums.BracketTypeRespons
 import com.github.gpluscb.ggjava.entity.object.response.enums.MatchConfigVerificationMethodResponse;
 import com.github.gpluscb.ggjava.entity.object.response.interfaces.MatchConfigResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.BooleanResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 
 /**
  * Race specific match configuration
@@ -24,7 +24,7 @@ public class RaceMatchConfigResponse extends MatchConfigResponse {
 		verificationMethods = null;
 	}
 
-	public RaceMatchConfigResponse(IntResponse id, BracketTypeResponse bracketType, BooleanResponse playerReportingEnabled, BooleanResponse verificationRequired, ListResponse<MatchConfigVerificationMethodResponse> verificationMethods) {
+	public RaceMatchConfigResponse(IDResponse id, BracketTypeResponse bracketType, BooleanResponse playerReportingEnabled, BooleanResponse verificationRequired, ListResponse<MatchConfigVerificationMethodResponse> verificationMethods) {
 		super(EntityType.RACE_MATCH_CONFIG, id, bracketType);
 		this.playerReportingEnabled = playerReportingEnabled;
 		this.verificationRequired = verificationRequired;

@@ -13,39 +13,36 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
 public class EntrantResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
 	private final EventResponse event;
-	private final ListResponse<SeedResponse> seeds;
+	private final StringResponse name;
 	private final ListResponse<ParticipantResponse> participants;
+	private final ListResponse<SeedResponse> seeds;
+	private final IntResponse skill;
 	private final StreamsResponse stream;
 	private final ListResponse<StreamsResponse> streams;
-	private final StringResponse name;
-	private final IntResponse eventId;
-	private final IntResponse skill;
 
 	public EntrantResponse() {
 		super(EntityType.ENTRANT);
 
 		id = null;
 		event = null;
-		seeds = null;
+		name = null;
 		participants = null;
+		seeds = null;
+		skill = null;
 		stream = null;
 		streams = null;
-		name = null;
-		eventId = null;
-		skill = null;
 	}
 
-	public EntrantResponse(IDResponse id, EventResponse event, ListResponse<SeedResponse> seeds, ListResponse<ParticipantResponse> participants, StreamsResponse stream, ListResponse<StreamsResponse> streams, StringResponse name, IntResponse eventId, IntResponse skill) {
+	public EntrantResponse(IDResponse id, EventResponse event, StringResponse name, ListResponse<ParticipantResponse> participants, ListResponse<SeedResponse> seeds, IntResponse skill, StreamsResponse stream, ListResponse<StreamsResponse> streams) {
 		super(EntityType.ENTRANT, true);
 		this.id = id;
 		this.event = event;
-		this.seeds = seeds;
+		this.name = name;
 		this.participants = participants;
+		this.seeds = seeds;
+		this.skill = skill;
 		this.stream = stream;
 		this.streams = streams;
-		this.name = name;
-		this.eventId = eventId;
-		this.skill = skill;
 	}
 
 	public IDResponse getId() {
@@ -58,14 +55,27 @@ public class EntrantResponse extends AbstractGGResponseObject {
 		return event;
 	}
 
-	public ListResponse<SeedResponse> getSeeds() {
+	/**
+	 * The entrant name as it appears in bracket: gamerTag of the participant or team name
+	 */
+	public StringResponse getName() {
 		checkProvided();
-		return seeds;
+		return name;
 	}
 
 	public ListResponse<ParticipantResponse> getParticipants() {
 		checkProvided();
 		return participants;
+	}
+
+	public ListResponse<SeedResponse> getSeeds() {
+		checkProvided();
+		return seeds;
+	}
+
+	public IntResponse getSkill() {
+		checkProvided();
+		return skill;
 	}
 
 	@Deprecated
@@ -77,23 +87,5 @@ public class EntrantResponse extends AbstractGGResponseObject {
 	public ListResponse<StreamsResponse> getStreams() {
 		checkProvided();
 		return streams;
-	}
-
-	/**
-	 * The entrant name as it appears in bracket: gamerTag of the participant or team name
-	 */
-	public StringResponse getName() {
-		checkProvided();
-		return name;
-	}
-
-	public IntResponse getEventId() {
-		checkProvided();
-		return eventId;
-	}
-
-	public IntResponse getSkill() {
-		checkProvided();
-		return skill;
 	}
 }

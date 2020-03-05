@@ -12,39 +12,33 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
 public class SetSlotResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
 	private final EntrantResponse entrant;
-	private final StandingResponse standing;
-	private final IDResponse setId;
-	private final IntResponse slotIndex;
-	private final IntResponse seedId;
 	private final StringResponse prereqId;
-	private final StringResponse prereqType;
 	private final IntResponse prereqPlacement;
+	private final StringResponse prereqType;
+	private final IntResponse slotIndex;
+	private final StandingResponse standing;
 
 	public SetSlotResponse() {
 		super(EntityType.SET_SLOT);
 
 		id = null;
 		entrant = null;
-		standing = null;
-		setId = null;
-		slotIndex = null;
-		seedId = null;
 		prereqId = null;
-		prereqType = null;
 		prereqPlacement = null;
+		prereqType = null;
+		slotIndex = null;
+		standing = null;
 	}
 
-	public SetSlotResponse(IDResponse id, EntrantResponse entrant, StandingResponse standing, IDResponse setId, IntResponse slotIndex, IntResponse seedId, StringResponse prereqId, StringResponse prereqType, IntResponse prereqPlacement) {
+	public SetSlotResponse(IDResponse id, EntrantResponse entrant, StringResponse prereqId, IntResponse prereqPlacement, StringResponse prereqType, IntResponse slotIndex, StandingResponse standing) {
 		super(EntityType.SET_SLOT, true);
 		this.id = id;
 		this.entrant = entrant;
-		this.standing = standing;
-		this.setId = setId;
-		this.slotIndex = slotIndex;
-		this.seedId = seedId;
 		this.prereqId = prereqId;
-		this.prereqType = prereqType;
 		this.prereqPlacement = prereqPlacement;
+		this.prereqType = prereqType;
+		this.slotIndex = slotIndex;
+		this.standing = standing;
 	}
 
 	public IDResponse getId() {
@@ -58,40 +52,19 @@ public class SetSlotResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * The standing within this set for the seed currently assigned to this slot.
-	 */
-	public StandingResponse getStanding() {
-		checkProvided();
-		return standing;
-	}
-
-	public IDResponse getSetId() {
-		checkProvided();
-		return setId;
-	}
-
-	/**
-	 * The index of the slot. Unique per set.
-	 */
-	public IntResponse getSlotIndex() {
-		checkProvided();
-		return slotIndex;
-	}
-
-	/**
-	 * Will be filled with a seedId once it is confirmed who will be participating in this slot.
-	 */
-	public IntResponse getSeedId() {
-		checkProvided();
-		return seedId;
-	}
-
-	/**
 	 * Pairs with prereqType, is the ID of the prereq.
 	 */
 	public StringResponse getPrereqId() {
 		checkProvided();
 		return prereqId;
+	}
+
+	/**
+	 * Given a set prereq type, defines the placement required in the origin set to end up in this slot.
+	 */
+	public IntResponse getPrereqPlacement() {
+		checkProvided();
+		return prereqPlacement;
 	}
 
 	/**
@@ -103,10 +76,18 @@ public class SetSlotResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Given a set prereq type, defines the placement required in the origin set to end up in this slot.
+	 * The index of the slot. Unique per set.
 	 */
-	public IntResponse getPrereqPlacement() {
+	public IntResponse getSlotIndex() {
 		checkProvided();
-		return prereqPlacement;
+		return slotIndex;
+	}
+
+	/**
+	 * The standing within this set for the seed currently assigned to this slot.
+	 */
+	public StandingResponse getStanding() {
+		checkProvided();
+		return standing;
 	}
 }
