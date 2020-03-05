@@ -75,9 +75,8 @@ public class GGClientImpl implements GGClient {
 	}
 
 	@Override
-	public void shutdown() {
-		limiter.shutdown();
-		requester.shutdown();
+	public CompletableFuture<Void> shutdown() {
+		return limiter.shutdown().thenRun(requester::shutdown);
 	}
 
 	@Override

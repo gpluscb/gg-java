@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -135,11 +136,11 @@ public class SimpleRateLimiter implements RateLimiter {
 	}
 
 	@Override
-	public void shutdown() {
+	public CompletableFuture<Void> shutdown() {
 		isShutDown = true;
 
 		// TODO: More beautiful
-		new Thread(() -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try {
 				while (!tasks.isEmpty())
 					Thread.sleep(100);
@@ -148,7 +149,9 @@ public class SimpleRateLimiter implements RateLimiter {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}, "ShutdownHandler").start();
+
+			return null;
+		});
 	}
 
 	@Override

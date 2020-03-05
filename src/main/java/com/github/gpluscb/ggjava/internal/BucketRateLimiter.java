@@ -220,11 +220,11 @@ public class BucketRateLimiter implements RateLimiter {
 	}
 
 	@Override
-	public void shutdown() {
+	public CompletableFuture<Void> shutdown() {
 		isShutDown = true;
 
 		// TODO: More beautiful
-		new Thread(() -> {
+		return CompletableFuture.supplyAsync(() -> {
 			try {
 				while (!tasks.isEmpty())
 					Thread.sleep(50);
@@ -233,7 +233,9 @@ public class BucketRateLimiter implements RateLimiter {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}, "ShutdownHandler").start();
+
+			return null;
+		});
 	}
 
 	@Override
