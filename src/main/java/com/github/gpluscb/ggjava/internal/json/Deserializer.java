@@ -3,6 +3,10 @@ package com.github.gpluscb.ggjava.internal.json;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.response.GGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
+import com.github.gpluscb.ggjava.entity.object.response.enums.EnumResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.FloatResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -122,6 +126,57 @@ public class Deserializer {
 	@Nonnull
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonPrimitive json, @Nonnull Class<T> toClass) {
 		// TODO
-		return null;
+		// Getting constructors
+		Constructor<T> constructor = null;
+		for (Constructor<?> c : toClass.getConstructors()) {
+			if (c.getParameterCount() != 0) {
+				// See documentation of getConstructors, this can only be Constructor<T>
+				constructor = (Constructor<T>) c;
+				break;
+			}
+		}
+
+		if (constructor == null)
+			throw new IllegalStateException("No fitting constructor found for " + toClass.toString());
+
+		try {
+			if (EnumResponse.class.isAssignableFrom(toClass)) {
+				if (!json.isString())
+					throw new IllegalStateException("toClass is an EnumResponse, but json is not a String");
+
+				// Enum
+				try {
+					Method valueOf = toClass.getMethod("valueOf", String.class);
+
+					// valueOf should be static
+					Object enumValue = valueOf.invoke(null, json.getAsString());
+
+					return constructor.newInstance(enumValue);
+				} catch (NoSuchMethodException e) {
+					throw new IllegalStateException("No valueOf method found in class " + toClass.toString(), e);
+				}
+			} else {
+				// Scalar
+				if (json.isBoolean()) {
+					return constructor.newInstance(json.getAsBoolean());
+				} else if (json.isString()) {
+					return constructor.newInstance(json.getAsString());
+				} else if (json.isNumber()) {
+					if (toClass.equals(IntResponse.class)) {
+						return constructor.newInstance(json.getAsInt());
+					} else if (toClass.equals(TimestampResponse.class)) {
+						return constructor.newInstance(json.getAsLong());
+					} else if (toClass.equals(FloatResponse.class)) {
+						return constructor.newInstance(json.getAsFloat());
+					} else {
+						throw new IllegalStateException("Unknown scalar for JSON number type: " + toClass.toString());
+					}
+				} else {
+					throw new IllegalStateException("JsonPrimitive is neither Boolean nor String nor Number, which is weird and probably illegal");
+				}
+			}
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			throw new IllegalStateException("Constructor or valueOf invocation failed", e);
+		}
 	}
 }
