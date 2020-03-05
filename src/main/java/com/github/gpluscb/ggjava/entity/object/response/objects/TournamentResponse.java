@@ -58,7 +58,6 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	private final StringResponse qrCodeRedirect;
 	private final StringResponse qrCodeRedirectType;
 	private final StringResponse region;
-	private final TimestampResponse registrationClosesAt;
 	private final StringResponse defaultTab;
 	private final StringResponse rules;
 	private final StringResponse slug;
@@ -73,6 +72,7 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	private final StringResponse venueAddress;
 	private final StringResponse venueName;
 	private final TimestampResponse eventRegistrationClosesAt;
+	private final TimestampResponse registrationClosesAt;
 	private final TimestampResponse teamCreationClosesAt;
 	private final StringResponse onsitePaymentMode;
 	private final StringResponse paypalMode;
@@ -133,7 +133,6 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		qrCodeRedirect = null;
 		qrCodeRedirectType = null;
 		region = null;
-		registrationClosesAt = null;
 		defaultTab = null;
 		rules = null;
 		slug = null;
@@ -148,6 +147,7 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		venueAddress = null;
 		venueName = null;
 		eventRegistrationClosesAt = null;
+		registrationClosesAt = null;
 		teamCreationClosesAt = null;
 		onsitePaymentMode = null;
 		paypalMode = null;
@@ -157,7 +157,7 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		approved = null;
 	}
 
-	public TournamentResponse(IDResponse id, ListResponse<ImageResponse> images, ListResponse<EventResponse> events, ParticipantConnectionResponse participants, StationsConnectionResponse stations, ListResponse<StreamsResponse> streams, ListResponse<StreamQueueInfoResponse> streamQueue, TeamConnectionResponse teams, ListResponse<WaveResponse> waves, StringResponse adminUrl, StringResponse addrState, StringResponse city, JSONResponse attendeeFieldConfig, StringResponse contactEmail, StringResponse contactPhone, StringResponse contactTwitter, StringResponse countryCode, TimestampResponse createdAt, StringResponse currency, JSONResponse customMarkdown, StringResponse details, StringResponse emailDirections, StringResponse emailInstructions, StringResponse emailNote, TimestampResponse endAt, JSONResponse generatedTabs, StringResponse gettingThere, StringResponse hashtag, BooleanResponse hasOnlineEvents, BooleanResponse hideAdmins, BooleanResponse includeQRCheckIn, BooleanResponse includeQRCode, BooleanResponse isOnline, BooleanResponse hasOfflineEvents, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, BooleanResponse notifyAdmins, IntResponse ownerId, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, StringResponse prizes, JSONResponse publishing, StringResponse qrCodeRedirect, StringResponse qrCodeRedirectType, StringResponse region, TimestampResponse registrationClosesAt, StringResponse defaultTab, StringResponse rules, StringResponse slug, StringResponse shortSlug, IntResponse reminderInterval, TimestampResponse startAt, IntResponse state, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, TimestampResponse eventRegistrationClosesAt, TimestampResponse teamCreationClosesAt, StringResponse onsitePaymentMode, StringResponse paypalMode, StringResponse stripeMode, StringResponse paypalUser, StringResponse stripeUserId, BooleanResponse approved) {
+	public TournamentResponse(IDResponse id, ListResponse<ImageResponse> images, ListResponse<EventResponse> events, ParticipantConnectionResponse participants, StationsConnectionResponse stations, ListResponse<StreamsResponse> streams, ListResponse<StreamQueueInfoResponse> streamQueue, TeamConnectionResponse teams, ListResponse<WaveResponse> waves, StringResponse adminUrl, StringResponse addrState, StringResponse city, JSONResponse attendeeFieldConfig, StringResponse contactEmail, StringResponse contactPhone, StringResponse contactTwitter, StringResponse countryCode, TimestampResponse createdAt, StringResponse currency, JSONResponse customMarkdown, StringResponse details, StringResponse emailDirections, StringResponse emailInstructions, StringResponse emailNote, TimestampResponse endAt, JSONResponse generatedTabs, StringResponse gettingThere, StringResponse hashtag, BooleanResponse hasOnlineEvents, BooleanResponse hideAdmins, BooleanResponse includeQRCheckIn, BooleanResponse includeQRCode, BooleanResponse isOnline, BooleanResponse hasOfflineEvents, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, BooleanResponse notifyAdmins, IntResponse ownerId, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, StringResponse prizes, JSONResponse publishing, StringResponse qrCodeRedirect, StringResponse qrCodeRedirectType, StringResponse region, StringResponse defaultTab, StringResponse rules, StringResponse slug, StringResponse shortSlug, IntResponse reminderInterval, TimestampResponse startAt, IntResponse state, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, TimestampResponse eventRegistrationClosesAt, TimestampResponse registrationClosesAt, TimestampResponse teamCreationClosesAt, StringResponse onsitePaymentMode, StringResponse paypalMode, StringResponse stripeMode, StringResponse paypalUser, StringResponse stripeUserId, BooleanResponse approved) {
 		super(EntityType.TOURNAMENT, true);
 		this.id = id;
 		this.images = images;
@@ -208,7 +208,6 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		this.qrCodeRedirect = qrCodeRedirect;
 		this.qrCodeRedirectType = qrCodeRedirectType;
 		this.region = region;
-		this.registrationClosesAt = registrationClosesAt;
 		this.defaultTab = defaultTab;
 		this.rules = rules;
 		this.slug = slug;
@@ -223,6 +222,7 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		this.venueAddress = venueAddress;
 		this.venueName = venueName;
 		this.eventRegistrationClosesAt = eventRegistrationClosesAt;
+		this.registrationClosesAt = registrationClosesAt;
 		this.teamCreationClosesAt = teamCreationClosesAt;
 		this.onsitePaymentMode = onsitePaymentMode;
 		this.paypalMode = paypalMode;
@@ -528,14 +528,6 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		return region;
 	}
 
-	/**
-	 * When does registration for the tournament end
-	 */
-	public TimestampResponse getRegistrationClosesAt() {
-		checkProvided();
-		return registrationClosesAt;
-	}
-
 	public StringResponse getDefaultTab() {
 		checkProvided();
 		return defaultTab;
@@ -637,6 +629,14 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	public TimestampResponse getEventRegistrationClosesAt() {
 		checkProvided();
 		return eventRegistrationClosesAt;
+	}
+
+	/**
+	 * When does registration for the tournament end
+	 */
+	public TimestampResponse getRegistrationClosesAt() {
+		checkProvided();
+		return registrationClosesAt;
 	}
 
 	/**

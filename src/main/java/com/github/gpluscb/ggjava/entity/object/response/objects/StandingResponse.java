@@ -14,6 +14,7 @@ public class StandingResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
 	private final IntResponse placement;
 	private final EntrantResponse entrant;
+	private final PlayerResponse player;
 	private final JSONResponse metadata;
 	private final StandingStatsResponse stats;
 	private final IntResponse standing;
@@ -26,6 +27,7 @@ public class StandingResponse extends AbstractGGResponseObject {
 		id = null;
 		placement = null;
 		entrant = null;
+		player = null;
 		metadata = null;
 		stats = null;
 		standing = null;
@@ -33,11 +35,12 @@ public class StandingResponse extends AbstractGGResponseObject {
 		entityType = null;
 	}
 
-	public StandingResponse(IDResponse id, IntResponse placement, EntrantResponse entrant, JSONResponse metadata, StandingStatsResponse stats, IntResponse standing, IntResponse entityId, StringResponse entityType) {
+	public StandingResponse(IDResponse id, IntResponse placement, EntrantResponse entrant, PlayerResponse player, JSONResponse metadata, StandingStatsResponse stats, IntResponse standing, IntResponse entityId, StringResponse entityType) {
 		super(EntityType.STANDING, true);
 		this.id = id;
 		this.placement = placement;
 		this.entrant = entrant;
+		this.player = player;
 		this.metadata = metadata;
 		this.stats = stats;
 		this.standing = standing;
@@ -61,6 +64,14 @@ public class StandingResponse extends AbstractGGResponseObject {
 	public EntrantResponse getEntrant() {
 		checkProvided();
 		return entrant;
+	}
+
+	/**
+	 * The player(s) tied to this standing's entity
+	 */
+	public PlayerResponse getPlayer() {
+		checkProvided();
+		return player;
 	}
 
 	/**

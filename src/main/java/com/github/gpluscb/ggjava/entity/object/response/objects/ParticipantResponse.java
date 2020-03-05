@@ -13,6 +13,7 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	private final ListResponse<ImageResponse> images;
 	private final JSONResponse connectedAccounts;
 	private final ContactInfoResponse contactInfo;
+	private final StringResponse email;
 	private final ListResponse<EntrantResponse> entrants;
 	private final ListResponse<EventResponse> events;
 	private final PlayerResponse player;
@@ -34,6 +35,7 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		images = null;
 		connectedAccounts = null;
 		contactInfo = null;
+		email = null;
 		entrants = null;
 		events = null;
 		player = null;
@@ -49,12 +51,13 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		userId = null;
 	}
 
-	public ParticipantResponse(IDResponse id, ListResponse<ImageResponse> images, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, PlayerResponse player, BooleanResponse checkedIn, TimestampResponse checkedInAt, BooleanResponse claimed, TimestampResponse createdAt, StringResponse gamerTag, IntResponse playerId, StringResponse phoneNumber, StringResponse prefix, BooleanResponse verified, IntResponse userId) {
+	public ParticipantResponse(IDResponse id, ListResponse<ImageResponse> images, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, StringResponse email, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, PlayerResponse player, BooleanResponse checkedIn, TimestampResponse checkedInAt, BooleanResponse claimed, TimestampResponse createdAt, StringResponse gamerTag, IntResponse playerId, StringResponse phoneNumber, StringResponse prefix, BooleanResponse verified, IntResponse userId) {
 		super(EntityType.PARTICIPANT, true);
 		this.id = id;
 		this.images = images;
 		this.connectedAccounts = connectedAccounts;
 		this.contactInfo = contactInfo;
+		this.email = email;
 		this.entrants = entrants;
 		this.events = events;
 		this.player = player;
@@ -94,6 +97,14 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	public ContactInfoResponse getContactInfo() {
 		checkProvided();
 		return contactInfo;
+	}
+
+	/**
+	 * Email of the user, only available to admins within 18 months of tournament
+	 */
+	public StringResponse getEmail() {
+		checkProvided();
+		return email;
 	}
 
 	public ListResponse<EntrantResponse> getEntrants() {

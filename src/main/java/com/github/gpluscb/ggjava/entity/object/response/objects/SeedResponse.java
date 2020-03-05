@@ -16,6 +16,7 @@ public class SeedResponse extends AbstractGGResponseObject {
 	private final StringResponse placeholderName;
 	private final ListResponse<PlayerResponse> players;
 	private final ListResponse<StandingResponse> standings;
+	private final ProgressionResponse progressionSource;
 	private final IntResponse entrantId;
 	private final JSONResponse checkedInParticipants;
 	private final IntResponse seedNum;
@@ -34,6 +35,7 @@ public class SeedResponse extends AbstractGGResponseObject {
 		placeholderName = null;
 		players = null;
 		standings = null;
+		progressionSource = null;
 		entrantId = null;
 		checkedInParticipants = null;
 		seedNum = null;
@@ -43,7 +45,7 @@ public class SeedResponse extends AbstractGGResponseObject {
 		groupSeedNum = null;
 	}
 
-	public SeedResponse(IDResponse id, PhaseResponse phase, PhaseGroupResponse phaseGroup, EntrantResponse entrant, StringResponse placeholderName, ListResponse<PlayerResponse> players, ListResponse<StandingResponse> standings, IntResponse entrantId, JSONResponse checkedInParticipants, IntResponse seedNum, IntResponse placement, IntResponse progressionSeedId, BooleanResponse isBye, IntResponse groupSeedNum) {
+	public SeedResponse(IDResponse id, PhaseResponse phase, PhaseGroupResponse phaseGroup, EntrantResponse entrant, StringResponse placeholderName, ListResponse<PlayerResponse> players, ListResponse<StandingResponse> standings, ProgressionResponse progressionSource, IntResponse entrantId, JSONResponse checkedInParticipants, IntResponse seedNum, IntResponse placement, IntResponse progressionSeedId, BooleanResponse isBye, IntResponse groupSeedNum) {
 		super(EntityType.SEED, true);
 		this.id = id;
 		this.phase = phase;
@@ -52,6 +54,7 @@ public class SeedResponse extends AbstractGGResponseObject {
 		this.placeholderName = placeholderName;
 		this.players = players;
 		this.standings = standings;
+		this.progressionSource = progressionSource;
 		this.entrantId = entrantId;
 		this.checkedInParticipants = checkedInParticipants;
 		this.seedNum = seedNum;
@@ -97,6 +100,14 @@ public class SeedResponse extends AbstractGGResponseObject {
 	public ListResponse<StandingResponse> getStandings() {
 		checkProvided();
 		return standings;
+	}
+
+	/**
+	 * Source progression information
+	 */
+	public ProgressionResponse getProgressionSource() {
+		checkProvided();
+		return progressionSource;
 	}
 
 	public IntResponse getEntrantId() {

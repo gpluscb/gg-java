@@ -17,13 +17,13 @@ import java.util.List;
 public class Deserializer {
 	@Nullable
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonElement json, @Nonnull Class<T> toClass) {
-		if(json.isJsonNull()) {
+		if (json.isJsonNull()) {
 			return null;
-		} else if(json.isJsonObject()) {
+		} else if (json.isJsonObject()) {
 			return deserialize(json.getAsJsonObject(), toClass);
-		} else if(json.isJsonArray()) {
+		} else if (json.isJsonArray()) {
 			throw new IllegalStateException("For deserializing JsonArrays, use <T extends GGResponseObject> ListResponse<T> deserialize(JsonArray, Class<T> innerClass)");
-		} else if(json.isJsonPrimitive()) {
+		} else if (json.isJsonPrimitive()) {
 			return deserialize(json.getAsJsonPrimitive(), toClass);
 		}
 
@@ -34,8 +34,8 @@ public class Deserializer {
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonObject json, @Nonnull Class<T> toClass) {
 		// Getting constructors
 		Constructor<T> constructor = null;
-		for(Constructor<?> c : toClass.getConstructors()) {
-			if(c.getParameterCount() != 0) {
+		for (Constructor<?> c : toClass.getConstructors()) {
+			if (c.getParameterCount() != 0) {
 				// See documentation of getConstructors, this can only be Constructor<T>
 				constructor = (Constructor<T>) c;
 				break;
@@ -43,33 +43,37 @@ public class Deserializer {
 		}
 
 		// TODO: DeserializationException
-		if(constructor == null) throw new IllegalStateException("No fitting constructor found for " + toClass.toString());
+		if (constructor == null)
+			throw new IllegalStateException("No fitting constructor found for " + toClass.toString());
 
 		Object[] constructorArgs = new Object[constructor.getParameterCount()];
 
 		Parameter[] params = constructor.getParameters();
-		for(int i = 0; i < params.length; i++) {
+		for (int i = 0; i < params.length; i++) {
 			Parameter param = params[i];
 
 			String name = param.getName();
 			Class<?> paramType = param.getType();
 
-			if(json.has(name)) {
+			if (json.has(name)) {
 				JsonElement value = json.get(name);
 
-				if(!GGResponseObject.class.isAssignableFrom(paramType))
+				if (!GGResponseObject.class.isAssignableFrom(paramType))
 					throw new IllegalStateException("Type of parameter " + i + " of the constructor " + toClass.toString() + " ( type is " + paramType.toString() + ") does mot extend GGResponseObject");
 
-				if(value.isJsonArray()) {
+				if (value.isJsonArray()) {
 					Type paramParameterizedType = param.getParameterizedType();
 
-					if(!(paramParameterizedType instanceof ParameterizedType)) throw new IllegalStateException("Cannot retrieve parameterized types for parameter " + param.toString());
+					if (!(paramParameterizedType instanceof ParameterizedType))
+						throw new IllegalStateException("Cannot retrieve parameterized types for parameter " + param.toString());
 
 					Type[] typeArguments = ((ParameterizedType) paramParameterizedType).getActualTypeArguments();
 
-					if(typeArguments.length != 1) throw new IllegalStateException("Unexpected number of generic type parameters for param " + param.toString());
+					if (typeArguments.length != 1)
+						throw new IllegalStateException("Unexpected number of generic type parameters for param " + param.toString());
 
-					if(!(typeArguments[0] instanceof Class)) throw new IllegalStateException("Generic type parameter does not implement class");
+					if (!(typeArguments[0] instanceof Class))
+						throw new IllegalStateException("Generic type parameter does not implement class");
 
 					// No way to check if GGResponseObject is safe
 					Class<? extends GGResponseObject> classArgument = (Class<? extends GGResponseObject>) typeArguments[0];
@@ -104,12 +108,12 @@ public class Deserializer {
 
 	@Nonnull
 	public static <T extends GGResponseObject> ListResponse<T> deserialize(@Nonnull JsonArray json, @Nonnull Class<T> toClass) {
-		EntityType type = EntityType.getByClazz(toClass);
-		if(type == null) throw new IllegalStateException("No EntityType found for class " + toClass.toString());
+		EntityType type = EntityType.getByResponseClass(toClass);
+		if (type == null) throw new IllegalStateException("No EntityType found for class " + toClass.toString());
 
 		List<T> ret = new ArrayList<>();
 
-		for(JsonElement element : json)
+		for (JsonElement element : json)
 			ret.add(deserialize(element, toClass));
 
 		return new ListResponse<>(type, ret);
