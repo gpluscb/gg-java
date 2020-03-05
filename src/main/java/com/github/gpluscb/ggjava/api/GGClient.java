@@ -57,8 +57,10 @@ public interface GGClient {
 	
 	/**
 	 * Shuts down the client gracefully. Already enqueued requests will still be executed.
+	 *
+	 * @return a CompletableFuture that will be completed once the shutdown is completed
 	 */
-	void shutdown();
+	CompletableFuture<Void> shutdown();
 	
 	/**
 	 * Whether the client is already shut down

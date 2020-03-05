@@ -7,6 +7,7 @@ import com.github.gpluscb.ggjava.internal.utils.IntToBooleanFunction;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Used for scheduling tasks according to rate limits.
@@ -28,8 +29,10 @@ public interface RateLimiter {
 	
 	/**
 	 * Shuts down the instance gracefully. Already enqueued tasks will still be executed.
+	 *
+	 * @return a CompletableFuture that will be completed once the shutdown is completed
 	 */
-	void shutdown();
+	CompletableFuture<Void> shutdown();
 	
 	/**
 	 * Whether the instance is already shut down
