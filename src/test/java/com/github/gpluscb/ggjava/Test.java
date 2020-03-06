@@ -47,11 +47,46 @@ public class Test {
 			});
 		}
 */
-		client.request(testQuery).thenAccept(r -> {
-			System.out.println(Deserializer.deserialize(r, TournamentResponse.class));
-		}).exceptionally(t -> {
-			t.printStackTrace();
-			return null;
+		client.request(testQuery).whenComplete((r, t) -> {
+			if(t == null) {
+				try {
+					System.out.println(r);
+
+					TournamentResponse tournament = Deserializer.deserialize(r.getAsJsonObject("data").get("tournament"), TournamentResponse.class);
+					System.out.println("tournament: " + tournament);
+					if (tournament != null) {
+						System.out.println("\tevents: " + tournament.getEvents());
+						if (tournament.getEvents() != null) {
+							tournament.getEvents().forEach(event -> {
+								System.out.println("\t\tevent: " + event);
+								if (event != null) {
+									System.out.println("\t\t\tname: " + event.getName());
+									System.out.println("\t\t\tstandings: " + event.getStandings());
+									if (event.getStandings() != null) {
+										System.out.println("\t\t\t\tnodes: " + event.getStandings().getNodes());
+										if (event.getStandings().getNodes() != null) {
+											event.getStandings().getNodes().forEach(node -> {
+												System.out.println("\t\t\t\t\tnode: " + node);
+												if (node != null) {
+													System.out.println("\t\t\t\t\t\tstanding: " + node.getStanding());
+													System.out.println("\t\t\t\t\t\t\tentrant: " + node.getEntrant());
+													if (node.getEntrant() != null) {
+														System.out.println("\t\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
+													}
+												}
+											});
+										}
+									}
+								}
+							});
+						}
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				t.printStackTrace();
+			}
 		});
 
 		client.shutdown();
