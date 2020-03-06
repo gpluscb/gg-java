@@ -61,6 +61,9 @@ public class Test {
 								System.out.println("\t\tevent: " + event);
 								if (event != null) {
 									System.out.println("\t\t\tname: " + event.getName());
+									if(event.getName() != null) {
+										System.out.println("\t\t\t\tnameString: " + event.getName().getValue());
+									}
 									System.out.println("\t\t\tstandings: " + event.getStandings());
 									if (event.getStandings() != null) {
 										System.out.println("\t\t\t\tnodes: " + event.getStandings().getNodes());
@@ -69,9 +72,15 @@ public class Test {
 												System.out.println("\t\t\t\t\tnode: " + node);
 												if (node != null) {
 													System.out.println("\t\t\t\t\t\tstanding: " + node.getStanding());
+													if(node.getStanding() != null) {
+														System.out.println("\t\t\t\t\t\t\tstandingInt: " + node.getStanding().getValue());
+													}
 													System.out.println("\t\t\t\t\t\t\tentrant: " + node.getEntrant());
 													if (node.getEntrant() != null) {
 														System.out.println("\t\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
+														if(node.getEntrant().getName() != null) {
+															System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
+														}
 													}
 												}
 											});

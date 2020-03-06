@@ -151,7 +151,6 @@ public class Deserializer {
 
 	@Nonnull
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonPrimitive json, @Nonnull Class<T> toClass) {
-		// TODO
 		// Getting constructors
 		Constructor<T> constructor = null;
 		for (Constructor<?> c : toClass.getConstructors()) {

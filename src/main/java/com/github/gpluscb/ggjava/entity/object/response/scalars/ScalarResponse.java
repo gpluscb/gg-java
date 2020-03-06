@@ -10,7 +10,7 @@ public abstract class ScalarResponse<T> extends AbstractGGResponseObject {
 	private final T value;
 
 	public ScalarResponse(@Nonnull EntityType type, @Nonnull T value) {
-		super(type);
+		super(type, true);
 		Checks.nonNull(value, "value");
 		this.value = value;
 	}
