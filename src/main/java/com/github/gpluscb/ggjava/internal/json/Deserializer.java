@@ -89,12 +89,38 @@ public class Deserializer {
 			} else {
 				// Not provided, invoke no args constructor for this case
 				try {
-					// Get no args constructor
-					Constructor<?> paramConstructorNoArgs = paramType.getConstructor();
+					if(paramType.equals(ListResponse.class)) {
+						// TODO: Code duplication
+						Type paramParameterizedType = param.getParameterizedType();
 
-					Object arg = paramConstructorNoArgs.newInstance();
+						if (!(paramParameterizedType instanceof ParameterizedType))
+							throw new IllegalStateException("Cannot retrieve parameterized types for parameter " + param.toString());
 
-					constructorArgs[i] = arg;
+						Type[] typeArguments = ((ParameterizedType) paramParameterizedType).getActualTypeArguments();
+
+						if (typeArguments.length != 1)
+							throw new IllegalStateException("Unexpected number of generic type parameters for param " + param.toString());
+
+						if (!(typeArguments[0] instanceof Class))
+							throw new IllegalStateException("Generic type parameter does not implement class");
+
+						// No way to check if GGResponseObject is safe
+						Class<? extends GGResponseObject> classArgument = (Class<? extends GGResponseObject>) typeArguments[0];
+
+						// Get EntityType constructor
+						Constructor<?> paramConstructor = paramType.getConstructor(EntityType.class);
+
+						EntityType paramEntityType = EntityType.getByResponseClass(classArgument);
+
+						constructorArgs[i] = paramConstructor.newInstance(paramEntityType);
+					} else {
+						// Get no args constructor
+						Constructor<?> paramConstructorNoArgs = paramType.getConstructor();
+
+						Object arg = paramConstructorNoArgs.newInstance();
+
+						constructorArgs[i] = arg;
+					}
 				} catch (NoSuchMethodException e) {
 					throw new IllegalStateException("No fitting constructor found for " + paramType.toString(), e);
 				} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {

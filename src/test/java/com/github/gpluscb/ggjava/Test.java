@@ -2,6 +2,8 @@ package com.github.gpluscb.ggjava;
 
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
+import com.github.gpluscb.ggjava.entity.object.response.objects.TournamentResponse;
+import com.github.gpluscb.ggjava.internal.json.Deserializer;
 
 import javax.annotation.Nonnull;
 
@@ -36,7 +38,7 @@ public class Test {
 		}
 
 		GGClient client = GGClient.builder(args[0]).limiter(RateLimiter.bucketBuilder().period(61000L).tasksPerPeriod(80).build()).build();
-
+/*
 		for (int i = 0; i < 100; i++) {
 			int i_ = i;
 			client.request(testQuery).thenAccept(r -> System.out.println("No. " + (i_ + 1) + " finished at " + System.currentTimeMillis())).exceptionally(t -> {
@@ -44,6 +46,13 @@ public class Test {
 				return null;
 			});
 		}
+*/
+		client.request(testQuery).thenAccept(r -> {
+			System.out.println(Deserializer.deserialize(r, TournamentResponse.class));
+		}).exceptionally(t -> {
+			t.printStackTrace();
+			return null;
+		});
 
 		client.shutdown();
 	}
