@@ -21,6 +21,7 @@ public class SetResponse extends AbstractGGResponseObject {
 	private final StringResponse identifier;
 	private final ListResponse<ImageResponse> images;
 	private final IntResponse lPlacement;
+	private final PhaseGroupResponse phaseGroup;
 	private final IntResponse round;
 	private final IntResponse setGamesType;
 	private final ListResponse<SetSlotResponse> slots;
@@ -48,6 +49,7 @@ public class SetResponse extends AbstractGGResponseObject {
 		identifier = null;
 		images = null;
 		lPlacement = null;
+		phaseGroup = null;
 		round = null;
 		setGamesType = null;
 		slots = null;
@@ -61,7 +63,7 @@ public class SetResponse extends AbstractGGResponseObject {
 		winnerId = null;
 	}
 
-	public SetResponse(IDResponse id, TimestampResponse completedAt, TimestampResponse createdAt, StringResponse displayScore, EventResponse event, StringResponse fullRoundText, GameResponse game, ListResponse<GameResponse> games, BooleanResponse hasPlaceholder, StringResponse identifier, ListResponse<ImageResponse> images, IntResponse lPlacement, IntResponse round, IntResponse setGamesType, ListResponse<SetSlotResponse> slots, TimestampResponse startedAt, IntResponse state, StationsResponse station, StreamsResponse stream, IntResponse totalGames, StringResponse vodUrl, IntResponse wPlacement, IntResponse winnerId) {
+	public SetResponse(IDResponse id, TimestampResponse completedAt, TimestampResponse createdAt, StringResponse displayScore, EventResponse event, StringResponse fullRoundText, GameResponse game, ListResponse<GameResponse> games, BooleanResponse hasPlaceholder, StringResponse identifier, ListResponse<ImageResponse> images, IntResponse lPlacement, PhaseGroupResponse phaseGroup, IntResponse round, IntResponse setGamesType, ListResponse<SetSlotResponse> slots, TimestampResponse startedAt, IntResponse state, StationsResponse station, StreamsResponse stream, IntResponse totalGames, StringResponse vodUrl, IntResponse wPlacement, IntResponse winnerId) {
 		super(EntityType.SET, true);
 		this.id = id;
 		this.completedAt = completedAt;
@@ -75,6 +77,7 @@ public class SetResponse extends AbstractGGResponseObject {
 		this.identifier = identifier;
 		this.images = images;
 		this.lPlacement = lPlacement;
+		this.phaseGroup = phaseGroup;
 		this.round = round;
 		this.setGamesType = setGamesType;
 		this.slots = slots;
@@ -164,6 +167,14 @@ public class SetResponse extends AbstractGGResponseObject {
 	public IntResponse getLPlacement() {
 		checkProvided();
 		return lPlacement;
+	}
+
+	/**
+	 * Phase group that this Set belongs to.
+	 */
+	public PhaseGroupResponse getPhaseGroup() {
+		checkProvided();
+		return phaseGroup;
 	}
 
 	/**

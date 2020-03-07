@@ -15,6 +15,7 @@ public class SetSlotResponse extends AbstractGGResponseObject {
 	private final StringResponse prereqId;
 	private final IntResponse prereqPlacement;
 	private final StringResponse prereqType;
+	private final SeedResponse seed;
 	private final IntResponse slotIndex;
 	private final StandingResponse standing;
 
@@ -26,17 +27,19 @@ public class SetSlotResponse extends AbstractGGResponseObject {
 		prereqId = null;
 		prereqPlacement = null;
 		prereqType = null;
+		seed = null;
 		slotIndex = null;
 		standing = null;
 	}
 
-	public SetSlotResponse(IDResponse id, EntrantResponse entrant, StringResponse prereqId, IntResponse prereqPlacement, StringResponse prereqType, IntResponse slotIndex, StandingResponse standing) {
+	public SetSlotResponse(IDResponse id, EntrantResponse entrant, StringResponse prereqId, IntResponse prereqPlacement, StringResponse prereqType, SeedResponse seed, IntResponse slotIndex, StandingResponse standing) {
 		super(EntityType.SET_SLOT, true);
 		this.id = id;
 		this.entrant = entrant;
 		this.prereqId = prereqId;
 		this.prereqPlacement = prereqPlacement;
 		this.prereqType = prereqType;
+		this.seed = seed;
 		this.slotIndex = slotIndex;
 		this.standing = standing;
 	}
@@ -73,6 +76,11 @@ public class SetSlotResponse extends AbstractGGResponseObject {
 	public StringResponse getPrereqType() {
 		checkProvided();
 		return prereqType;
+	}
+
+	public SeedResponse getSeed() {
+		checkProvided();
+		return seed;
 	}
 
 	/**

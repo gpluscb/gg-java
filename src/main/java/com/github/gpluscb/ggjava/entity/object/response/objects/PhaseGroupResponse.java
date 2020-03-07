@@ -17,6 +17,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	private final IntResponse numRounds;
 	private final SeedConnectionResponse paginatedSeeds;
 	private final SetConnectionResponse paginatedSets;
+	private final PhaseResponse phase;
 	private final ListResponse<ProgressionResponse> progressionsOut;
 	private final ListResponse<RoundResponse> rounds;
 	private final SeedConnectionResponse seeds;
@@ -36,6 +37,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		numRounds = null;
 		paginatedSeeds = null;
 		paginatedSets = null;
+		phase = null;
 		progressionsOut = null;
 		rounds = null;
 		seeds = null;
@@ -46,7 +48,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		wave = null;
 	}
 
-	public PhaseGroupResponse(BracketTypeResponse bracketType, IDResponse id, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
+	public PhaseGroupResponse(BracketTypeResponse bracketType, IDResponse id, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, PhaseResponse phase, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
 		super(EntityType.PHASE_GROUP, true);
 		this.bracketType = bracketType;
 		this.id = id;
@@ -55,6 +57,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		this.numRounds = numRounds;
 		this.paginatedSeeds = paginatedSeeds;
 		this.paginatedSets = paginatedSets;
+		this.phase = phase;
 		this.progressionsOut = progressionsOut;
 		this.rounds = rounds;
 		this.seeds = seeds;
@@ -117,6 +120,14 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	public SetConnectionResponse getPaginatedSets() {
 		checkProvided();
 		return paginatedSets;
+	}
+
+	/**
+	 * The phase associated with this phase group
+	 */
+	public PhaseResponse getPhase() {
+		checkProvided();
+		return phase;
 	}
 
 	/**

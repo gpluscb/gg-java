@@ -89,7 +89,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * @deprecated This entire type is deprecated. Use User.location
+	 * @deprecated This entire type is deprecated. Use User.name
 	 */
 	@Deprecated
 	public StringResponse getName() {
@@ -100,7 +100,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 	/**
 	 * First Name
 	 *
-	 * @deprecated This entire type is deprecated. Use User.location
+	 * @deprecated This entire type is deprecated. Use User.name
 	 */
 	@Deprecated
 	public StringResponse getNameFirst() {
@@ -111,7 +111,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 	/**
 	 * Last Name
 	 *
-	 * @deprecated This entire type is deprecated. Use User.location
+	 * @deprecated This entire type is deprecated. Use User.name
 	 */
 	@Deprecated
 	public StringResponse getNameLast() {
