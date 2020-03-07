@@ -78,6 +78,9 @@ public class EntrantResponse extends AbstractGGResponseObject {
 		return skill;
 	}
 
+	/**
+	 * @deprecated DEPRECATED. Use streams instead, which supports multiple stream types and teams.
+	 */
 	@Deprecated
 	public StreamsResponse getStream() {
 		checkProvided();

@@ -88,6 +88,9 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 		return countryId;
 	}
 
+	/**
+	 * @deprecated This entire type is deprecated. Use User.location
+	 */
 	@Deprecated
 	public StringResponse getName() {
 		checkProvided();

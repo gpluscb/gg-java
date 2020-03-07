@@ -101,6 +101,9 @@ public class PhaseResponse extends AbstractGGResponseObject {
 		return numSeeds;
 	}
 
+	/**
+	 * @deprecated Please use 'seeds' instead
+	 */
 	@Deprecated
 	public SeedConnectionResponse getPaginatedSeeds() {
 		checkProvided();

@@ -99,6 +99,9 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		return numRounds;
 	}
 
+	/**
+	 * @deprecated Please use 'seeds', which is now paginated
+	 */
 	@Deprecated
 	public SeedConnectionResponse getPaginatedSeeds() {
 		checkProvided();

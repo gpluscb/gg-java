@@ -75,6 +75,9 @@ public class StandingResponse extends AbstractGGResponseObject {
 		return player;
 	}
 
+	/**
+	 * @deprecated The "placement" field is identical and will eventually replace "standing"
+	 */
 	@Deprecated
 	public IntResponse getStanding() {
 		checkProvided();
