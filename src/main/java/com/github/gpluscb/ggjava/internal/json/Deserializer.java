@@ -7,6 +7,7 @@ import com.github.gpluscb.ggjava.entity.object.response.enums.EnumResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.FloatResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
+import com.github.gpluscb.ggjava.internal.exception.DeserializationException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,22 +21,22 @@ import java.util.List;
 
 public class Deserializer {
 	@Nullable
-	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonElement json, @Nonnull Class<T> toClass) {
+	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonElement json, @Nonnull Class<T> toClass) throws DeserializationException {
 		if (json.isJsonNull()) {
 			return null;
 		} else if (json.isJsonObject()) {
 			return deserialize(json.getAsJsonObject(), toClass);
 		} else if (json.isJsonArray()) {
-			throw new IllegalStateException("For deserializing JsonArrays, use <T extends GGResponseObject> ListResponse<T> deserialize(JsonArray, Class<T> innerClass)");
+			throw new DeserializationException("For deserializing JsonArrays, use <T extends GGResponseObject> ListResponse<T> deserialize(JsonArray, Class<T> innerClass)");
 		} else if (json.isJsonPrimitive()) {
 			return deserialize(json.getAsJsonPrimitive(), toClass);
 		}
 
-		throw new IllegalStateException("Illegal state reached: json is neither JsonNull, JsonObject, JsonArray nor JsonPrimitive");
+		throw new DeserializationException("Illegal state reached: json is neither JsonNull, JsonObject, JsonArray nor JsonPrimitive");
 	}
 
 	@Nonnull
-	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonObject json, @Nonnull Class<T> toClass) {
+	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonObject json, @Nonnull Class<T> toClass) throws DeserializationException {
 		// Getting constructors
 		Constructor<T> constructor = null;
 		for (Constructor<?> c : toClass.getConstructors()) {
@@ -46,9 +47,8 @@ public class Deserializer {
 			}
 		}
 
-		// TODO: DeserializationException
 		if (constructor == null)
-			throw new IllegalStateException("No fitting constructor found for " + toClass.toString());
+			throw new DeserializationException("No fitting constructor found for " + toClass.toString());
 
 		Object[] constructorArgs = new Object[constructor.getParameterCount()];
 
@@ -63,21 +63,21 @@ public class Deserializer {
 				JsonElement value = json.get(name);
 
 				if (!GGResponseObject.class.isAssignableFrom(paramType))
-					throw new IllegalStateException("Type of parameter " + i + " of the constructor " + toClass.toString() + " ( type is " + paramType.toString() + ") does mot extend GGResponseObject");
+					throw new DeserializationException("Type of parameter " + i + " of the constructor " + toClass.toString() + " ( type is " + paramType.toString() + ") does mot extend GGResponseObject");
 
 				if (value.isJsonArray()) {
 					Type paramParameterizedType = param.getParameterizedType();
 
 					if (!(paramParameterizedType instanceof ParameterizedType))
-						throw new IllegalStateException("Cannot retrieve parameterized types for parameter " + param.toString());
+						throw new DeserializationException("Cannot retrieve parameterized types for parameter " + param.toString());
 
 					Type[] typeArguments = ((ParameterizedType) paramParameterizedType).getActualTypeArguments();
 
 					if (typeArguments.length != 1)
-						throw new IllegalStateException("Unexpected number of generic type parameters for param " + param.toString());
+						throw new DeserializationException("Unexpected number of generic type parameters for param " + param.toString());
 
 					if (!(typeArguments[0] instanceof Class))
-						throw new IllegalStateException("Generic type parameter does not implement class");
+						throw new DeserializationException("Generic type parameter does not implement class");
 
 					// No way to check if GGResponseObject is safe
 					Class<? extends GGResponseObject> classArgument = (Class<? extends GGResponseObject>) typeArguments[0];
@@ -94,15 +94,15 @@ public class Deserializer {
 						Type paramParameterizedType = param.getParameterizedType();
 
 						if (!(paramParameterizedType instanceof ParameterizedType))
-							throw new IllegalStateException("Cannot retrieve parameterized types for parameter " + param.toString());
+							throw new DeserializationException("Cannot retrieve parameterized types for parameter " + param.toString());
 
 						Type[] typeArguments = ((ParameterizedType) paramParameterizedType).getActualTypeArguments();
 
 						if (typeArguments.length != 1)
-							throw new IllegalStateException("Unexpected number of generic type parameters for param " + param.toString());
+							throw new DeserializationException("Unexpected number of generic type parameters for param " + param.toString());
 
 						if (!(typeArguments[0] instanceof Class))
-							throw new IllegalStateException("Generic type parameter does not implement class");
+							throw new DeserializationException("Generic type parameter does not implement class");
 
 						// No way to check if GGResponseObject is safe
 						Class<? extends GGResponseObject> classArgument = (Class<? extends GGResponseObject>) typeArguments[0];
@@ -122,9 +122,9 @@ public class Deserializer {
 						constructorArgs[i] = arg;
 					}
 				} catch (NoSuchMethodException e) {
-					throw new IllegalStateException("No fitting constructor found for " + paramType.toString(), e);
+					throw new DeserializationException("No fitting constructor found for " + paramType.toString(), e);
 				} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-					throw new IllegalStateException("Exception caught while invoking no args constructor for " + paramType.toString(), e);
+					throw new DeserializationException("Exception caught while invoking no args constructor for " + paramType.toString(), e);
 				}
 			}
 		}
@@ -132,14 +132,14 @@ public class Deserializer {
 		try {
 			return constructor.newInstance(constructorArgs);
 		} catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-			throw new IllegalStateException("Exception caught while invoking constructor for " + toClass.toString(), e);
+			throw new DeserializationException("Exception caught while invoking constructor for " + toClass.toString(), e);
 		}
 	}
 
 	@Nonnull
-	public static <T extends GGResponseObject> ListResponse<T> deserialize(@Nonnull JsonArray json, @Nonnull Class<T> toClass) {
+	public static <T extends GGResponseObject> ListResponse<T> deserialize(@Nonnull JsonArray json, @Nonnull Class<T> toClass) throws DeserializationException {
 		EntityType type = EntityType.getByResponseClass(toClass);
-		if (type == null) throw new IllegalStateException("No EntityType found for class " + toClass.toString());
+		if (type == null) throw new DeserializationException("No EntityType found for class " + toClass.toString());
 
 		List<T> ret = new ArrayList<>();
 
@@ -150,7 +150,7 @@ public class Deserializer {
 	}
 
 	@Nonnull
-	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonPrimitive json, @Nonnull Class<T> toClass) {
+	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonPrimitive json, @Nonnull Class<T> toClass) throws DeserializationException {
 		// Getting constructors
 		Constructor<T> constructor = null;
 		for (Constructor<?> c : toClass.getConstructors()) {
@@ -162,12 +162,12 @@ public class Deserializer {
 		}
 
 		if (constructor == null)
-			throw new IllegalStateException("No fitting constructor found for " + toClass.toString());
+			throw new DeserializationException("No fitting constructor found for " + toClass.toString());
 
 		try {
 			if (EnumResponse.class.isAssignableFrom(toClass)) {
 				if (!json.isString())
-					throw new IllegalStateException("toClass is an EnumResponse, but json is not a String");
+					throw new DeserializationException("toClass is an EnumResponse, but json is not a String");
 
 				// Enum
 				try {
@@ -181,7 +181,7 @@ public class Deserializer {
 
 					return constructor.newInstance(enumValue);
 				} catch (NoSuchMethodException e) {
-					throw new IllegalStateException("No valueOf method found in class " + toClass.toString(), e);
+					throw new DeserializationException("No valueOf method found in class " + toClass.toString(), e);
 				}
 			} else {
 				// Scalar
@@ -197,14 +197,14 @@ public class Deserializer {
 					} else if (toClass.equals(FloatResponse.class)) {
 						return constructor.newInstance(json.getAsFloat());
 					} else {
-						throw new IllegalStateException("Unknown scalar for JSON number type: " + toClass.toString());
+						throw new DeserializationException("Unknown scalar for JSON number type: " + toClass.toString());
 					}
 				} else {
-					throw new IllegalStateException("JsonPrimitive is neither Boolean nor String nor Number, which is weird and probably illegal");
+					throw new DeserializationException("JsonPrimitive is neither Boolean nor String nor Number, which is weird and probably illegal");
 				}
 			}
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException("Constructor or valueOf invocation failed", e);
+			throw new DeserializationException("Constructor or valueOf invocation failed", e);
 		}
 	}
 }
