@@ -51,7 +51,7 @@ public class BasicRequester {
 					try {
 						ResponseBody body = response.body();
 						if(body == null) {
-							ret.completeExceptionally(new RequestFailureException("No response body received"));
+							ret.completeExceptionally(new RequestFailureException("No response body received: " + response.toString()));
 							return;
 						}
 						
@@ -60,13 +60,13 @@ public class BasicRequester {
 						if(!response.isSuccessful()) {
 							switch(response.code()) {
 								case 401:
-									ret.completeExceptionally(new UnauthorizedException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
+									ret.completeExceptionally(new UnauthorizedException(jsonResponse.toString()));
 									break;
 								case 429:
-									ret.completeExceptionally(new RateLimitException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
+									ret.completeExceptionally(new RateLimitException(jsonResponse.toString()));
 									break;
 								default:
-									ret.completeExceptionally(new RequestFailureException("Unsuccessful response received: " + response));
+									ret.completeExceptionally(new RequestFailureException("Unsuccessful response received: " + response.toString()));
 									break;
 							}
 							
@@ -89,7 +89,7 @@ public class BasicRequester {
 						} else
 							ret.completeExceptionally(errorResponse);
 					} catch(Throwable t) {
-						System.err.print("Failed to handle server response: ");
+						System.err.print("Failed to handle server response: " + response.toString());
 						t.printStackTrace();
 						ret.completeExceptionally(t);
 					}
