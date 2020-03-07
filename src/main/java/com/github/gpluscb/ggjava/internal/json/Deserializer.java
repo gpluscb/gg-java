@@ -89,7 +89,7 @@ public class Deserializer {
 			} else {
 				// Not provided, invoke no args constructor for this case
 				try {
-					if(paramType.equals(ListResponse.class)) {
+					if (paramType.equals(ListResponse.class)) {
 						// TODO: Code duplication
 						Type paramParameterizedType = param.getParameterizedType();
 
