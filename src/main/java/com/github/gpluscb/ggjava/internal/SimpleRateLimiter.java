@@ -135,6 +135,7 @@ public class SimpleRateLimiter implements RateLimiter {
 		return limit * (2 ^ numRetries++);
 	}
 
+	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
 		isShutDown = true;

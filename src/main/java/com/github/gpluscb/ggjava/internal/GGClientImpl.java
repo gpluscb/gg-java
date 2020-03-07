@@ -2,7 +2,7 @@ package com.github.gpluscb.ggjava.internal;
 
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
-import com.github.gpluscb.ggjava.internal.exception.RateLimitException;
+import com.github.gpluscb.ggjava.api.exception.RateLimitException;
 import com.github.gpluscb.ggjava.internal.request.BasicRequester;
 import com.github.gpluscb.ggjava.internal.request.GGRequest;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
@@ -74,6 +74,7 @@ public class GGClientImpl implements GGClient {
 		}
 	}
 
+	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
 		return limiter.shutdown().thenRun(requester::shutdown);

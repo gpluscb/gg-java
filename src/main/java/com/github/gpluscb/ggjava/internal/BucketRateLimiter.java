@@ -220,6 +220,7 @@ public class BucketRateLimiter implements RateLimiter {
 		return taskCompletionTimes.size() >= tasksPerPeriod;
 	}
 
+	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
 		isShutDown = true;
