@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Different options available for verifying player-reported match results
+ */
 public enum MatchConfigVerificationMethod implements GGEnum {
 	TWITCH,
 	STREAM_ME,

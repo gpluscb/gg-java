@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Enforces limits on the amount of allowable Race submissions
+ */
 public enum RaceLimitMode implements GGEnum {
 	BEST_ALL,
 	FIRST_ALL,

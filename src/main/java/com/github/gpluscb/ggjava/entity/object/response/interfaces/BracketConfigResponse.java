@@ -8,6 +8,9 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Bracket-specific configuration
+ */
 public abstract class BracketConfigResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
 	private final BracketTypeResponse bracketType;

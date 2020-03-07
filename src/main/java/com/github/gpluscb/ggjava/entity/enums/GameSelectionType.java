@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type of selection i.e. is it for a character or something else
+ */
 public enum GameSelectionType implements GGEnum {
 	/**
 	 * Character selection

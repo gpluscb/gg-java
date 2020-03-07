@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents the state of an activity
+ */
 public enum ActivityState implements GGEnum {
 	/**
 	 * Activity is created

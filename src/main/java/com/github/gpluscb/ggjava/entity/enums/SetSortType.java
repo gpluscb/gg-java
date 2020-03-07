@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Different sort type configurations used when displaying multiple sets
+ */
 public enum SetSortType implements GGEnum {
 	/**
 	 * No sort

@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.RaceType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Race type
+ */
 public class RaceTypeResponse extends EnumResponse<RaceType> {
 	public RaceTypeResponse() {
 		super(EntityType.RACE_TYPE);

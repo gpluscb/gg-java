@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents the source of a stream
+ */
 public enum StreamSource implements GGEnum {
 	/**
 	 * Stream is on twitch.tv channel

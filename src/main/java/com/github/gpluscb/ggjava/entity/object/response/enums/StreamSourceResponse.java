@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.StreamSource;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents the source of a stream
+ */
 public class StreamSourceResponse extends EnumResponse<StreamSource> {
 	public StreamSourceResponse() {
 		super(EntityType.STREAM_SOURCE);

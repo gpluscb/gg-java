@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Comparison operator
+ */
 public enum Comparator implements GGEnum {
 	GREATER_THAN,
 	GREATER_THAN_OR_EQUAL,

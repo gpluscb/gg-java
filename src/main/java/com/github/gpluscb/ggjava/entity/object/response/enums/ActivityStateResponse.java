@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.ActivityState;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents the state of an activity
+ */
 public class ActivityStateResponse extends EnumResponse<ActivityState> {
 	public ActivityStateResponse() {
 		super(EntityType.ACTIVITY_STATE);

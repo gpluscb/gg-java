@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.MatchConfigVerificationMethod;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Different options available for verifying player-reported match results
+ */
 public class MatchConfigVerificationMethodResponse extends EnumResponse<MatchConfigVerificationMethod> {
 	public MatchConfigVerificationMethodResponse() {
 		super(EntityType.MATCH_CONFIG_VERIFICATION_METHOD);

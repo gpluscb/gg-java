@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Race type
+ */
 public enum RaceType implements GGEnum {
 	GOALS,
 	TIMED;

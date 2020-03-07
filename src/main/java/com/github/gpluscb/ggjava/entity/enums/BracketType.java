@@ -4,6 +4,9 @@ import com.github.gpluscb.ggjava.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type of Bracket format that a Phase is configured with.
+ */
 public enum BracketType implements GGEnum {
 	SINGLE_ELIMINATION,
 	DOUBLE_ELIMINATION,

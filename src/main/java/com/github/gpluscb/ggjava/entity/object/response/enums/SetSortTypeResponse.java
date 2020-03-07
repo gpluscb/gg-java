@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.SetSortType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Different sort type configurations used when displaying multiple sets
+ */
 public class SetSortTypeResponse extends EnumResponse<SetSortType> {
 	public SetSortTypeResponse() {
 		super(EntityType.SET_SORT_TYPE);

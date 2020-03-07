@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.Comparator;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Comparison operator
+ */
 public class ComparatorResponse extends EnumResponse<Comparator> {
 	public ComparatorResponse() {
 		super(EntityType.COMPARATOR);

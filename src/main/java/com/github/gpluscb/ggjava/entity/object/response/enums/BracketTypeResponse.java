@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.BracketType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type of Bracket format that a Phase is configured with.
+ */
 public class BracketTypeResponse extends EnumResponse<BracketType> {
 	public BracketTypeResponse() {
 		super(EntityType.BRACKET_TYPE);

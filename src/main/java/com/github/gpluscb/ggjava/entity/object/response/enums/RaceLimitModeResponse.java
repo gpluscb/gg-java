@@ -5,6 +5,9 @@ import com.github.gpluscb.ggjava.entity.enums.RaceLimitMode;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Enforces limits on the amount of allowable Race submissions
+ */
 public class RaceLimitModeResponse extends EnumResponse<RaceLimitMode> {
 	public RaceLimitModeResponse() {
 		super(EntityType.RACE_LIMIT_MODE);
