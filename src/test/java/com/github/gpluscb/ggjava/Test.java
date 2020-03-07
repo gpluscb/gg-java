@@ -8,7 +8,7 @@ import com.github.gpluscb.ggjava.internal.json.Deserializer;
 import javax.annotation.Nonnull;
 
 public class Test {
-	private static final String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{name standings(query:{page:1,perPage:3}){nodes{standing entrant{name}}}}}}";
+	private static final String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{name state standings(query:{page:1,perPage:3}){nodes{standing entrant{name}}}}}}";
 
 	public static void main(@Nonnull String[] args) {
 		// rateLimiterTest();
@@ -61,8 +61,12 @@ public class Test {
 								System.out.println("\t\tevent: " + event);
 								if (event != null) {
 									System.out.println("\t\t\tname: " + event.getName());
-									if(event.getName() != null) {
+									if (event.getName() != null) {
 										System.out.println("\t\t\t\tnameString: " + event.getName().getValue());
+									}
+									System.out.println("\t\t\tstate: " + event.getState());
+									if (event.getState() != null) {
+										System.out.println("\t\t\t\tstateEnum: " + event.getState().getValue());
 									}
 									System.out.println("\t\t\tstandings: " + event.getStandings());
 									if (event.getStandings() != null) {
@@ -75,11 +79,11 @@ public class Test {
 													if(node.getStanding() != null) {
 														System.out.println("\t\t\t\t\t\t\tstandingInt: " + node.getStanding().getValue());
 													}
-													System.out.println("\t\t\t\t\t\t\tentrant: " + node.getEntrant());
+													System.out.println("\t\t\t\t\t\tentrant: " + node.getEntrant());
 													if (node.getEntrant() != null) {
-														System.out.println("\t\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
+														System.out.println("\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
 														if(node.getEntrant().getName() != null) {
-															System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
+															System.out.println("\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
 														}
 													}
 												}

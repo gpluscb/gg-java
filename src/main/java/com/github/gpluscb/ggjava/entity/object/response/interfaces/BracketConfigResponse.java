@@ -44,6 +44,6 @@ public abstract class BracketConfigResponse extends AbstractGGResponseObject {
 	 * @throws IllegalStateException if this is not provided
 	 */
 	public BracketType getBracketType() {
-		return getBracketTypeResponse().getResponse();
+		return getBracketTypeResponse().getValue();
 	}
 }

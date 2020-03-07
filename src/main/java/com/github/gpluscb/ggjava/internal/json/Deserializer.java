@@ -154,7 +154,7 @@ public class Deserializer {
 		// Getting constructors
 		Constructor<T> constructor = null;
 		for (Constructor<?> c : toClass.getConstructors()) {
-			if (c.getParameterCount() != 0) {
+			if (c.getParameterCount() == 1) {
 				// See documentation of getConstructors, this can only be Constructor<T>
 				constructor = (Constructor<T>) c;
 				break;
@@ -171,7 +171,10 @@ public class Deserializer {
 
 				// Enum
 				try {
-					Method valueOf = toClass.getMethod("valueOf", String.class);
+					// Get emum class
+					Class<?> enumClass = constructor.getParameters()[0].getType();
+
+					Method valueOf = enumClass.getMethod("valueOf", String.class);
 
 					// valueOf should be static
 					Object enumValue = valueOf.invoke(null, json.getAsString());
