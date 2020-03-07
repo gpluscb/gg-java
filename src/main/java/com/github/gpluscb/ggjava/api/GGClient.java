@@ -60,6 +60,7 @@ public interface GGClient {
 	 *
 	 * @return a CompletableFuture that will be completed once the shutdown is completed
 	 */
+	@Nonnull
 	CompletableFuture<Void> shutdown();
 	
 	/**

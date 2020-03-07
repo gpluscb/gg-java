@@ -71,7 +71,8 @@ public class GGClientImpl implements GGClient {
 			return false;
 		}
 	}
-	
+
+	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
 		return limiter.shutdown().thenRun(requester::shutdown);

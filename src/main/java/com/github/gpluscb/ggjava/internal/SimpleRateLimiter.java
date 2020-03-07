@@ -133,7 +133,8 @@ public class SimpleRateLimiter implements RateLimiter {
 	private long requestExponentialBackoff() {
 		return limit * (2 ^ numRetries++);
 	}
-	
+
+	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
 		isShutDown = true;
