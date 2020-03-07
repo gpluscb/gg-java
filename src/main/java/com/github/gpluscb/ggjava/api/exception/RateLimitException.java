@@ -1,6 +1,5 @@
-package com.github.gpluscb.ggjava.internal.exception;
+package com.github.gpluscb.ggjava.api.exception;
 
-import com.github.gpluscb.ggjava.api.exception.RequestFailureException;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
 import javax.annotation.Nonnull;
 

@@ -4,7 +4,7 @@ import com.github.gpluscb.ggjava.api.exception.ErrorResponseException;
 import com.github.gpluscb.ggjava.api.exception.GGError;
 import com.github.gpluscb.ggjava.api.exception.RequestFailureException;
 import com.github.gpluscb.ggjava.api.exception.UnauthorizedException;
-import com.github.gpluscb.ggjava.internal.exception.RateLimitException;
+import com.github.gpluscb.ggjava.api.exception.RateLimitException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
