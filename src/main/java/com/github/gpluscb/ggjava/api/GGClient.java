@@ -1,5 +1,7 @@
 package com.github.gpluscb.ggjava.api;
 
+import com.github.gpluscb.ggjava.entity.object.response.objects.MutationResponse;
+import com.github.gpluscb.ggjava.entity.object.response.objects.QueryResponse;
 import com.github.gpluscb.ggjava.internal.BucketRateLimiter;
 import com.github.gpluscb.ggjava.internal.GGClientImpl;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
@@ -17,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface GGClient {
 	/**
-	 * Performs a request with the given query to the GraphQL API.
+	 * Performs a request with the given query and variables to the GraphQL API.
 	 * <p>
 	 * The returned CompletableFuture will be completed with the response on the requester thread.
 	 * If you don't use async methods and block, no requests will be sent during execution of your code.
@@ -34,6 +36,7 @@ public interface GGClient {
 
 	/**
 	 * Performs a request with the given query to the GraphQL API.
+	 * Generally {@link #query(String)} or {@link #mutation(String)} are preferred, but if you need the raw JsonObject response, you can use this method.
 	 * <p>
 	 * The returned CompletableFuture will be completed with the response on the requester thread.
 	 * If you don't use async methods and block, no requests will be sent during execution of your code.
@@ -47,6 +50,73 @@ public interface GGClient {
 	@Nonnull
 	default CompletableFuture<JsonObject> request(@Nonnull String query) {
 		return request(query, null);
+	}
+
+	/**
+	 * Performs a query request with the given query and variables to the GraphQL API.
+	 * <p>
+	 * The returned CompletableFuture will be completed with the response on the requester thread.
+	 * If you don't use async methods and block, no requests will be sent during execution of your code.
+	 * If you block until a request is complete in a not-async callback, you will deadlock.
+	 *
+	 * @param query     the GraphQL query
+	 * @param variables the variable assignments as a JsonObject of format {"variable1":"value1", "variable2":"value2" ...}
+	 * @return a CompletableFuture that will be completed with the QueryResponse of the response or will be completed exceptionally if the request or deserialization fails
+	 * @throws IllegalArgumentException if query is null
+	 * @throws IllegalStateException    if the client is already shut down
+	 */
+	@Nonnull
+	CompletableFuture<QueryResponse> query(@Nonnull String query, @Nullable JsonObject variables);
+
+	/**
+	 * Performs a query request with the given query to the GraphQL API.
+	 * <p>
+	 * The returned CompletableFuture will be completed with the response on the requester thread.
+	 * If you don't use async methods and block, no requests will be sent during execution of your code.
+	 * If you block until a request is complete in a not-async callback, you will deadlock.
+	 *
+	 * @param query     the GraphQL query
+	 * @return a CompletableFuture that will be completed with the QueryResponse of the response or will be completed exceptionally if the request or deserialization fails
+	 * @throws IllegalArgumentException if query is null
+	 * @throws IllegalStateException    if the client is already shut down
+	 */
+	@Nonnull
+	default CompletableFuture<QueryResponse> query(@Nonnull String query) {
+		return query(query, null);
+	}
+
+	/**
+	 * Performs a mutation request with the given query and variables to the GraphQL API.
+	 * <p>
+	 * The returned CompletableFuture will be completed with the response on the requester thread.
+	 * If you don't use async methods and block, no requests will be sent during execution of your code.
+	 * If you block until a request is complete in a not-async callback, you will deadlock.
+	 *
+	 * @param query     the GraphQL query
+	 * @param variables the variable assignments as a JsonObject of format {"variable1":"value1", "variable2":"value2" ...}
+	 * @return a CompletableFuture that will be completed with the MutationResponse of the response or will be completed exceptionally if the request or deserialization fails
+	 * @throws IllegalArgumentException if query is null
+	 * @throws IllegalStateException    if the client is already shut down
+	 */
+	@Nonnull
+	CompletableFuture<MutationResponse> mutation(@Nonnull String query, @Nullable JsonObject variables);
+
+
+	/**
+	 * Performs a mutation request with the given query to the GraphQL API.
+	 * <p>
+	 * The returned CompletableFuture will be completed with the response on the requester thread.
+	 * If you don't use async methods and block, no requests will be sent during execution of your code.
+	 * If you block until a request is complete in a not-async callback, you will deadlock.
+	 *
+	 * @param query     the GraphQL query
+	 * @return a CompletableFuture that will be completed with the MutationResponse of the response or will be completed exceptionally if the request or deserialization fails
+	 * @throws IllegalArgumentException if query is null
+	 * @throws IllegalStateException    if the client is already shut down
+	 */
+	@Nonnull
+	default CompletableFuture<MutationResponse> mutation(@Nonnull String query) {
+		return mutation(query, null);
 	}
 
 	/**

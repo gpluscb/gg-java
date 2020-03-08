@@ -2,8 +2,6 @@ package com.github.gpluscb.ggjava;
 
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
-import com.github.gpluscb.ggjava.entity.object.response.objects.TournamentResponse;
-import com.github.gpluscb.ggjava.internal.json.Deserializer;
 
 import javax.annotation.Nonnull;
 
@@ -47,51 +45,51 @@ public class Test {
 			});
 		}
 */
-		client.request(testQuery).whenComplete((r, t) -> {
+		client.query(testQuery).whenComplete((query, t) -> {
 			if(t == null) {
 				try {
-					System.out.println(r);
-
-					TournamentResponse tournament = Deserializer.deserialize(r.getAsJsonObject("data").get("tournament"), TournamentResponse.class);
-					System.out.println("tournament: " + tournament);
-					if (tournament != null) {
-						System.out.println("\tevents: " + tournament.getEvents());
-						if (tournament.getEvents() != null) {
-							tournament.getEvents().forEach(event -> {
-								System.out.println("\t\tevent: " + event);
-								if (event != null) {
-									System.out.println("\t\t\tname: " + event.getName());
-									if (event.getName() != null) {
-										System.out.println("\t\t\t\tnameString: " + event.getName().getValue());
-									}
-									System.out.println("\t\t\tstate: " + event.getState());
-									if (event.getState() != null) {
-										System.out.println("\t\t\t\tstateEnum: " + event.getState().getValue());
-									}
-									System.out.println("\t\t\tstandings: " + event.getStandings());
-									if (event.getStandings() != null) {
-										System.out.println("\t\t\t\tnodes: " + event.getStandings().getNodes());
-										if (event.getStandings().getNodes() != null) {
-											event.getStandings().getNodes().forEach(node -> {
-												System.out.println("\t\t\t\t\tnode: " + node);
-												if (node != null) {
-													System.out.println("\t\t\t\t\t\tstanding: " + node.getStanding());
-													if(node.getStanding() != null) {
-														System.out.println("\t\t\t\t\t\t\tstandingInt: " + node.getStanding().getValue());
-													}
-													System.out.println("\t\t\t\t\t\tentrant: " + node.getEntrant());
-													if (node.getEntrant() != null) {
-														System.out.println("\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
-														if(node.getEntrant().getName() != null) {
-															System.out.println("\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
+					System.out.println("data: " + query);
+					if(query != null ) {
+						System.out.println("tournament: " + query.getTournament());
+						if (query.getTournament() != null) {
+							System.out.println("\tevents: " + query.getTournament().getEvents());
+							if (query.getTournament().getEvents() != null) {
+								query.getTournament().getEvents().forEach(event -> {
+									System.out.println("\t\tevent: " + event);
+									if (event != null) {
+										System.out.println("\t\t\tname: " + event.getName());
+										if (event.getName() != null) {
+											System.out.println("\t\t\t\tnameString: " + event.getName().getValue());
+										}
+										System.out.println("\t\t\tstate: " + event.getState());
+										if (event.getState() != null) {
+											System.out.println("\t\t\t\tstateEnum: " + event.getState().getValue());
+										}
+										System.out.println("\t\t\tstandings: " + event.getStandings());
+										if (event.getStandings() != null) {
+											System.out.println("\t\t\t\tnodes: " + event.getStandings().getNodes());
+											if (event.getStandings().getNodes() != null) {
+												event.getStandings().getNodes().forEach(node -> {
+													System.out.println("\t\t\t\t\tnode: " + node);
+													if (node != null) {
+														System.out.println("\t\t\t\t\t\tstanding: " + node.getStanding());
+														if (node.getStanding() != null) {
+															System.out.println("\t\t\t\t\t\t\tstandingInt: " + node.getStanding().getValue());
+														}
+														System.out.println("\t\t\t\t\t\tentrant: " + node.getEntrant());
+														if (node.getEntrant() != null) {
+															System.out.println("\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
+															if (node.getEntrant().getName() != null) {
+																System.out.println("\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
+															}
 														}
 													}
-												}
-											});
+												});
+											}
 										}
 									}
-								}
-							});
+								});
+							}
 						}
 					}
 				} catch(Exception e) {
