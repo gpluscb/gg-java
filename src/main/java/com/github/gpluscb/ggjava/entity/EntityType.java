@@ -12,6 +12,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public enum EntityType {
+	// Schema
+	QUERY(QueryResponse.class),
+	MUTATION(MutationResponse.class),
+
 	// Scalars
 	BOOLEAN(BooleanResponse.class),
 	FLOAT(FloatResponse.class),
