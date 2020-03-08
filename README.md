@@ -67,7 +67,7 @@ However, depending on your query, some of these fields are not requested by you 
 In these cases, the getter for the field will **not** return null, but rather an `XResponse` instance of which the `isProvided()` method returns false.
 All other getters will throw an `IllegalStateException`.
 The getter for the field **will** return null if it was provided in the response as null.
-This system has the consequence that Scalars and Enums cannot be given in their native java representation.
+This system has the consequence that Scalars and Enums cannot be given directly in their native java representation.
 Instead they are wrapped into a XResponse class, of which the `getValue()` method will return the underlying java type or throw if it is not provided. 
 
 ### Variables
@@ -78,7 +78,7 @@ testVariables.addProperty("slug", "evo2018");
 
 client.query(testQuery, testVariables)
     // ...
-	;
+    ;
 ```
 
 ### Rate limiting
