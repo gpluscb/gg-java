@@ -42,22 +42,24 @@ String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{na
 
 GGClient client = GGClient.builder("your-token-here").build();
 
-client.request(testQuery)
-	.thenAccept(r -> {
-		System.out.println("Success!");
-		System.out.println(r.toString());
-	})
-	.exceptionally(t -> {t.printStackTrace(); return null;});
+client.query(testQuery)
+    .thenAccept(r -> {
+        System.out.println("Success!");
+        System.out.println(r.getTournament().getEvents().get(0).getName().getValue());
+    })
+    .exceptionally(t -> {t.printStackTrace(); return null;});
 client.shutdown();
 ```
 
 The [smash.gg API docs](https://developer.smash.gg/docs/intro) will be an useful resource, especially the [GraphQL reference](https://developer.smash.gg/reference).
 For a tutorial on how to construct the GraphQL queries, visit https://graphql.org/learn/.
 
-Every request returns a CompletableFuture\<JsonObject\> currently for handling stuff asynchronously.
+Use the `GGClient#query` overloads for queries, `GGClient#mutation` for mutations. If you want to get the raw JsonObject of the response use `GGClient#request`.
+
+These methods return a `CompletableFuture<QueryResponse>`, `CompletableFuture<MutationResponse>` and `CompletableFuture<JsonObject>` respectively for handling stuff asynchronously.
 
 For reference, here's the [gson repo](https://github.com/google/gson) used for all the JSON stuff.
-All responses will have the format `{"data": {...}}`.
+The responses will have the format `{"data": {...}}`.
 
 ### Variables
 ```java
@@ -65,8 +67,8 @@ String testQuery = "query TournamentQuery($slug:String){tournament(slug:$slug){e
 JsonObject testVariables = new JsonObject();
 testVariables.addProperty("slug", "evo2018");
 
-client.request(testQuery, testVariables)
-	// ...
+client.query(testQuery, testVariables)
+    // ...
 	;
 ```
 
@@ -90,5 +92,4 @@ The docs can be found on the github-pages site [here](https://gpluscb.github.io/
 * More/better documentation
 * Proper configurable logging
 * Generally better code structure (whatever that means)
-* Have the response in Java Objects instead of a JsonObject (see [feature-entities](https://github.com/gpluscb/gg-java/tree/feature-entities) branch), a lot of the code will be generated
 * Builder for GraphQL queries, later specific to the project for more tight syntax and less room for illegal queries
