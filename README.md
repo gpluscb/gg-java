@@ -61,6 +61,15 @@ These methods return a `CompletableFuture<QueryResponse>`, `CompletableFuture<Mu
 For reference, here's the [gson repo](https://github.com/google/gson) used for all the JSON stuff.
 The responses will have the format `{"data": {...}}`.
 
+### XResponse classes
+The `XResponse` classes provide getters for all the fields of the GraphQL types they are representing.
+However, depending on your query, some of these fields are not requested by you and therefore not provided in the response.
+In these cases, the getter for the field will **not** return null, but rather an `XResponse` instance of which the `isProvided()` method returns false.
+All other getters will throw an `IllegalStateException`.
+The getter for the field **will** return null if it was provided in the response as null.
+This system has the consequence that Scalars and Enums cannot be given in their native java representation.
+Instead they are wrapped into a XResponse class, of which the `getValue()` method will return the underlying java type or throw if it is not provided. 
+
 ### Variables
 ```java
 String testQuery = "query TournamentQuery($slug:String){tournament(slug:$slug){events{name standings(query:{page:1,perPage:3}){nodes{standing entrant{name}}}}}}";
@@ -73,7 +82,8 @@ client.query(testQuery, testVariables)
 ```
 
 ### Rate limiting
-The [rate limiting](https://developer.smash.gg/docs/rate-limits) is handled automatically and you should never run into one. If you still do, a message will be printed to `System.err` and the request will retry ater a back-off.
+The [rate limiting](https://developer.smash.gg/docs/rate-limits) is handled automatically and you should never run into one.
+If you still do, a message will be printed to `System.err` and the request will retry ater a back-off.
 
 You can still specify custom rate limits if you want to.
 For example if you want to adhere to a 80/40s bucket:
@@ -81,7 +91,8 @@ For example if you want to adhere to a 80/40s bucket:
 GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucketBuilder().tasksPerPeriod(80).period(40000L).build()).build();
 ```
 
-*I have done some testing with the rate limit system. It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
+*I have done some testing with the rate limit system.
+It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
 
 ### Docs
 The docs can be found on the github-pages site [here](https://gpluscb.github.io/gg-java).
