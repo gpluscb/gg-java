@@ -5,12 +5,14 @@ import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.JSONResponse;
+import com.github.gpluscb.ggjava.entity.object.response.unions.StandingContainerResponse;
 
 /**
  * A standing indicates the placement of something within a container.
  */
 public class StandingResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final StandingContainerResponse container;
 	private final EntrantResponse entrant;
 	private final JSONResponse metadata;
 	private final IntResponse placement;
@@ -22,6 +24,7 @@ public class StandingResponse extends AbstractGGResponseObject {
 		super(EntityType.STANDING);
 
 		id = null;
+		container = null;
 		entrant = null;
 		metadata = null;
 		placement = null;
@@ -30,9 +33,10 @@ public class StandingResponse extends AbstractGGResponseObject {
 		stats = null;
 	}
 
-	public StandingResponse(IDResponse id, EntrantResponse entrant, JSONResponse metadata, IntResponse placement, PlayerResponse player, IntResponse standing, StandingStatsResponse stats) {
+	public StandingResponse(IDResponse id, StandingContainerResponse container, EntrantResponse entrant, JSONResponse metadata, IntResponse placement, PlayerResponse player, IntResponse standing, StandingStatsResponse stats) {
 		super(EntityType.STANDING, true);
 		this.id = id;
+		this.container = container;
 		this.entrant = entrant;
 		this.metadata = metadata;
 		this.placement = placement;
@@ -44,6 +48,16 @@ public class StandingResponse extends AbstractGGResponseObject {
 	public IDResponse getId() {
 		checkProvided();
 		return id;
+	}
+
+	/**
+	 * The containing entity that contextualizes this standing. Event standings, for
+	 * example, represent an entrant's standing in the entire event vs. Set standings
+	 * which is an entrant's standing in only a single set within an event.
+	 */
+	public StandingContainerResponse getContainer() {
+		checkProvided();
+		return container;
 	}
 
 	/**

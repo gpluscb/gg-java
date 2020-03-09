@@ -7,6 +7,7 @@ import com.github.gpluscb.ggjava.entity.object.response.enums.EnumResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.FloatResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
+import com.github.gpluscb.ggjava.entity.object.response.unions.UnionResponse;
 import com.github.gpluscb.ggjava.internal.exception.DeserializationException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -37,6 +38,10 @@ public class Deserializer {
 
 	@Nonnull
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonObject json, @Nonnull Class<T> toClass) throws DeserializationException {
+		if(UnionResponse.class.isAssignableFrom(toClass)) {
+			throw new DeserializationException("Unions are not yet supported for deserialization");
+		}
+
 		// Getting constructors
 		Constructor<T> constructor = null;
 		for (Constructor<?> c : toClass.getConstructors()) {

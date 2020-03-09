@@ -6,6 +6,7 @@ import com.github.gpluscb.ggjava.entity.object.response.interfaces.BracketConfig
 import com.github.gpluscb.ggjava.entity.object.response.interfaces.MatchConfigResponse;
 import com.github.gpluscb.ggjava.entity.object.response.objects.*;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
+import com.github.gpluscb.ggjava.entity.object.response.unions.StandingContainerResponse;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
@@ -43,6 +44,9 @@ public enum EntityType {
 	// Interfaces
 	BRACKET_CONFIG(BracketConfigResponse.class),
 	MATCH_CONFIG(MatchConfigResponse.class),
+
+	// Unions
+	STANDING_CONTAINER(StandingContainerResponse.class),
 
 	// Objects
 	CONTACT_INFO(ContactInfoResponse.class),

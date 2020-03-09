@@ -17,6 +17,7 @@ public class EntrantResponse extends AbstractGGResponseObject {
 	private final ListResponse<ParticipantResponse> participants;
 	private final ListResponse<SeedResponse> seeds;
 	private final IntResponse skill;
+	private final StandingResponse standing;
 	private final StreamsResponse stream;
 	private final ListResponse<StreamsResponse> streams;
 
@@ -29,11 +30,12 @@ public class EntrantResponse extends AbstractGGResponseObject {
 		participants = null;
 		seeds = null;
 		skill = null;
+		standing = null;
 		stream = null;
 		streams = null;
 	}
 
-	public EntrantResponse(IDResponse id, EventResponse event, StringResponse name, ListResponse<ParticipantResponse> participants, ListResponse<SeedResponse> seeds, IntResponse skill, StreamsResponse stream, ListResponse<StreamsResponse> streams) {
+	public EntrantResponse(IDResponse id, EventResponse event, StringResponse name, ListResponse<ParticipantResponse> participants, ListResponse<SeedResponse> seeds, IntResponse skill, StandingResponse standing, StreamsResponse stream, ListResponse<StreamsResponse> streams) {
 		super(EntityType.ENTRANT, true);
 		this.id = id;
 		this.event = event;
@@ -41,6 +43,7 @@ public class EntrantResponse extends AbstractGGResponseObject {
 		this.participants = participants;
 		this.seeds = seeds;
 		this.skill = skill;
+		this.standing = standing;
 		this.stream = stream;
 		this.streams = streams;
 	}
@@ -76,6 +79,14 @@ public class EntrantResponse extends AbstractGGResponseObject {
 	public IntResponse getSkill() {
 		checkProvided();
 		return skill;
+	}
+
+	/**
+	 * Standing for this entrant given an event. All entrants queried must be in the same event (for now).
+	 */
+	public StandingResponse getStanding() {
+		checkProvided();
+		return standing;
 	}
 
 	/**
