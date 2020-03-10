@@ -38,8 +38,39 @@ public class Deserializer {
 
 	@Nonnull
 	public static <T extends GGResponseObject> T deserialize(@Nonnull JsonObject json, @Nonnull Class<T> toClass) throws DeserializationException {
-		if(UnionResponse.class.isAssignableFrom(toClass)) {
-			throw new DeserializationException("Unions are not yet supported for deserialization");
+		if (UnionResponse.class.isAssignableFrom(toClass)) {
+			if (!json.has("__typename"))
+				throw new DeserializationException("__typename has to be provided for union type");
+
+			String __typename = json.getAsJsonPrimitive("__typename").getAsString();
+
+			try {
+				Method typeForTypename = toClass.getMethod("typeForTypename", String.class);
+
+				Object typeObject = typeForTypename.invoke(null, __typename);
+
+				if (!(typeObject instanceof Class))
+					throw new DeserializationException("typeForTypename did not return Class");
+
+				// No way to check if this is safe
+				Class<? extends GGResponseObject> type = (Class<? extends GGResponseObject>) typeObject;
+
+				try {
+					Constructor<T> constructor = toClass.getConstructor(type);
+
+					GGResponseObject inner = deserialize(json, type);
+
+					return constructor.newInstance(inner);
+				} catch (NoSuchMethodException e) {
+					throw new DeserializationException("No fitting constructor found for " + toClass.toString(), e);
+				} catch (InstantiationException e) {
+					throw new DeserializationException("Constructor invocation failed", e);
+				}
+			} catch (NoSuchMethodException e) {
+				throw new DeserializationException("No typeForTypename(String) method found for " + toClass.toString(), e);
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				throw new DeserializationException("Invocation of typeForTypename failed", e);
+			}
 		}
 
 		// Getting constructors
