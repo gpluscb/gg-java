@@ -72,11 +72,8 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Contact Info selected during registration. Falls back to contact info on Player if necessary.
-	 *
-	 * @deprecated Use User.location
+	 * Contact Info selected during registration. Falls back to User.location and/or User.name if necessary. These fields are for admin use only and do not respect user privacy settings. DO NOT display this information publicly.
 	 */
-	@Deprecated
 	public ContactInfoResponse getContactInfo() {
 		checkProvided();
 		return contactInfo;
