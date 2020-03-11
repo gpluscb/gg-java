@@ -1,4 +1,4 @@
-package com.github.gpluscb.ggjava.internal.exception;
+package com.github.gpluscb.ggjava.api.exception;
 
 public class DeserializationException extends Exception {
 	public DeserializationException() {

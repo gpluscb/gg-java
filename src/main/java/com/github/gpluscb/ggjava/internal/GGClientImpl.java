@@ -2,11 +2,11 @@ package com.github.gpluscb.ggjava.internal;
 
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
+import com.github.gpluscb.ggjava.api.exception.DeserializationException;
 import com.github.gpluscb.ggjava.api.exception.RateLimitException;
+import com.github.gpluscb.ggjava.entity.object.response.GGResponse;
 import com.github.gpluscb.ggjava.entity.object.response.objects.MutationResponse;
 import com.github.gpluscb.ggjava.entity.object.response.objects.QueryResponse;
-import com.github.gpluscb.ggjava.internal.exception.DeserializationException;
-import com.github.gpluscb.ggjava.internal.json.Deserializer;
 import com.github.gpluscb.ggjava.internal.request.BasicRequester;
 import com.github.gpluscb.ggjava.internal.request.GGRequest;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
@@ -55,12 +55,13 @@ public class GGClientImpl implements GGClient {
 
 	@Nonnull
 	@Override
-	public CompletableFuture<QueryResponse> query(@Nonnull String query, @Nullable JsonObject variables) {
-		// TODO: This hack or thenApply and making DeserializationException unchecked?
+	public CompletableFuture<GGResponse<QueryResponse>> query(@Nonnull String query, @Nullable JsonObject variables) {
+		Checks.nonNull(query, "query");
+
 		return request(query, variables).thenCompose(json -> {
-			CompletableFuture<QueryResponse> ret = new CompletableFuture<>();
+			CompletableFuture<GGResponse<QueryResponse>> ret = new CompletableFuture<>();
 			try {
-				ret.complete(Deserializer.deserialize(json.getAsJsonObject("data"), QueryResponse.class));
+				ret.complete(new GGResponse<>(json, QueryResponse.class));
 			} catch (DeserializationException e) {
 				ret.completeExceptionally(e);
 			}
@@ -70,11 +71,13 @@ public class GGClientImpl implements GGClient {
 
 	@Nonnull
 	@Override
-	public CompletableFuture<MutationResponse> mutation(@Nonnull String query, @Nullable JsonObject variables) {
+	public CompletableFuture<GGResponse<MutationResponse>> mutation(@Nonnull String query, @Nullable JsonObject variables) {
+		Checks.nonNull(query, "query");
+
 		return request(query, variables).thenCompose(json -> {
-			CompletableFuture<MutationResponse> ret = new CompletableFuture<>();
+			CompletableFuture<GGResponse<MutationResponse>> ret = new CompletableFuture<>();
 			try {
-				ret.complete(Deserializer.deserialize(json.getAsJsonObject("data"), MutationResponse.class));
+				ret.complete(new GGResponse<>(json, MutationResponse.class));
 			} catch (DeserializationException e) {
 				ret.completeExceptionally(e);
 			}
@@ -84,6 +87,7 @@ public class GGClientImpl implements GGClient {
 
 	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
 		try {
+			// TODO: Make this entire code async?
 			JsonObject response = requester.sendRequest(request.getQuery(), request.getVariables()).get();
 			request.getFuture().complete(response);
 			return false;
@@ -96,14 +100,13 @@ public class GGClientImpl implements GGClient {
 	}
 
 	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, @Nonnegative int retries) {
+		// TODO: The retries system kind of does not make sense here
 		if (failure instanceof RateLimitException && retries < maxRetries) {
 			// Rate limit, rescheduling
 			System.err.printf("Ran into rate limit: %s%n", failure.getMessage());
-
 			return true;
 		} else {
 			request.getFuture().completeExceptionally(failure);
-
 			return false;
 		}
 	}

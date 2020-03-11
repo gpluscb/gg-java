@@ -1,5 +1,6 @@
 package com.github.gpluscb.ggjava.internal.json;
 
+import com.github.gpluscb.ggjava.api.exception.DeserializationException;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.response.GGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
@@ -8,7 +9,6 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.FloatResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
 import com.github.gpluscb.ggjava.entity.object.response.unions.UnionResponse;
-import com.github.gpluscb.ggjava.internal.exception.DeserializationException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
