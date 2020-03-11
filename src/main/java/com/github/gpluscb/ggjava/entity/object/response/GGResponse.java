@@ -20,6 +20,8 @@ public class GGResponse<T extends GGResponseObject> {
 	@Nullable
 	private final T data;
 	@Nullable
+	private final DeserializationException exception;
+	@Nullable
 	private final List<GGError> errors;
 	@Nullable
 	private final JsonObject extensions;
@@ -28,16 +30,26 @@ public class GGResponse<T extends GGResponseObject> {
 
 	/**
 	 * @throws IllegalArgumentException if responseRoot or toClass are null
-	 * @throws DeserializationException if deserialization failed
 	 */
-	public GGResponse(@Nonnull JsonObject responseRoot, @Nonnull Class<T> toClass) throws DeserializationException {
+	public GGResponse(@Nonnull JsonObject responseRoot, @Nonnull Class<T> toClass) {
 		Checks.nonNull(responseRoot, "responseRoot");
 		Checks.nonNull(toClass, "toClass");
 
 		this.responseRoot = responseRoot;
 
 		JsonElement dataElement = responseRoot.get("data");
-		data = dataElement == null ? null : Deserializer.deserialize(dataElement, toClass);
+
+		T data;
+		DeserializationException exception;
+		try {
+			data = dataElement == null ? null : Deserializer.deserialize(dataElement, toClass);
+			exception = null;
+		} catch (DeserializationException e) {
+			exception = e;
+			data = null;
+		}
+		this.data = data;
+		this.exception = exception;
 
 		JsonElement errorsElement = responseRoot.get("errors");
 		if (errorsElement != null && errorsElement.isJsonArray()) {
@@ -60,7 +72,7 @@ public class GGResponse<T extends GGResponseObject> {
 		Checks.nonNull(onError, "onError");
 		Checks.nonNull(onElse, "onElse");
 
-		return errors != null ? onError.apply(this) : onElse.apply(this);
+		return errors != null || exception != null ? onError.apply(this) : onElse.apply(this);
 	}
 
 	@Nonnull
@@ -71,6 +83,11 @@ public class GGResponse<T extends GGResponseObject> {
 	@Nullable
 	public T getData() {
 		return data;
+	}
+
+	@Nullable
+	public DeserializationException getException() {
+		return exception;
 	}
 
 	@Nullable

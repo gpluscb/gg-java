@@ -2,7 +2,6 @@ package com.github.gpluscb.ggjava.internal;
 
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
-import com.github.gpluscb.ggjava.api.exception.DeserializationException;
 import com.github.gpluscb.ggjava.api.exception.RateLimitException;
 import com.github.gpluscb.ggjava.entity.object.response.GGResponse;
 import com.github.gpluscb.ggjava.entity.object.response.objects.MutationResponse;
@@ -58,15 +57,7 @@ public class GGClientImpl implements GGClient {
 	public CompletableFuture<GGResponse<QueryResponse>> query(@Nonnull String query, @Nullable JsonObject variables) {
 		Checks.nonNull(query, "query");
 
-		return request(query, variables).thenCompose(json -> {
-			CompletableFuture<GGResponse<QueryResponse>> ret = new CompletableFuture<>();
-			try {
-				ret.complete(new GGResponse<>(json, QueryResponse.class));
-			} catch (DeserializationException e) {
-				ret.completeExceptionally(e);
-			}
-			return ret;
-		});
+		return request(query, variables).thenApply(json -> new GGResponse<>(json, QueryResponse.class));
 	}
 
 	@Nonnull
@@ -74,15 +65,7 @@ public class GGClientImpl implements GGClient {
 	public CompletableFuture<GGResponse<MutationResponse>> mutation(@Nonnull String query, @Nullable JsonObject variables) {
 		Checks.nonNull(query, "query");
 
-		return request(query, variables).thenCompose(json -> {
-			CompletableFuture<GGResponse<MutationResponse>> ret = new CompletableFuture<>();
-			try {
-				ret.complete(new GGResponse<>(json, MutationResponse.class));
-			} catch (DeserializationException e) {
-				ret.completeExceptionally(e);
-			}
-			return ret;
-		});
+		return request(query, variables).thenApply(json -> new GGResponse<>(json, MutationResponse.class));
 	}
 
 	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
