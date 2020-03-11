@@ -45,7 +45,7 @@ GGClient client = GGClient.builder("your-token-here").build();
 client.query(testQuery)
     .thenAccept(r -> {
         System.out.println("Success!");
-        System.out.println(r.getTournament().getEvents().get(0).getName().getValue());
+        System.out.println(r.getData().getTournament().getEvents().get(0).getName().getValue());
     })
     .exceptionally(t -> {t.printStackTrace(); return null;});
 client.shutdown();
@@ -54,21 +54,24 @@ client.shutdown();
 The [smash.gg API docs](https://developer.smash.gg/docs/intro) will be an useful resource, especially the [GraphQL reference](https://developer.smash.gg/reference).
 For a tutorial on how to construct the GraphQL queries, visit https://graphql.org/learn/.
 
-Use the `GGClient#query` overloads for queries, `GGClient#mutation` for mutations. If you want to get the raw JsonObject of the response use `GGClient#request`.
+Use the `GGClient#query` overloads for queries, `GGClient#mutation` for mutations. If you only want to get the raw JsonObject of the response, you can skip the deserialization and use `GGClient#request`.
 
-These methods return a `CompletableFuture<QueryResponse>`, `CompletableFuture<MutationResponse>` and `CompletableFuture<JsonObject>` respectively for handling stuff asynchronously.
+These methods return a `CompletableFuture<GGResponse<QueryResponse>>`, `CompletableFuture<GGResponse<MutationResponse>>` and `CompletableFuture<JsonObject>` respectively for handling stuff asynchronously.
 
 For reference, here's the [gson repo](https://github.com/google/gson) used for all the JSON stuff.
 The responses will have the format `{"data": {...}}`.
 
 ### XResponse classes
-The `XResponse` classes provide getters for all the fields of the GraphQL types they are representing.
+The `XResponse` classes (not including `GGResponse`) provide getters for all the fields of the GraphQL types they are representing.
+
 However, depending on your query, some of these fields are not requested by you and therefore not provided in the response.
 In these cases, the getter for the field will **not** return null, but rather an `XResponse` instance of which the `isProvided()` method returns false.
 All other getters will throw an `IllegalStateException`.
 The getter for the field **will** return null if it was provided in the response as null.
+
 This system has the consequence that Scalars and Enums cannot be given directly in their native java representation.
 Instead they are wrapped into a XResponse class, of which the `getValue()` method will return the underlying java type or throw if it is not provided.
+
 For deserialization of unions to work, you will need to include the `__typename` field.
 
 ### Variables
