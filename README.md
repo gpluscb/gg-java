@@ -43,11 +43,11 @@ String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{na
 GGClient client = GGClient.builder("your-token-here").build();
 
 client.query(testQuery)
-    .thenAccept(r -> {
-        System.out.println("Success!");
-        System.out.println(r.getData().getTournament().getEvents().get(0).getName().getValue());
-    })
-    .exceptionally(t -> {t.printStackTrace(); return null;});
+    .thenAccept(r ->
+        System.out.println(r.map(onError -> "Oh no, an error", onSuccess ->
+                "Success! First event name: " + r.getData().getTournament().getEvents().get(0).getName().getValue()
+        ))
+    ).exceptionally(t -> {t.printStackTrace(); return null;});
 client.shutdown();
 ```
 

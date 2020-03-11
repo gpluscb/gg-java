@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -81,6 +82,7 @@ public class GGResponse<T extends GGResponseObject> {
 	 * @param onElse the function to apply if the errors field is not present and deserialization succeeded
 	 * @param <U> the return type
 	 * @return the result of the applied function
+	 * @throws IllegalStateException if onError or onElse are null
 	 */
 	public <U> U map(@Nonnull Function<GGResponse<T>, U> onError, @Nonnull Function<GGResponse<T>, U> onElse) {
 		Checks.nonNull(onError, "onError");
