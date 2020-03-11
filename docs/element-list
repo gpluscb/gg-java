@@ -2,13 +2,7 @@ com.github.gpluscb.ggjava.api
 com.github.gpluscb.ggjava.api.exception
 com.github.gpluscb.ggjava.entity
 com.github.gpluscb.ggjava.entity.enums
-com.github.gpluscb.ggjava.entity.fragment
-com.github.gpluscb.ggjava.entity.fragment.enums
-com.github.gpluscb.ggjava.entity.fragment.scalars
 com.github.gpluscb.ggjava.entity.object
-com.github.gpluscb.ggjava.entity.object.input
-com.github.gpluscb.ggjava.entity.object.input.enums
-com.github.gpluscb.ggjava.entity.object.input.scalars
 com.github.gpluscb.ggjava.entity.object.response
 com.github.gpluscb.ggjava.entity.object.response.enums
 com.github.gpluscb.ggjava.entity.object.response.interfaces
