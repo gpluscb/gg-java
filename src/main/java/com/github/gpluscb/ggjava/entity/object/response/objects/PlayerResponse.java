@@ -54,7 +54,7 @@ public class PlayerResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Most recent active & published rankings
+	 * Most recent active {@literal &} published rankings
 	 */
 	public ListResponse<PlayerRankResponse> getRankings() {
 		checkProvided();

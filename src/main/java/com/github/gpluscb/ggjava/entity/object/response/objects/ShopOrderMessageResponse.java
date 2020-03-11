@@ -57,7 +57,7 @@ public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * The player's name. Returns null unless name & tag display is selected
+	 * The player's name. Returns null unless name {@literal &} tag display is selected
 	 */
 	public StringResponse getName() {
 		checkProvided();
