@@ -3,6 +3,9 @@ package com.github.gpluscb.ggjava.internal;
 import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
 import com.github.gpluscb.ggjava.api.exception.RateLimitException;
+import com.github.gpluscb.ggjava.entity.object.response.GGResponse;
+import com.github.gpluscb.ggjava.entity.object.response.objects.MutationResponse;
+import com.github.gpluscb.ggjava.entity.object.response.objects.QueryResponse;
 import com.github.gpluscb.ggjava.internal.request.BasicRequester;
 import com.github.gpluscb.ggjava.internal.request.GGRequest;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
@@ -49,9 +52,27 @@ public class GGClientImpl implements GGClient {
 		return ret;
 	}
 
+	@Nonnull
+	@Override
+	public CompletableFuture<GGResponse<QueryResponse>> query(@Nonnull String query, @Nullable JsonObject variables) {
+		Checks.nonNull(query, "query");
+
+		return request(query, variables).thenApply(json -> new GGResponse<>(json, QueryResponse.class));
+	}
+
+	@Nonnull
+	@Override
+	public CompletableFuture<GGResponse<MutationResponse>> mutation(@Nonnull String query, @Nullable JsonObject variables) {
+		Checks.nonNull(query, "query");
+
+		return request(query, variables).thenApply(json -> new GGResponse<>(json, MutationResponse.class));
+	}
+
 	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
 		try {
-			request.getFuture().complete(requester.sendRequest(request.getQuery(), request.getVariables()).get());
+			// TODO: Make this entire code async?
+			JsonObject response = requester.sendRequest(request.getQuery(), request.getVariables()).get();
+			request.getFuture().complete(response);
 			return false;
 		} catch (ExecutionException e) {
 			return handleFailure(e.getCause(), request, retries);
@@ -62,14 +83,13 @@ public class GGClientImpl implements GGClient {
 	}
 
 	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, @Nonnegative int retries) {
+		// TODO: The retries system kind of does not make sense here
 		if (failure instanceof RateLimitException && retries < maxRetries) {
 			// Rate limit, rescheduling
 			System.err.printf("Ran into rate limit: %s%n", failure.getMessage());
-
 			return true;
 		} else {
 			request.getFuture().completeExceptionally(failure);
-
 			return false;
 		}
 	}

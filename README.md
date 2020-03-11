@@ -42,22 +42,37 @@ String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{na
 
 GGClient client = GGClient.builder("your-token-here").build();
 
-client.request(testQuery)
-	.thenAccept(r -> {
-		System.out.println("Success!");
-		System.out.println(r.toString());
-	})
-	.exceptionally(t -> {t.printStackTrace(); return null;});
+client.query(testQuery)
+    .thenAccept(r -> {
+        System.out.println("Success!");
+        System.out.println(r.getData().getTournament().getEvents().get(0).getName().getValue());
+    })
+    .exceptionally(t -> {t.printStackTrace(); return null;});
 client.shutdown();
 ```
 
 The [smash.gg API docs](https://developer.smash.gg/docs/intro) will be an useful resource, especially the [GraphQL reference](https://developer.smash.gg/reference).
 For a tutorial on how to construct the GraphQL queries, visit https://graphql.org/learn/.
 
-Every request returns a CompletableFuture\<JsonObject\> currently for handling stuff asynchronously.
+Use the `GGClient#query` overloads for queries, `GGClient#mutation` for mutations. If you only want to get the raw JsonObject of the response, you can skip the deserialization and use `GGClient#request`.
+
+These methods return a `CompletableFuture<GGResponse<QueryResponse>>`, `CompletableFuture<GGResponse<MutationResponse>>` and `CompletableFuture<JsonObject>` respectively for handling stuff asynchronously.
 
 For reference, here's the [gson repo](https://github.com/google/gson) used for all the JSON stuff.
-All responses will have the format `{"data": {...}}`.
+The responses will have the format `{"data": {...}}`.
+
+### XResponse classes
+The `XResponse` classes (not including `GGResponse`) provide getters for all the fields of the GraphQL types they are representing.
+
+However, depending on your query, some of these fields are not requested by you and therefore not provided in the response.
+In these cases, the getter for the field will **not** return null, but rather an `XResponse` instance of which the `isProvided()` method returns false.
+All other getters will throw an `IllegalStateException`.
+The getter for the field **will** return null if it was provided in the response as null.
+
+This system has the consequence that Scalars and Enums cannot be given directly in their native java representation.
+Instead they are wrapped into a XResponse class, of which the `getValue()` method will return the underlying java type or throw if it is not provided.
+
+For deserialization of unions to work, you will need to include the `__typename` field.
 
 ### Variables
 ```java
@@ -65,13 +80,14 @@ String testQuery = "query TournamentQuery($slug:String){tournament(slug:$slug){e
 JsonObject testVariables = new JsonObject();
 testVariables.addProperty("slug", "evo2018");
 
-client.request(testQuery, testVariables)
-	// ...
-	;
+client.query(testQuery, testVariables)
+    // ...
+    ;
 ```
 
 ### Rate limiting
-The [rate limiting](https://developer.smash.gg/docs/rate-limits) is handled automatically and you should never run into one. If you still do, a message will be printed to `System.err` and the request will retry ater a back-off.
+The [rate limiting](https://developer.smash.gg/docs/rate-limits) is handled automatically and you should never run into one.
+If you still do, a message will be printed to `System.err` and the request will retry ater a back-off.
 
 You can still specify custom rate limits if you want to.
 For example if you want to adhere to a 80/40s bucket:
@@ -79,7 +95,8 @@ For example if you want to adhere to a 80/40s bucket:
 GGClient client = GGClient.builder("your-token-here").limiter(RateLimiter.bucketBuilder().tasksPerPeriod(80).period(40000L).build()).build();
 ```
 
-*I have done some testing with the rate limit system. It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
+*I have done some testing with the rate limit system.
+It seems like, for the default rate limits, clients have to respect an 80/61s bucket instead of an 80/60s one as the docs would suggest, so that's the default.*
 
 ### Docs
 The docs can be found on the github-pages site [here](https://gpluscb.github.io/gg-java).
@@ -90,5 +107,4 @@ The docs can be found on the github-pages site [here](https://gpluscb.github.io/
 * More/better documentation
 * Proper configurable logging
 * Generally better code structure (whatever that means)
-* Have the response in Java Objects instead of a JsonObject (see [feature-entities](https://github.com/gpluscb/gg-java/tree/feature-entities) branch), a lot of the code will be generated
 * Builder for GraphQL queries, later specific to the project for more tight syntax and less room for illegal queries

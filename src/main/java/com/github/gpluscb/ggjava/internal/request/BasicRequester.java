@@ -1,7 +1,8 @@
 package com.github.gpluscb.ggjava.internal.request;
 
-import com.github.gpluscb.ggjava.api.exception.*;
-import com.google.gson.JsonElement;
+import com.github.gpluscb.ggjava.api.exception.RateLimitException;
+import com.github.gpluscb.ggjava.api.exception.RequestFailureException;
+import com.github.gpluscb.ggjava.api.exception.UnauthorizedException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
@@ -9,8 +10,6 @@ import okhttp3.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class BasicRequester {
@@ -40,51 +39,36 @@ public class BasicRequester {
 			client.newCall(request).enqueue(new okhttp3.Callback() {
 				@Override
 				public void onFailure(@Nonnull Call call, @Nonnull IOException e) {
-					ret.completeExceptionally(new RequestFailureException(e));
+					ret.completeExceptionally(e);
 				}
 
 				@Override
 				public void onResponse(@Nonnull Call call, @Nonnull Response response) {
 					try {
 						ResponseBody body = response.body();
-						if (body == null) {
-							ret.completeExceptionally(new RequestFailureException("No response body received: " + response.toString()));
-							return;
-						}
+						// See documentation, this cannot be null here
+						assert body != null;
 
 						JsonObject jsonResponse = JsonParser.parseString(body.string()).getAsJsonObject();
 
+						// These have atypical layouts for the jsonResponse
 						if (!response.isSuccessful()) {
 							switch (response.code()) {
 								case 401:
-									ret.completeExceptionally(new UnauthorizedException(jsonResponse.toString()));
+									ret.completeExceptionally(new UnauthorizedException(jsonResponse));
 									break;
 								case 429:
-									ret.completeExceptionally(new RateLimitException(jsonResponse.toString()));
+									ret.completeExceptionally(new RateLimitException(jsonResponse));
 									break;
 								default:
-									ret.completeExceptionally(new RequestFailureException("Unsuccessful response received: " + response.toString()));
+									ret.completeExceptionally(new RequestFailureException(jsonResponse, "Unsuccessful response received: " + jsonResponse.toString()));
 									break;
 							}
 
 							return;
 						}
 
-						if (jsonResponse.has("success") && !jsonResponse.getAsJsonPrimitive("success").getAsBoolean()) {
-							ret.completeExceptionally(new RequestFailureException(jsonResponse.getAsJsonPrimitive("message").getAsString()));
-							return;
-						}
-
-						ErrorResponseException errorResponse = getErrorResponse(jsonResponse);
-
-						if (errorResponse == null) {
-							try {
-								ret.complete(jsonResponse);
-							} catch (Throwable t) {
-								ret.completeExceptionally(t);
-							}
-						} else
-							ret.completeExceptionally(errorResponse);
+						ret.complete(jsonResponse);
 					} catch (Throwable t) {
 						System.err.print("Failed to handle server response: " + response.toString());
 						t.printStackTrace();
@@ -97,19 +81,6 @@ public class BasicRequester {
 		}
 
 		return ret;
-	}
-
-	@Nullable
-	private ErrorResponseException getErrorResponse(@Nonnull JsonObject jsonResponse) {
-		if (!jsonResponse.has("errors"))
-			return null;
-
-		List<GGError> errors = new ArrayList<>();
-
-		for (JsonElement jsonError : jsonResponse.getAsJsonArray("errors"))
-			errors.add(new GGError(jsonError.getAsJsonObject().getAsJsonPrimitive("message").getAsString()));
-
-		return new ErrorResponseException(errors);
 	}
 
 	@Nonnull
@@ -132,10 +103,5 @@ public class BasicRequester {
 	public void shutdown() {
 		client.dispatcher().executorService().shutdown();
 		client.connectionPool().evictAll();
-	}
-
-	@Nonnull
-	public OkHttpClient getClient() {
-		return client;
 	}
 }

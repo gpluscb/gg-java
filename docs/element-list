@@ -1,0 +1,12 @@
+com.github.gpluscb.ggjava.api
+com.github.gpluscb.ggjava.api.exception
+com.github.gpluscb.ggjava.entity
+com.github.gpluscb.ggjava.entity.enums
+com.github.gpluscb.ggjava.entity.object
+com.github.gpluscb.ggjava.entity.object.response
+com.github.gpluscb.ggjava.entity.object.response.enums
+com.github.gpluscb.ggjava.entity.object.response.interfaces
+com.github.gpluscb.ggjava.entity.object.response.objects
+com.github.gpluscb.ggjava.entity.object.response.scalars
+com.github.gpluscb.ggjava.entity.object.response.unions
+com.github.gpluscb.ggjava.entity.object.scalars

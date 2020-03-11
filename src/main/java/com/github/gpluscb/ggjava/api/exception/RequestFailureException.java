@@ -1,18 +1,61 @@
 package com.github.gpluscb.ggjava.api.exception;
 
+import com.github.gpluscb.ggjava.internal.utils.Checks;
+import com.google.gson.JsonObject;
+
+import javax.annotation.Nonnull;
+
+/**
+ * Represents an unsuccessful response.
+ */
 public class RequestFailureException extends Exception {
-	public RequestFailureException() {
+	@Nonnull
+	private final JsonObject jsonResponse;
+
+	/**
+	 * @throws if jsonResponse is null
+	 */
+	public RequestFailureException(@Nonnull JsonObject jsonResponse) {
+		Checks.nonNull(jsonResponse, "jsonResponse");
+
+		this.jsonResponse = jsonResponse;
 	}
 
-	public RequestFailureException(String message) {
+	/**
+	 * @throws if jsonResponse is null
+	 */
+	public RequestFailureException(@Nonnull JsonObject jsonResponse, String message) {
 		super(message);
+
+		Checks.nonNull(jsonResponse, "jsonResponse");
+
+		this.jsonResponse = jsonResponse;
 	}
 
-	public RequestFailureException(String message, Throwable cause) {
+	/**
+	 * @throws if jsonResponse is null
+	 */
+	public RequestFailureException(@Nonnull JsonObject jsonResponse, String message, Throwable cause) {
 		super(message, cause);
+
+		Checks.nonNull(jsonResponse, "jsonResponse");
+
+		this.jsonResponse = jsonResponse;
 	}
 
-	public RequestFailureException(Throwable cause) {
+	/**
+	 * @throws if jsonResponse is null
+	 */
+	public RequestFailureException(@Nonnull JsonObject jsonResponse, Throwable cause) {
 		super(cause);
+
+		Checks.nonNull(jsonResponse, "jsonResponse");
+
+		this.jsonResponse = jsonResponse;
+	}
+
+	@Nonnull
+	public JsonObject getJsonResponse() {
+		return jsonResponse;
 	}
 }
