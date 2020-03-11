@@ -10,6 +10,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a single error element from the errors field of the smash.gg api response.
+ */
 public class GGError {
 	@Nonnull
 	private final JsonObject errorRoot;
@@ -45,26 +48,49 @@ public class GGError {
 		path = pathElement == null || !pathElement.isJsonArray() ? null : pathElement.getAsJsonArray();
 	}
 
+	/**
+	 * The unprocessed JsonObject of the error.
+	 *
+	 * @return the error root
+	 */
 	@Nonnull
 	public JsonObject getErrorRoot() {
 		return errorRoot;
 	}
 
+	/**
+	 * The message field of the error.
+	 *
+	 * @return the message field
+	 */
 	@Nullable
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * The locations field.
+	 *
+	 * @return The locations field as a {@link List}{@literal <}{@link Location}{@literal >}
+	 */
 	@Nullable
 	public List<Location> getLocations() {
 		return locations;
 	}
 
+	/**
+	 * The unprocessed path field of the response.
+	 *
+	 * @return the path field
+	 */
 	@Nullable
 	public JsonArray getPath() {
 		return path;
 	}
 
+	/**
+	 * Represents a location of an error.
+	 */
 	public static class Location {
 		@Nonnull
 		private final JsonObject locationRoot;
@@ -73,7 +99,12 @@ public class GGError {
 		@Nullable
 		private final Integer column;
 
+		/**
+		 * @throws IllegalArgumentException if locationRoot is null
+		 */
 		public Location(@Nonnull JsonObject locationRoot) {
+			Checks.nonNull(locationRoot, "locationRoot");
+
 			this.locationRoot = locationRoot;
 
 			JsonElement lineElement = locationRoot.get("line");
@@ -83,16 +114,31 @@ public class GGError {
 			column = columnElement == null || !columnElement.isJsonPrimitive() || !columnElement.getAsJsonPrimitive().isString() ? null : columnElement.getAsInt();
 		}
 
+		/**
+		 * The unprocessed JsonObject of the location.
+		 *
+		 * @return the location root
+		 */
 		@Nonnull
 		public JsonObject getLocationRoot() {
 			return locationRoot;
 		}
 
+		/**
+		 * The line field of the location.
+		 *
+		 * @return the line field
+		 */
 		@Nullable
 		public Integer getLine() {
 			return line;
 		}
 
+		/**
+		 * The column field of the location.
+		 *
+		 * @return the column field
+		 */
 		@Nullable
 		public Integer getColumn() {
 			return column;
