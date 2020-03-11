@@ -1,5 +1,8 @@
 package com.github.gpluscb.ggjava.api.exception;
 
+/**
+ * Represents a deserialization failure. This should not occur with api responses.
+ */
 public class DeserializationException extends Exception {
 	public DeserializationException() {
 	}

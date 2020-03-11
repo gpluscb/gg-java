@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents an unsuccessful response.
+ */
 public class RequestFailureException extends Exception {
 	@Nonnull
 	private final JsonObject jsonResponse;

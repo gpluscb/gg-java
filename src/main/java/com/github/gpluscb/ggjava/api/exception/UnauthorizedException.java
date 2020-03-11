@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Represents a 401 - Unauthorized response
+ */
 public class UnauthorizedException extends RequestFailureException {
 	/**
 	 * @throws if jsonResponse is null
