@@ -11,7 +11,9 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
  */
 public class GameSelectionResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final EntrantResponse entrant;
 	private final IntResponse orderNum;
+	private final ParticipantResponse participant;
 	private final GameSelectionTypeResponse selectionType;
 	private final IntResponse selectionValue;
 
@@ -19,15 +21,19 @@ public class GameSelectionResponse extends AbstractGGResponseObject {
 		super(EntityType.GAME_SELECTION);
 
 		id = null;
+		entrant = null;
 		orderNum = null;
+		participant = null;
 		selectionType = null;
 		selectionValue = null;
 	}
 
-	public GameSelectionResponse(IDResponse id, IntResponse orderNum, GameSelectionTypeResponse selectionType, IntResponse selectionValue) {
+	public GameSelectionResponse(IDResponse id, EntrantResponse entrant, IntResponse orderNum, ParticipantResponse participant, GameSelectionTypeResponse selectionType, IntResponse selectionValue) {
 		super(EntityType.GAME_SELECTION, true);
 		this.id = id;
+		this.entrant = entrant;
 		this.orderNum = orderNum;
+		this.participant = participant;
 		this.selectionType = selectionType;
 		this.selectionValue = selectionValue;
 	}
@@ -37,9 +43,26 @@ public class GameSelectionResponse extends AbstractGGResponseObject {
 		return id;
 	}
 
+	/**
+	 * The entrant who this selection is for
+	 */
+	public EntrantResponse getEntrant() {
+		checkProvided();
+		return entrant;
+	}
+
 	public IntResponse getOrderNum() {
 		checkProvided();
 		return orderNum;
+	}
+
+	/**
+	 * The participant who this selection is for. This is only populated if there are
+	 * selections for multiple participants of a single entrant
+	 */
+	public ParticipantResponse getParticipant() {
+		checkProvided();
+		return participant;
 	}
 
 	public GameSelectionTypeResponse getSelectionType() {
