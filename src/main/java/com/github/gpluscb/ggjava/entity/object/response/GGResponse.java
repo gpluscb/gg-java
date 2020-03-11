@@ -76,19 +76,47 @@ public class GGResponse<T extends GGResponseObject> {
 	}
 
 	/**
-	 * Applies itself either to onError if either the errors field is present or deserialization failed, and to onElse if that is not the case and returns the result.
+	 * Applies either itself to onError, if either the errors field is present or deserialization failed, or the deserialized data to onSuccess if that is not the case, and returns the result.
 	 *
-	 * @param onError the function to apply if the errors field is present or deserialization failed
-	 * @param onElse the function to apply if the errors field is not present and deserialization succeeded
-	 * @param <U> the return type
+	 * @param onError   the function to apply if the errors field is present or deserialization failed
+	 * @param onSuccess the function to apply if the errors field is not present and deserialization succeeded
+	 * @param <U>       the return type
 	 * @return the result of the applied function
-	 * @throws IllegalStateException if onError or onElse are null
+	 * @throws IllegalStateException if onError or onSuccess are null
 	 */
-	public <U> U map(@Nonnull Function<GGResponse<T>, U> onError, @Nonnull Function<GGResponse<T>, U> onElse) {
+	public <U> U map(@Nonnull Function<GGResponse<T>, U> onError, @Nonnull Function<T, U> onSuccess) {
 		Checks.nonNull(onError, "onError");
-		Checks.nonNull(onElse, "onElse");
+		Checks.nonNull(onSuccess, "onSuccess");
 
-		return errors != null || exception != null ? onError.apply(this) : onElse.apply(this);
+		return errors != null || exception != null ? onError.apply(this) : onSuccess.apply(data);
+	}
+
+	/**
+	 * The consumer is executed only if the errors field is present or deserialization failed.
+	 *
+	 * @param consumer the consumer to execute
+	 * @return itself for chaining
+	 * @throws IllegalStateException if consumer is null
+	 */
+	public GGResponse<T> onError(@Nonnull Consumer<GGResponse<T>> consumer) {
+		Checks.nonNull(consumer, "consumer");
+
+		if (errors != null || exception != null) consumer.accept(this);
+		return this;
+	}
+
+	/**
+	 * The consumer is executed only if the errors field is not present and deserialization was successful.
+	 *
+	 * @param consumer the consumer to execute
+	 * @return itself for chaining
+	 * @throws IllegalStateException if consumer is null
+	 */
+	public GGResponse<T> onSuccess(@Nonnull Consumer<T> consumer) {
+		Checks.nonNull(consumer, "consumer");
+
+		if (errors == null && exception == null) consumer.accept(data);
+		return this;
 	}
 
 	/**

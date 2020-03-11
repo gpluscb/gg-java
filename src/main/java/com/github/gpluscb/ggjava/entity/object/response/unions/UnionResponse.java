@@ -5,7 +5,7 @@ import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject
 
 import javax.annotation.Nonnull;
 
-public class UnionResponse extends AbstractGGResponseObject {
+public abstract class UnionResponse extends AbstractGGResponseObject {
 	public UnionResponse(@Nonnull EntityType type) {
 		super(type);
 	}

@@ -48,92 +48,89 @@ public class Test {
 		client.query(testQuery).whenComplete((response, t) -> {
 			if (t == null) {
 				try {
-					response.map(e -> {
-						System.out.println(e.getResponseRoot().toString());
-						return null;
-					}, respose_ -> {
-						System.out.println("data: " + respose_);
-						if (respose_ != null) {
-							System.out.println("\ttournament: " + respose_.getData().getTournament());
-							if (respose_.getData().getTournament() != null) {
-								System.out.println("\t\tevents: " + respose_.getData().getTournament().getEvents());
-								if (respose_.getData().getTournament().getEvents() != null) {
-									respose_.getData().getTournament().getEvents().forEach(event -> {
-										System.out.println("\t\t\tevent: " + event);
-										if (event != null) {
-											System.out.println("\t\t\t\tname: " + event.getName());
-											if (event.getName() != null) {
-												System.out.println("\t\t\t\t\tnameString: " + event.getName().getValue());
-											}
-											System.out.println("\t\t\t\tstate: " + event.getState());
-											if (event.getState() != null) {
-												System.out.println("\t\t\t\t\tstateEnum: " + event.getState().getValue());
-											}
-											System.out.println("\t\t\t\tstandings: " + event.getStandings());
-											if (event.getStandings() != null) {
-												System.out.println("\t\t\t\t\tnodes: " + event.getStandings().getNodes());
-												if (event.getStandings().getNodes() != null) {
-													event.getStandings().getNodes().forEach(node -> {
-														System.out.println("\t\t\t\t\t\tnode: " + node);
-														if (node != null) {
-															System.out.println("\t\t\t\t\t\t\tplacement: " + node.getPlacement());
-															if (node.getPlacement() != null) {
-																System.out.println("\t\t\t\t\t\t\t\tplacementInt: " + node.getPlacement().getValue());
-															}
-															System.out.println("\t\t\t\t\t\t\tcontainer: " + node.getContainer());
-															if (node.getContainer() != null) {
-																node.getContainer().onTournament(tournament -> {
-																	System.out.println("\t\t\t\t\t\t\t\ttournament: " + tournament);
-																	if (tournament != null) {
-																		System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + tournament.getName());
-																		if (tournament.getName() != null) {
-																			System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + tournament.getName().getValue());
+					response.onError(e -> System.out.println(e.getResponseRoot().toString()))
+							.onSuccess(data -> {
+								System.out.println("data: " + data);
+								if (data != null) {
+									System.out.println("\ttournament: " + data.getTournament());
+									if (data.getTournament() != null) {
+										System.out.println("\t\tevents: " + data.getTournament().getEvents());
+										if (data.getTournament().getEvents() != null) {
+											data.getTournament().getEvents().forEach(event -> {
+												System.out.println("\t\t\tevent: " + event);
+												if (event != null) {
+													System.out.println("\t\t\t\tname: " + event.getName());
+													if (event.getName() != null) {
+														System.out.println("\t\t\t\t\tnameString: " + event.getName().getValue());
+													}
+													System.out.println("\t\t\t\tstate: " + event.getState());
+													if (event.getState() != null) {
+														System.out.println("\t\t\t\t\tstateEnum: " + event.getState().getValue());
+													}
+													System.out.println("\t\t\t\tstandings: " + event.getStandings());
+													if (event.getStandings() != null) {
+														System.out.println("\t\t\t\t\tnodes: " + event.getStandings().getNodes());
+														if (event.getStandings().getNodes() != null) {
+															event.getStandings().getNodes().forEach(node -> {
+																System.out.println("\t\t\t\t\t\tnode: " + node);
+																if (node != null) {
+																	System.out.println("\t\t\t\t\t\t\tplacement: " + node.getPlacement());
+																	if (node.getPlacement() != null) {
+																		System.out.println("\t\t\t\t\t\t\t\tplacementInt: " + node.getPlacement().getValue());
+																	}
+																	System.out.println("\t\t\t\t\t\t\tcontainer: " + node.getContainer());
+																	if (node.getContainer() != null) {
+																		node.getContainer().onTournament(tournament -> {
+																			System.out.println("\t\t\t\t\t\t\t\ttournament: " + tournament);
+																			if (tournament != null) {
+																				System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + tournament.getName());
+																				if (tournament.getName() != null) {
+																					System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + tournament.getName().getValue());
+																				}
+																			}
+																		}).onEvent(event_ -> {
+																			System.out.println("\t\t\t\t\t\t\t\tevent_: " + event_);
+																			if (event_ != null) {
+																				System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + event_.getName());
+																				if (event_.getName() != null) {
+																					System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + event_.getName().getValue());
+																				}
+																			}
+																		}).onPhaseGroup(phaseGroup -> {
+																			System.out.println("\t\t\t\t\t\t\t\tphaseGroup: " + phaseGroup);
+																			if (phaseGroup != null) {
+																				System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + phaseGroup.getDisplayIdentifier());
+																				if (phaseGroup.getDisplayIdentifier() != null) {
+																					System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + phaseGroup.getDisplayIdentifier().getValue());
+																				}
+																			}
+																		}).onSet(set -> {
+																			System.out.println("\t\t\t\t\t\t\t\tset: " + set);
+																			if (set != null) {
+																				System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + set.getIdentifier());
+																				if (set.getIdentifier() != null) {
+																					System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + set.getIdentifier().getValue());
+																				}
+																			}
+																		});
+																	}
+																	System.out.println("\t\t\t\t\t\t\tentrant: " + node.getEntrant());
+																	if (node.getEntrant() != null) {
+																		System.out.println("\t\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
+																		if (node.getEntrant().getName() != null) {
+																			System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
 																		}
 																	}
-																}).onEvent(event_ -> {
-																	System.out.println("\t\t\t\t\t\t\t\tevent_: " + event_);
-																	if (event_ != null) {
-																		System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + event_.getName());
-																		if (event_.getName() != null) {
-																			System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + event_.getName().getValue());
-																		}
-																	}
-																}).onPhaseGroup(phaseGroup -> {
-																	System.out.println("\t\t\t\t\t\t\t\tphaseGroup: " + phaseGroup);
-																	if (phaseGroup != null) {
-																		System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + phaseGroup.getDisplayIdentifier());
-																		if (phaseGroup.getDisplayIdentifier() != null) {
-																			System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + phaseGroup.getDisplayIdentifier().getValue());
-																		}
-																	}
-																}).onSet(set -> {
-																	System.out.println("\t\t\t\t\t\t\t\tset: " + set);
-																	if (set != null) {
-																		System.out.println("\t\t\t\t\t\t\t\t\t\tname: " + set.getIdentifier());
-																		if (set.getIdentifier() != null) {
-																			System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + set.getIdentifier().getValue());
-																		}
-																	}
-																});
-															}
-															System.out.println("\t\t\t\t\t\t\tentrant: " + node.getEntrant());
-															if (node.getEntrant() != null) {
-																System.out.println("\t\t\t\t\t\t\t\tname: " + node.getEntrant().getName());
-																if (node.getEntrant().getName() != null) {
-																	System.out.println("\t\t\t\t\t\t\t\t\tnameString: " + node.getEntrant().getName().getValue());
 																}
-															}
+															});
 														}
-													});
+													}
 												}
-											}
+											});
 										}
-									});
+									}
 								}
-							}
-						}
-						return null;
-					});
+							});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
