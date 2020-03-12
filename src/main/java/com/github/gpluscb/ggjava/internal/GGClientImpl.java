@@ -16,7 +16,6 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class GGClientImpl implements GGClient {
 	@Nonnegative
@@ -68,18 +67,15 @@ public class GGClientImpl implements GGClient {
 		return request(query, variables).thenApply(json -> new GGResponse<>(json, MutationResponse.class));
 	}
 
-	private boolean makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
-		try {
-			// TODO: Make this entire code async?
-			JsonObject response = requester.sendRequest(request.getQuery(), request.getVariables()).get();
-			request.getFuture().complete(response);
-			return false;
-		} catch (ExecutionException e) {
-			return handleFailure(e.getCause(), request, retries);
-		} catch (InterruptedException e) {
-			System.err.println("Thread was interrupted while waiting for server response, retrying");
-			return true;
-		}
+	private CompletableFuture<Boolean> makeRequest(@Nonnull GGRequest request, @Nonnegative int retries) {
+		return requester.sendRequest(request.getQuery(), request.getVariables()).handle((response, t) -> {
+			if (t != null) {
+				return handleFailure(t, request, retries);
+			} else {
+				request.getFuture().complete(response);
+				return false;
+			}
+		});
 	}
 
 	private boolean handleFailure(@Nonnull Throwable failure, @Nonnull GGRequest request, @Nonnegative int retries) {

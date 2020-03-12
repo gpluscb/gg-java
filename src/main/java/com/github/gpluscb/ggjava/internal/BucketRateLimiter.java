@@ -1,7 +1,6 @@
 package com.github.gpluscb.ggjava.internal;
 
 import com.github.gpluscb.ggjava.api.RateLimiter;
-import com.github.gpluscb.ggjava.internal.utils.IntToBooleanFunction;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -11,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntFunction;
 
 public class BucketRateLimiter implements RateLimiter {
 	@Nonnegative
@@ -24,7 +24,7 @@ public class BucketRateLimiter implements RateLimiter {
 	private final ScheduledExecutorService scheduler;
 
 	@Nonnull
-	private final Queue<IntToBooleanFunction> tasks;
+	private final Queue<IntFunction<CompletableFuture<Boolean>>> tasks;
 
 	@Nonnull
 	private final Deque<Long> taskCompletionTimes;
@@ -64,7 +64,7 @@ public class BucketRateLimiter implements RateLimiter {
 	}
 
 	@Override
-	public void enqueue(@Nonnull IntToBooleanFunction task) {
+	public void enqueue(@Nonnull IntFunction<CompletableFuture<Boolean>> task) {
 		if (isShutDown)
 			throw new IllegalStateException("Trying to request while requester shut down");
 
@@ -84,7 +84,7 @@ public class BucketRateLimiter implements RateLimiter {
 	}
 
 	private void scheduleTask(@Nonnegative long waitTime) {
-		IntToBooleanFunction task = tasks.peek();
+		IntFunction<CompletableFuture<Boolean>> task = tasks.peek();
 		assert task != null; // To stop null analysis from whining
 
 		try {
@@ -97,22 +97,31 @@ public class BucketRateLimiter implements RateLimiter {
 		}
 	}
 
-	private void completeTask(@Nonnull IntToBooleanFunction task) {
-		boolean reschedule = task.applyAsBoolean(numRetries);
+	private void completeTask(@Nonnull IntFunction<CompletableFuture<Boolean>> task) {
+		task.apply(numRetries).whenComplete((reschedule, t) -> {
+			if (t != null) {
+				System.err.print("Exception occurred during task execution, not rescheduling: ");
+				t.printStackTrace();
+				reschedule = false;
+			} else if (reschedule == null) {
+				System.err.println("Task returned null, not rescheduling");
+				reschedule = false;
+			}
 
-		// Store time after task completion for safety (time response -> request should be within the limits because else fluctuations in ping could put us into rate limit territory from the servers perspective)
-		taskCompletionTimes.offer(System.currentTimeMillis());
+			// Store time after task completion for safety (time response -> request should be within the limits because else fluctuations in ping could put us into rate limit territory from the servers perspective)
+			taskCompletionTimes.offer(System.currentTimeMillis());
 
-		// Keep the earliest element at numTasks before the next one
-		if (taskCompletionTimes.size() > tasksPerPeriod)
-			taskCompletionTimes.remove();
+			// Keep the earliest element at numTasks before the next one
+			if (taskCompletionTimes.size() > tasksPerPeriod)
+				taskCompletionTimes.remove();
 
-		long cumulativeBackoff = requestCumulativeBackoff();
+			long cumulativeBackoff = requestCumulativeBackoff();
 
-		if (reschedule)
-			handleRateLimit(cumulativeBackoff);
-		else
-			handleTaskSuccess(cumulativeBackoff);
+			if (reschedule)
+				handleRateLimit(cumulativeBackoff);
+			else
+				handleTaskSuccess(cumulativeBackoff);
+		});
 	}
 
 	// The cycle goes #enqueue -(only if the rest of the chain is not going on already)> #scheduleTask -> #nextTask -> #scheduleTask -> etc.

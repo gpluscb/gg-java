@@ -3,27 +3,27 @@ package com.github.gpluscb.ggjava.api;
 import com.github.gpluscb.ggjava.internal.BucketRateLimiter;
 import com.github.gpluscb.ggjava.internal.SimpleRateLimiter;
 import com.github.gpluscb.ggjava.internal.utils.Checks;
-import com.github.gpluscb.ggjava.internal.utils.IntToBooleanFunction;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.IntFunction;
 
 /**
  * Used for scheduling tasks according to rate limits.
  */
 public interface RateLimiter {
 	/**
-	 * Enqueues a task to be executed according to the rate limit this instance represents.
+	 * Enqueues an asynchronous task to be executed according to the rate limit this instance represents.
 	 * The int applied to the function is the number of retries this task is on in this iteration. If this is the first time this task is executed it will be 0, it will be 1 on the first retry and so on.
-	 * Return true in the function if you want to retry this task.
+	 * Complete the {@link CompletableFuture} you return with true in the function if you want to retry this task.
 	 *
 	 * @param task the task to enqueue
 	 * @throws IllegalArgumentException task is null
 	 * @throws IllegalStateException    if the instance is already shut down
 	 */
-	void enqueue(@Nonnull IntToBooleanFunction task);
+	void enqueue(@Nonnull IntFunction<CompletableFuture<Boolean>> task);
 
 	/**
 	 * Shuts down the instance gracefully. Already enqueued tasks will still be executed.

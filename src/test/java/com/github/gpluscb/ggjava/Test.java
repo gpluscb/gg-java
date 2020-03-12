@@ -4,6 +4,7 @@ import com.github.gpluscb.ggjava.api.GGClient;
 import com.github.gpluscb.ggjava.api.RateLimiter;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.CompletableFuture;
 
 public class Test {
 	private static final String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){e vents{name state standings(query:{page:1,perPage:3}){nodes{placement container{__typename ... on Tournament{name} ... on Event{name} ... on PhaseGroup{displayIdentifier} ... on Set{identifier}} entrant{name}}}}}}";
@@ -22,7 +23,7 @@ public class Test {
 			limiter.enqueue(retries -> {
 				System.out.printf("No. %d started: %d", i_ + 1, System.currentTimeMillis());
 				System.out.printf(" | finished: %d%n", System.currentTimeMillis());
-				return i_ + 1 == 10 || i_ + 1 == 100 && retries < 1; // Only retry request No. 10 and 100 once
+				return CompletableFuture.completedFuture(i_ + 1 == 10 || i_ + 1 == 100 && retries < 1); // Only retry request No. 10 and 100 once
 			});
 		}
 

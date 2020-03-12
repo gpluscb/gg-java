@@ -1,7 +1,6 @@
 package com.github.gpluscb.ggjava.internal;
 
 import com.github.gpluscb.ggjava.api.RateLimiter;
-import com.github.gpluscb.ggjava.internal.utils.IntToBooleanFunction;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -12,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntFunction;
 
 public class SimpleRateLimiter implements RateLimiter {
 	public static final long DEFAULT_LIMIT = (long) (60d / 60d * 1000d); // Default hard limit is 80 requests per 60 (80 per 61 actually apparently) seconds, doing 60 per 60 seconds for safety
@@ -22,7 +22,7 @@ public class SimpleRateLimiter implements RateLimiter {
 	private final ScheduledExecutorService scheduler;
 
 	@Nonnull
-	private final Queue<IntToBooleanFunction> tasks;
+	private final Queue<IntFunction<CompletableFuture<Boolean>>> tasks;
 
 	@Nonnegative
 	private final long limit;
@@ -48,7 +48,7 @@ public class SimpleRateLimiter implements RateLimiter {
 	}
 
 	@Override
-	public void enqueue(@Nonnull IntToBooleanFunction task) {
+	public void enqueue(@Nonnull IntFunction<CompletableFuture<Boolean>> task) {
 		if (isShutDown)
 			throw new IllegalStateException("Trying to request while requester shut down");
 
@@ -72,17 +72,28 @@ public class SimpleRateLimiter implements RateLimiter {
 	}
 
 	private void scheduleRequest(@Nonnegative long waitTime) {
-		IntToBooleanFunction task = tasks.peek();
+		IntFunction<CompletableFuture<Boolean>> task = tasks.peek();
 		assert task != null; // To stop null analysis from whining
 
 		scheduler.schedule(() -> completeTask(task), waitTime, TimeUnit.MILLISECONDS);
 	}
 
-	private void completeTask(@Nonnull IntToBooleanFunction task) {
-		if (task.applyAsBoolean(numRetries))
-			handleRateLimit();
-		else
-			nextRequest();
+	private void completeTask(@Nonnull IntFunction<CompletableFuture<Boolean>> task) {
+		task.apply(numRetries).whenComplete((reschedule, t) -> {
+			if (t != null) {
+				System.err.print("Exception occurred during task execution, not rescheduling: ");
+				t.printStackTrace();
+				reschedule = false;
+			} else if (reschedule == null) {
+				System.err.println("Task returned null, not rescheduling");
+				reschedule = false;
+			}
+
+			if (reschedule)
+				handleRateLimit();
+			else
+				nextRequest();
+		});
 	}
 
 	private void handleRateLimit() {
