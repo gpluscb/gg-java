@@ -22,6 +22,10 @@ public class GGError {
 	private final List<Location> locations;
 	@Nullable
 	private final JsonArray path;
+	@Nullable
+	private final JsonObject extensions;
+	@Nullable
+	private final String errorId;
 
 	/**
 	 * @throws IllegalArgumentException if errorRoot is null
@@ -46,6 +50,12 @@ public class GGError {
 
 		JsonElement pathElement = errorRoot.get("path");
 		path = pathElement == null || !pathElement.isJsonArray() ? null : pathElement.getAsJsonArray();
+
+		JsonElement extensionsElement = errorRoot.get("extensions");
+		extensions = extensionsElement == null || !extensionsElement.isJsonObject() ? null : extensionsElement.getAsJsonObject();
+
+		JsonElement errorIdElement = errorRoot.get("errorId");
+		errorId = errorIdElement == null || !errorIdElement.isJsonPrimitive() || !errorIdElement.getAsJsonPrimitive().isString() ? null : errorIdElement.getAsString();
 	}
 
 	/**
@@ -89,7 +99,27 @@ public class GGError {
 	}
 
 	/**
-	 * Represents a location of an error.
+	 * The unprocessed extensions field of the response.
+	 *
+	 * @return the extensions field
+	 */
+	@Nullable
+	public JsonObject getExtensions() {
+		return extensions;
+	}
+
+	/**
+	 * The errorId field of the response.
+	 *
+	 * @return the errorId field
+	 */
+	@Nullable
+	public String getErrorId() {
+		return errorId;
+	}
+
+	/**
+	 * Represents the location of an error.
 	 */
 	public static class Location {
 		@Nonnull
