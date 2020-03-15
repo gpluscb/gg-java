@@ -7,27 +7,38 @@ import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
 public class Test {
-	private static final String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){e vents{name state standings(query:{page:1,perPage:3}){nodes{placement container{__typename ... on Tournament{name} ... on Event{name} ... on PhaseGroup{displayIdentifier} ... on Set{identifier}} entrant{name}}}}}}";
+	private static final String testQuery = "query TournamentQuery{tournament(slug:\"evo2018\"){events{name state standings(query:{page:1,perPage:3}){nodes{placement container{__typename ... on Tournament{name} ... on Event{name} ... on PhaseGroup{displayIdentifier} ... on Set{identifier}} entrant{name}}}}}}";
 
 	public static void main(@Nonnull String[] args) {
-		// rateLimiterTest();
+		rateLimiterTest();
 		clientTest(args);
 	}
 
 	private static void rateLimiterTest() {
+//		RateLimiter limiter = RateLimiter.simpleBuilder().build();
 		RateLimiter limiter = RateLimiter.bucketBuilder().build();
 
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 100; i++) {
 			int i_ = i;
 
 			limiter.enqueue(retries -> {
 				System.out.printf("No. %d started: %d", i_ + 1, System.currentTimeMillis());
 				System.out.printf(" | finished: %d%n", System.currentTimeMillis());
-				return CompletableFuture.completedFuture(i_ + 1 == 10 || i_ + 1 == 100 && retries < 1); // Only retry request No. 10 and 100 once
+				return CompletableFuture.completedFuture((i_ + 1 == 10 || i_ + 1 == 60) && retries < 1); // Only retry request No. 10 and 60 once
 			});
 		}
 
-		limiter.shutdown();
+		CompletableFuture<Void> onShutdown = limiter.shutdown().thenRun(() -> System.out.println("Finished test 1"));
+
+		try {
+			limiter.enqueue(a -> CompletableFuture.completedFuture(false));
+
+			System.err.println("No IllegalState thrown for enqueueing when shut down");
+		} catch (IllegalStateException e) {
+			System.out.println("IllegalState as expected");
+		}
+
+		onShutdown.join();
 	}
 
 	private static void clientTest(@Nonnull String[] args) {
@@ -36,8 +47,11 @@ public class Test {
 			return;
 		}
 
-		GGClient client = GGClient.builder(args[0]).limiter(RateLimiter.bucketBuilder().period(61000L).tasksPerPeriod(80).build()).build();
-/*
+//		RateLimiter limiter = RateLimiter.simpleBuilder().build();
+		RateLimiter limiter = RateLimiter.bucketBuilder().period(61000L).tasksPerPeriod(80).build();
+
+		GGClient client = GGClient.builder(args[0]).limiter(limiter).build();
+
 		for (int i = 0; i < 100; i++) {
 			int i_ = i;
 			client.request(testQuery).thenAccept(r -> System.out.println("No. " + (i_ + 1) + " finished at " + System.currentTimeMillis())).exceptionally(t -> {
@@ -45,7 +59,7 @@ public class Test {
 				return null;
 			});
 		}
-*/
+
 		client.query(testQuery).whenComplete((response, t) -> {
 			if (t == null) {
 				try {
@@ -140,6 +154,6 @@ public class Test {
 			}
 		});
 
-		client.shutdown();
+		client.shutdown().thenRun(() -> System.out.println("Finished test 2"));
 	}
 }

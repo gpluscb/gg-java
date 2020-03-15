@@ -18,7 +18,8 @@ public class BucketRateLimiter implements RateLimiter {
 	@Nonnegative
 	public static final long DEFAULT_PERIOD = 61 * 1000; // For some dumb reason it appears to be actually 80/61s not 80/60s
 
-	private boolean isShutDown;
+	@Nullable
+	private CompletableFuture<Void> shutdownFuture;
 
 	@Nonnull
 	private final ScheduledExecutorService scheduler;
@@ -47,8 +48,8 @@ public class BucketRateLimiter implements RateLimiter {
 		this.tasksPerPeriod = tasksPerPeriod == null ? DEFAULT_TASKS_PER_PERIOD : tasksPerPeriod;
 		this.period = period == null ? DEFAULT_PERIOD : period;
 
-		isShutDown = false;
-		scheduler = Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, "RequestScheduler"));
+		shutdownFuture = null;
+		scheduler = Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, "RateLimiter"));
 
 		tasks = new LinkedList<>();
 		taskCompletionTimes = new LinkedList<>();
@@ -65,10 +66,10 @@ public class BucketRateLimiter implements RateLimiter {
 
 	@Override
 	public void enqueue(@Nonnull IntFunction<CompletableFuture<Boolean>> task) {
-		if (isShutDown)
-			throw new IllegalStateException("Trying to request while requester shut down");
+		if (isShutDown())
+			throw new IllegalStateException("Trying to enqueue task while shut down");
 
-		// Don't want the processing status to change
+		// Don't want the processing status to change while checking it and offering tasks
 		boolean notProcessing;
 		synchronized (tasks) {
 			// Already processing tasks if tasks is not empty
@@ -78,7 +79,7 @@ public class BucketRateLimiter implements RateLimiter {
 			// From here our task is guaranteed to be handled if it is processing, so we can leave lock here
 		}
 
-		// If already processing, the task will be scheduled automatically (see #nextTask)
+		// If already processing, the task will be scheduled automatically (see #handleTaskSuccess)
 		if (notProcessing)
 			scheduleTask(requestWaitTime(requestCumulativeBackoff()));
 	}
@@ -90,7 +91,7 @@ public class BucketRateLimiter implements RateLimiter {
 		try {
 			scheduler.schedule(() -> completeTask(task), waitTime, TimeUnit.MILLISECONDS);
 		} catch (Throwable t) {
-			System.err.print("Error scheduling request, shutting down: ");
+			System.err.print("Error scheduling task, shutting down: ");
 			t.printStackTrace();
 
 			shutdown();
@@ -111,7 +112,7 @@ public class BucketRateLimiter implements RateLimiter {
 			// Store time after task completion for safety (time response -> request should be within the limits because else fluctuations in ping could put us into rate limit territory from the servers perspective)
 			taskCompletionTimes.offer(System.currentTimeMillis());
 
-			// Keep the earliest element at numTasks before the next one
+			// Keep the earliest element at tasksPerPeriod before the next one
 			if (taskCompletionTimes.size() > tasksPerPeriod)
 				taskCompletionTimes.remove();
 
@@ -124,20 +125,24 @@ public class BucketRateLimiter implements RateLimiter {
 		});
 	}
 
-	// The cycle goes #enqueue -(only if the rest of the chain is not going on already)> #scheduleTask -> #nextTask -> #scheduleTask -> etc.
+	// The cycle goes #enqueue -(only if the rest of the chain is not going on already)> #scheduleTask -> #handleTaskSuccess -> #scheduleTask -> etc.
 	// In no situation should two handleResponse be running at the same time, so we don't have to worry about concurrency in that regard
 	private void handleTaskSuccess(@Nonnegative long cumulativeBackoff) {
 		// No rate limits hit, so we can reset the numRetries
 		numRetries = 0;
 
-		// Don't want #enqueue to check isEmpty after remove and before we do here, else: remove -> request checks is empty (true, thinks processing stopped) -> adds own request -> calls #scheduleTask -> we check if is empty (false, meaning processing won't stop) -> we call #scheduleTask
+		// Don't want #enqueue to check isEmpty after we remove but before we do the check here, else: remove -> enqueue checks is empty (true, thinks processing stopped) -> adds own task -> calls #scheduleTask -> we check if is empty (false, meaning processing won't stop) -> we call #scheduleTask
 		synchronized (tasks) {
 			// Remove corresponding task from queue
 			tasks.remove();
 
-			// Stop if no more tasks are present
-			if (tasks.isEmpty())
+			// Stop if no more tasks are present, complete shutdownFuture if we are shut down
+			if (tasks.isEmpty()) {
+				// Not calling #isShutdown here because of null analysis
+				if (shutdownFuture != null) shutdownFuture.complete(null);
+
 				return;
+			}
 		}
 
 		scheduleTask(requestWaitTime(cumulativeBackoff));
@@ -173,7 +178,7 @@ public class BucketRateLimiter implements RateLimiter {
 
 	@Nonnegative
 	private long requestWaitTime(@Nonnegative long cumulativeBackoff) {
-		// If we did not do numTasks tasks yet, there is nothing to worry about
+		// If we did not do tasksPerPeriod tasks yet, there is nothing to worry about
 		if (!completionTimesFilled())
 			return 0;
 
@@ -199,12 +204,15 @@ public class BucketRateLimiter implements RateLimiter {
 		return nextOpportunity - period - tasksPerPeriodBefore;
 	}
 
+	@Nonnegative
 	private long requestExponentialBackoff() {
 		return initialExponentialBackoff * (2 ^ numRetries++);
 	}
 
+	@Nonnegative
 	private long requestCumulativeBackoff() {
 		long cumulativeBackoff = 0;
+
 		for (int i = 0; i < backoffList.size(); i++) {
 			Backoff backoff = backoffList.get(i);
 
@@ -218,6 +226,7 @@ public class BucketRateLimiter implements RateLimiter {
 		return cumulativeBackoff;
 	}
 
+	@Nonnegative
 	private long peekCompletionTimesRespectingCumulative(@Nonnegative long cumulativeBackoff) {
 		Long tasksPerPeriodBefore = taskCompletionTimes.peek();
 		assert tasksPerPeriodBefore != null; // To stop null analysis from whining
@@ -232,26 +241,15 @@ public class BucketRateLimiter implements RateLimiter {
 	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
-		isShutDown = true;
+		// Is completed automatically when tasks are empty
+		shutdownFuture = new CompletableFuture<>();
 
-		// TODO: More beautiful
-		return CompletableFuture.supplyAsync(() -> {
-			try {
-				while (!tasks.isEmpty())
-					Thread.sleep(50);
-
-				scheduler.shutdown();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			return null;
-		});
+		return shutdownFuture.thenRun(scheduler::shutdown);
 	}
 
 	@Override
 	public boolean isShutDown() {
-		return isShutDown;
+		return shutdownFuture != null;
 	}
 
 	private class Backoff {
