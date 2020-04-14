@@ -241,8 +241,10 @@ public class BucketRateLimiter implements RateLimiter {
 	@Nonnull
 	@Override
 	public CompletableFuture<Void> shutdown() {
-		// Is completed automatically when tasks are empty
-		shutdownFuture = new CompletableFuture<>();
+		synchronized (tasks) {
+			// Is completed automatically when tasks are empty
+			shutdownFuture = tasks.isEmpty() ? CompletableFuture.completedFuture(null) : new CompletableFuture<>();
+		}
 
 		return shutdownFuture.thenRun(scheduler::shutdown);
 	}
