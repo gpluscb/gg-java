@@ -57,10 +57,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Participant City Name
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public StringResponse getCity() {
 		checkProvided();
 		return city;
@@ -68,10 +65,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Participant Country Name
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public StringResponse getCountry() {
 		checkProvided();
 		return country;
@@ -79,19 +73,12 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Participant Country (region) id
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public IntResponse getCountryId() {
 		checkProvided();
 		return countryId;
 	}
 
-	/**
-	 * @deprecated This entire type is deprecated. Use User.name
-	 */
-	@Deprecated
 	public StringResponse getName() {
 		checkProvided();
 		return name;
@@ -99,10 +86,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * First Name
-	 *
-	 * @deprecated This entire type is deprecated. Use User.name
 	 */
-	@Deprecated
 	public StringResponse getNameFirst() {
 		checkProvided();
 		return nameFirst;
@@ -110,10 +94,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Last Name
-	 *
-	 * @deprecated This entire type is deprecated. Use User.name
 	 */
-	@Deprecated
 	public StringResponse getNameLast() {
 		checkProvided();
 		return nameLast;
@@ -121,10 +102,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Participant State Name
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public StringResponse getState() {
 		checkProvided();
 		return state;
@@ -132,10 +110,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Participant State (region) id
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public IntResponse getStateId() {
 		checkProvided();
 		return stateId;
@@ -143,10 +118,7 @@ public class ContactInfoResponse extends AbstractGGResponseObject {
 
 	/**
 	 * Zip or Postal Code
-	 *
-	 * @deprecated This entire type is deprecated. Use User.location
 	 */
-	@Deprecated
 	public StringResponse getZipcode() {
 		checkProvided();
 		return zipcode;

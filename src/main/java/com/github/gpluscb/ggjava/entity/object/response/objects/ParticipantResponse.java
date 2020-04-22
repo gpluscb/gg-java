@@ -3,16 +3,15 @@ package com.github.gpluscb.ggjava.entity.object.response.objects;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.BooleanResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.JSONResponse;
-import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
 
 /**
  * A participant of a tournament; either a spectator or competitor
  */
 public class ParticipantResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
+	private final BooleanResponse checkedIn;
+	private final TimestampResponse checkedInAt;
 	private final JSONResponse connectedAccounts;
 	private final ContactInfoResponse contactInfo;
 	private final StringResponse email;
@@ -29,6 +28,8 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		super(EntityType.PARTICIPANT);
 
 		id = null;
+		checkedIn = null;
+		checkedInAt = null;
 		connectedAccounts = null;
 		contactInfo = null;
 		email = null;
@@ -42,9 +43,11 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 		verified = null;
 	}
 
-	public ParticipantResponse(IDResponse id, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, StringResponse email, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, StringResponse gamerTag, ListResponse<ImageResponse> images, PlayerResponse player, StringResponse prefix, UserResponse user, BooleanResponse verified) {
+	public ParticipantResponse(IDResponse id, BooleanResponse checkedIn, TimestampResponse checkedInAt, JSONResponse connectedAccounts, ContactInfoResponse contactInfo, StringResponse email, ListResponse<EntrantResponse> entrants, ListResponse<EventResponse> events, StringResponse gamerTag, ListResponse<ImageResponse> images, PlayerResponse player, StringResponse prefix, UserResponse user, BooleanResponse verified) {
 		super(EntityType.PARTICIPANT, true);
 		this.id = id;
+		this.checkedIn = checkedIn;
+		this.checkedInAt = checkedInAt;
 		this.connectedAccounts = connectedAccounts;
 		this.contactInfo = contactInfo;
 		this.email = email;
@@ -64,6 +67,22 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	}
 
 	/**
+	 * If this participant was checked-in by admin
+	 */
+	public BooleanResponse getCheckedIn() {
+		checkProvided();
+		return checkedIn;
+	}
+
+	/**
+	 * The time this participant was checked-in by admin
+	 */
+	public TimestampResponse getCheckedInAt() {
+		checkProvided();
+		return checkedInAt;
+	}
+
+	/**
 	 * Info for connected accounts to external services.
 	 */
 	public JSONResponse getConnectedAccounts() {
@@ -72,7 +91,9 @@ public class ParticipantResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Contact Info selected during registration. Falls back to User.location and/or User.name if necessary. These fields are for admin use only and do not respect user privacy settings. DO NOT display this information publicly.
+	 * Contact Info selected during registration. Falls back to User.location and/or
+	 * User.name if necessary. These fields are for admin use only and do not respect
+	 * user privacy settings. DO NOT display this information publicly.
 	 */
 	public ContactInfoResponse getContactInfo() {
 		checkProvided();

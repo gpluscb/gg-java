@@ -9,11 +9,12 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
  * A tournament
  */
 public class TournamentResponse extends AbstractGGResponseObject {
-	private final TimestampResponse createdAt;
-	private final IDResponse id;
 	private final StringResponse addrState;
+	private final IDResponse id;
+	private final ListResponse<UserResponse> admins;
 	private final StringResponse city;
 	private final StringResponse countryCode;
+	private final TimestampResponse createdAt;
 	private final StringResponse currency;
 	private final TimestampResponse endAt;
 	private final TimestampResponse eventRegistrationClosesAt;
@@ -23,11 +24,13 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	private final StringResponse hashtag;
 	private final ListResponse<ImageResponse> images;
 	private final BooleanResponse isOnline;
+	private final BooleanResponse isRegistrationOpen;
 	private final FloatResponse lat;
 	private final TournamentLinksResponse links;
 	private final FloatResponse lng;
 	private final StringResponse mapsPlaceId;
 	private final StringResponse name;
+	private final IntResponse numAttendees;
 	private final UserResponse owner;
 	private final ParticipantConnectionResponse participants;
 	private final StringResponse postalCode;
@@ -56,11 +59,12 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	public TournamentResponse() {
 		super(EntityType.TOURNAMENT);
 
-		createdAt = null;
-		id = null;
 		addrState = null;
+		id = null;
+		admins = null;
 		city = null;
 		countryCode = null;
+		createdAt = null;
 		currency = null;
 		endAt = null;
 		eventRegistrationClosesAt = null;
@@ -70,11 +74,13 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		hashtag = null;
 		images = null;
 		isOnline = null;
+		isRegistrationOpen = null;
 		lat = null;
 		links = null;
 		lng = null;
 		mapsPlaceId = null;
 		name = null;
+		numAttendees = null;
 		owner = null;
 		participants = null;
 		postalCode = null;
@@ -101,13 +107,14 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		waves = null;
 	}
 
-	public TournamentResponse(TimestampResponse createdAt, IDResponse id, StringResponse addrState, StringResponse city, StringResponse countryCode, StringResponse currency, TimestampResponse endAt, TimestampResponse eventRegistrationClosesAt, ListResponse<EventResponse> events, BooleanResponse hasOfflineEvents, BooleanResponse hasOnlineEvents, StringResponse hashtag, ListResponse<ImageResponse> images, BooleanResponse isOnline, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, UserResponse owner, ParticipantConnectionResponse participants, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, JSONResponse publishing, TimestampResponse registrationClosesAt, StringResponse rules, StringResponse shortSlug, StringResponse slug, TimestampResponse startAt, IntResponse state, StationsConnectionResponse stations, ListResponse<StreamQueueInfoResponse> streamQueue, ListResponse<StreamsResponse> streams, TimestampResponse teamCreationClosesAt, TeamConnectionResponse teams, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, ListResponse<WaveResponse> waves) {
+	public TournamentResponse(StringResponse addrState, IDResponse id, ListResponse<UserResponse> admins, StringResponse city, StringResponse countryCode, TimestampResponse createdAt, StringResponse currency, TimestampResponse endAt, TimestampResponse eventRegistrationClosesAt, ListResponse<EventResponse> events, BooleanResponse hasOfflineEvents, BooleanResponse hasOnlineEvents, StringResponse hashtag, ListResponse<ImageResponse> images, BooleanResponse isOnline, BooleanResponse isRegistrationOpen, FloatResponse lat, TournamentLinksResponse links, FloatResponse lng, StringResponse mapsPlaceId, StringResponse name, IntResponse numAttendees, UserResponse owner, ParticipantConnectionResponse participants, StringResponse postalCode, StringResponse primaryContact, StringResponse primaryContactType, JSONResponse publishing, TimestampResponse registrationClosesAt, StringResponse rules, StringResponse shortSlug, StringResponse slug, TimestampResponse startAt, IntResponse state, StationsConnectionResponse stations, ListResponse<StreamQueueInfoResponse> streamQueue, ListResponse<StreamsResponse> streams, TimestampResponse teamCreationClosesAt, TeamConnectionResponse teams, StringResponse timezone, IntResponse tournamentType, TimestampResponse updatedAt, StringResponse url, StringResponse venueAddress, StringResponse venueName, ListResponse<WaveResponse> waves) {
 		super(EntityType.TOURNAMENT, true);
-		this.createdAt = createdAt;
-		this.id = id;
 		this.addrState = addrState;
+		this.id = id;
+		this.admins = admins;
 		this.city = city;
 		this.countryCode = countryCode;
+		this.createdAt = createdAt;
 		this.currency = currency;
 		this.endAt = endAt;
 		this.eventRegistrationClosesAt = eventRegistrationClosesAt;
@@ -117,11 +124,13 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		this.hashtag = hashtag;
 		this.images = images;
 		this.isOnline = isOnline;
+		this.isRegistrationOpen = isRegistrationOpen;
 		this.lat = lat;
 		this.links = links;
 		this.lng = lng;
 		this.mapsPlaceId = mapsPlaceId;
 		this.name = name;
+		this.numAttendees = numAttendees;
 		this.owner = owner;
 		this.participants = participants;
 		this.postalCode = postalCode;
@@ -148,12 +157,9 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		this.waves = waves;
 	}
 
-	/**
-	 * When the tournament was created (unix timestamp)
-	 */
-	public TimestampResponse getCreatedAt() {
+	public StringResponse getAddrState() {
 		checkProvided();
-		return createdAt;
+		return addrState;
 	}
 
 	public IDResponse getId() {
@@ -161,9 +167,12 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		return id;
 	}
 
-	public StringResponse getAddrState() {
+	/**
+	 * Admin-only view of admins for this tournament
+	 */
+	public ListResponse<UserResponse> getAdmins() {
 		checkProvided();
-		return addrState;
+		return admins;
 	}
 
 	public StringResponse getCity() {
@@ -174,6 +183,14 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	public StringResponse getCountryCode() {
 		checkProvided();
 		return countryCode;
+	}
+
+	/**
+	 * When the tournament was created (unix timestamp)
+	 */
+	public TimestampResponse getCreatedAt() {
+		checkProvided();
+		return createdAt;
 	}
 
 	public StringResponse getCurrency() {
@@ -233,6 +250,14 @@ public class TournamentResponse extends AbstractGGResponseObject {
 		return isOnline;
 	}
 
+	/**
+	 * Is tournament registration open
+	 */
+	public BooleanResponse getIsRegistrationOpen() {
+		checkProvided();
+		return isRegistrationOpen;
+	}
+
 	public FloatResponse getLat() {
 		checkProvided();
 		return lat;
@@ -259,6 +284,14 @@ public class TournamentResponse extends AbstractGGResponseObject {
 	public StringResponse getName() {
 		checkProvided();
 		return name;
+	}
+
+	/**
+	 * Number of attendees including spectators, if public
+	 */
+	public IntResponse getNumAttendees() {
+		checkProvided();
+		return numAttendees;
 	}
 
 	/**
