@@ -6,6 +6,7 @@ import com.github.gpluscb.ggjava.entity.object.response.GGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
 import com.github.gpluscb.ggjava.entity.object.response.enums.EnumResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.FloatResponse;
+import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IntResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.TimestampResponse;
 import com.github.gpluscb.ggjava.entity.object.response.unions.UnionResponse;
@@ -232,6 +233,8 @@ public class Deserializer {
 						return constructor.newInstance(json.getAsLong());
 					} else if (toClass.equals(FloatResponse.class)) {
 						return constructor.newInstance(json.getAsFloat());
+					} else if (toClass.equals(IDResponse.class)) { // Documentation says "The ID type appears in a JSON response as a String", but testing says they appear as numbers
+						return constructor.newInstance(String.valueOf(json.getAsLong()));
 					} else {
 						throw new DeserializationException("Unknown scalar for JSON number type: " + toClass.toString());
 					}
