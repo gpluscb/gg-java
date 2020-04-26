@@ -16,6 +16,7 @@ public class PlayerResponse extends AbstractGGResponseObject {
 	private final ListResponse<PlayerRankResponse> rankings;
 	private final ListResponse<SetResponse> recentSets;
 	private final SetConnectionResponse sets;
+	private final UserResponse user;
 
 	public PlayerResponse() {
 		super(EntityType.PLAYER);
@@ -26,9 +27,10 @@ public class PlayerResponse extends AbstractGGResponseObject {
 		rankings = null;
 		recentSets = null;
 		sets = null;
+		user = null;
 	}
 
-	public PlayerResponse(IDResponse id, StringResponse gamerTag, StringResponse prefix, ListResponse<PlayerRankResponse> rankings, ListResponse<SetResponse> recentSets, SetConnectionResponse sets) {
+	public PlayerResponse(IDResponse id, StringResponse gamerTag, StringResponse prefix, ListResponse<PlayerRankResponse> rankings, ListResponse<SetResponse> recentSets, SetConnectionResponse sets, UserResponse user) {
 		super(EntityType.PLAYER, true);
 		this.id = id;
 		this.gamerTag = gamerTag;
@@ -36,6 +38,7 @@ public class PlayerResponse extends AbstractGGResponseObject {
 		this.rankings = rankings;
 		this.recentSets = recentSets;
 		this.sets = sets;
+		this.user = user;
 	}
 
 	public IDResponse getId() {
@@ -78,5 +81,10 @@ public class PlayerResponse extends AbstractGGResponseObject {
 	public SetConnectionResponse getSets() {
 		checkProvided();
 		return sets;
+	}
+
+	public UserResponse getUser() {
+		checkProvided();
+		return user;
 	}
 }

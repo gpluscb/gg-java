@@ -10,8 +10,8 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.*;
  * A group within a phase
  */
 public class PhaseGroupResponse extends AbstractGGResponseObject {
-	private final BracketTypeResponse bracketType;
 	private final IDResponse id;
+	private final BracketTypeResponse bracketType;
 	private final StringResponse displayIdentifier;
 	private final TimestampResponse firstRoundTime;
 	private final IntResponse numRounds;
@@ -20,6 +20,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	private final PhaseResponse phase;
 	private final ListResponse<ProgressionResponse> progressionsOut;
 	private final ListResponse<RoundResponse> rounds;
+	private final JSONResponse seedMap;
 	private final SeedConnectionResponse seeds;
 	private final SetConnectionResponse sets;
 	private final StandingConnectionResponse standings;
@@ -30,8 +31,8 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	public PhaseGroupResponse() {
 		super(EntityType.PHASE_GROUP);
 
-		bracketType = null;
 		id = null;
+		bracketType = null;
 		displayIdentifier = null;
 		firstRoundTime = null;
 		numRounds = null;
@@ -40,6 +41,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		phase = null;
 		progressionsOut = null;
 		rounds = null;
+		seedMap = null;
 		seeds = null;
 		sets = null;
 		standings = null;
@@ -48,10 +50,10 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		wave = null;
 	}
 
-	public PhaseGroupResponse(BracketTypeResponse bracketType, IDResponse id, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, PhaseResponse phase, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
+	public PhaseGroupResponse(IDResponse id, BracketTypeResponse bracketType, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, PhaseResponse phase, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, JSONResponse seedMap, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
 		super(EntityType.PHASE_GROUP, true);
-		this.bracketType = bracketType;
 		this.id = id;
+		this.bracketType = bracketType;
 		this.displayIdentifier = displayIdentifier;
 		this.firstRoundTime = firstRoundTime;
 		this.numRounds = numRounds;
@@ -60,6 +62,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		this.phase = phase;
 		this.progressionsOut = progressionsOut;
 		this.rounds = rounds;
+		this.seedMap = seedMap;
 		this.seeds = seeds;
 		this.sets = sets;
 		this.standings = standings;
@@ -68,17 +71,17 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		this.wave = wave;
 	}
 
+	public IDResponse getId() {
+		checkProvided();
+		return id;
+	}
+
 	/**
 	 * The bracket type of this group's phase.
 	 */
 	public BracketTypeResponse getBracketType() {
 		checkProvided();
 		return bracketType;
-	}
-
-	public IDResponse getId() {
-		checkProvided();
-		return id;
 	}
 
 	/**
@@ -141,6 +144,11 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	public ListResponse<RoundResponse> getRounds() {
 		checkProvided();
 		return rounds;
+	}
+
+	public JSONResponse getSeedMap() {
+		checkProvided();
+		return seedMap;
 	}
 
 	/**
