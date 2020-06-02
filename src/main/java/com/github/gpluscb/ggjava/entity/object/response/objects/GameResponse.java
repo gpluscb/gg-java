@@ -14,6 +14,7 @@ public class GameResponse extends AbstractGGResponseObject {
 	private final ListResponse<ImageResponse> images;
 	private final IntResponse orderNum;
 	private final ListResponse<GameSelectionResponse> selections;
+	private final StageResponse stage;
 	private final IntResponse state;
 	private final IntResponse winnerId;
 
@@ -24,16 +25,18 @@ public class GameResponse extends AbstractGGResponseObject {
 		images = null;
 		orderNum = null;
 		selections = null;
+		stage = null;
 		state = null;
 		winnerId = null;
 	}
 
-	public GameResponse(IDResponse id, ListResponse<ImageResponse> images, IntResponse orderNum, ListResponse<GameSelectionResponse> selections, IntResponse state, IntResponse winnerId) {
+	public GameResponse(IDResponse id, ListResponse<ImageResponse> images, IntResponse orderNum, ListResponse<GameSelectionResponse> selections, StageResponse stage, IntResponse state, IntResponse winnerId) {
 		super(EntityType.GAME, true);
 		this.id = id;
 		this.images = images;
 		this.orderNum = orderNum;
 		this.selections = selections;
+		this.stage = stage;
 		this.state = state;
 		this.winnerId = winnerId;
 	}
@@ -54,11 +57,19 @@ public class GameResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Selections for this game such as character, stage, etc.
+	 * Selections for this game such as character, etc.
 	 */
 	public ListResponse<GameSelectionResponse> getSelections() {
 		checkProvided();
 		return selections;
+	}
+
+	/**
+	 * The stage that this game was played on (if applicable)
+	 */
+	public StageResponse getStage() {
+		checkProvided();
+		return stage;
 	}
 
 	public IntResponse getState() {

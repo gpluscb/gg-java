@@ -24,6 +24,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	private final SeedConnectionResponse seeds;
 	private final SetConnectionResponse sets;
 	private final StandingConnectionResponse standings;
+	private final TimestampResponse startAt;
 	private final IntResponse state;
 	private final JSONResponse tiebreakOrder;
 	private final WaveResponse wave;
@@ -45,12 +46,13 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		seeds = null;
 		sets = null;
 		standings = null;
+		startAt = null;
 		state = null;
 		tiebreakOrder = null;
 		wave = null;
 	}
 
-	public PhaseGroupResponse(IDResponse id, BracketTypeResponse bracketType, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, PhaseResponse phase, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, JSONResponse seedMap, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
+	public PhaseGroupResponse(IDResponse id, BracketTypeResponse bracketType, StringResponse displayIdentifier, TimestampResponse firstRoundTime, IntResponse numRounds, SeedConnectionResponse paginatedSeeds, SetConnectionResponse paginatedSets, PhaseResponse phase, ListResponse<ProgressionResponse> progressionsOut, ListResponse<RoundResponse> rounds, JSONResponse seedMap, SeedConnectionResponse seeds, SetConnectionResponse sets, StandingConnectionResponse standings, TimestampResponse startAt, IntResponse state, JSONResponse tiebreakOrder, WaveResponse wave) {
 		super(EntityType.PHASE_GROUP, true);
 		this.id = id;
 		this.bracketType = bracketType;
@@ -66,6 +68,7 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 		this.seeds = seeds;
 		this.sets = sets;
 		this.standings = standings;
+		this.startAt = startAt;
 		this.state = state;
 		this.tiebreakOrder = tiebreakOrder;
 		this.wave = wave;
@@ -173,6 +176,14 @@ public class PhaseGroupResponse extends AbstractGGResponseObject {
 	public StandingConnectionResponse getStandings() {
 		checkProvided();
 		return standings;
+	}
+
+	/**
+	 * Unix time the group is scheduled to start. This info could also be on the wave instead.
+	 */
+	public TimestampResponse getStartAt() {
+		checkProvided();
+		return startAt;
 	}
 
 	public IntResponse getState() {

@@ -14,6 +14,7 @@ public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 	private final StringResponse gamertag;
 	private final StringResponse message;
 	private final StringResponse name;
+	private final PlayerResponse player;
 	private final FloatResponse total;
 
 	public ShopOrderMessageResponse() {
@@ -23,15 +24,17 @@ public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 		gamertag = null;
 		message = null;
 		name = null;
+		player = null;
 		total = null;
 	}
 
-	public ShopOrderMessageResponse(IDResponse id, StringResponse gamertag, StringResponse message, StringResponse name, FloatResponse total) {
+	public ShopOrderMessageResponse(IDResponse id, StringResponse gamertag, StringResponse message, StringResponse name, PlayerResponse player, FloatResponse total) {
 		super(EntityType.SHOP_ORDER_MESSAGE, true);
 		this.id = id;
 		this.gamertag = gamertag;
 		this.message = message;
 		this.name = name;
+		this.player = player;
 		this.total = total;
 	}
 
@@ -57,11 +60,19 @@ public class ShopOrderMessageResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * The player's name. Returns null unless name {@literal &} tag display is selected
+	 * The player's name. Returns null unless name & tag display is selected
 	 */
 	public StringResponse getName() {
 		checkProvided();
 		return name;
+	}
+
+	/**
+	 * The player who left the comment
+	 */
+	public PlayerResponse getPlayer() {
+		checkProvided();
+		return player;
 	}
 
 	/**

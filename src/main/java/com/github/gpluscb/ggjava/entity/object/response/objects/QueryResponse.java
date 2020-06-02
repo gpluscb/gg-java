@@ -179,7 +179,7 @@ public class QueryResponse extends AbstractGGResponseObject {
 	}
 
 	/**
-	 * Returns a user given a userId or slug
+	 * Returns a user given a user slug of the form user/abc123, or id
 	 */
 	public UserResponse getUser() {
 		checkProvided();

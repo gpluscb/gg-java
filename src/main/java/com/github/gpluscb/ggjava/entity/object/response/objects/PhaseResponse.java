@@ -3,6 +3,7 @@ package com.github.gpluscb.ggjava.entity.object.response.objects;
 import com.github.gpluscb.ggjava.entity.EntityType;
 import com.github.gpluscb.ggjava.entity.object.response.AbstractGGResponseObject;
 import com.github.gpluscb.ggjava.entity.object.response.ListResponse;
+import com.github.gpluscb.ggjava.entity.object.response.enums.ActivityStateResponse;
 import com.github.gpluscb.ggjava.entity.object.response.enums.BracketTypeResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.BooleanResponse;
 import com.github.gpluscb.ggjava.entity.object.response.scalars.IDResponse;
@@ -15,14 +16,17 @@ import com.github.gpluscb.ggjava.entity.object.response.scalars.StringResponse;
 public class PhaseResponse extends AbstractGGResponseObject {
 	private final IDResponse id;
 	private final BracketTypeResponse bracketType;
+	private final EventResponse event;
 	private final IntResponse groupCount;
 	private final BooleanResponse isExhibition;
 	private final StringResponse name;
 	private final IntResponse numSeeds;
 	private final SeedConnectionResponse paginatedSeeds;
 	private final PhaseGroupConnectionResponse phaseGroups;
+	private final IntResponse phaseOrder;
 	private final SeedConnectionResponse seeds;
 	private final SetConnectionResponse sets;
+	private final ActivityStateResponse state;
 	private final ListResponse<WaveResponse> waves;
 
 	public PhaseResponse() {
@@ -30,29 +34,35 @@ public class PhaseResponse extends AbstractGGResponseObject {
 
 		id = null;
 		bracketType = null;
+		event = null;
 		groupCount = null;
 		isExhibition = null;
 		name = null;
 		numSeeds = null;
 		paginatedSeeds = null;
 		phaseGroups = null;
+		phaseOrder = null;
 		seeds = null;
 		sets = null;
+		state = null;
 		waves = null;
 	}
 
-	public PhaseResponse(IDResponse id, BracketTypeResponse bracketType, IntResponse groupCount, BooleanResponse isExhibition, StringResponse name, IntResponse numSeeds, SeedConnectionResponse paginatedSeeds, PhaseGroupConnectionResponse phaseGroups, SeedConnectionResponse seeds, SetConnectionResponse sets, ListResponse<WaveResponse> waves) {
+	public PhaseResponse(IDResponse id, BracketTypeResponse bracketType, EventResponse event, IntResponse groupCount, BooleanResponse isExhibition, StringResponse name, IntResponse numSeeds, SeedConnectionResponse paginatedSeeds, PhaseGroupConnectionResponse phaseGroups, IntResponse phaseOrder, SeedConnectionResponse seeds, SetConnectionResponse sets, ActivityStateResponse state, ListResponse<WaveResponse> waves) {
 		super(EntityType.PHASE, true);
 		this.id = id;
 		this.bracketType = bracketType;
+		this.event = event;
 		this.groupCount = groupCount;
 		this.isExhibition = isExhibition;
 		this.name = name;
 		this.numSeeds = numSeeds;
 		this.paginatedSeeds = paginatedSeeds;
 		this.phaseGroups = phaseGroups;
+		this.phaseOrder = phaseOrder;
 		this.seeds = seeds;
 		this.sets = sets;
+		this.state = state;
 		this.waves = waves;
 	}
 
@@ -67,6 +77,14 @@ public class PhaseResponse extends AbstractGGResponseObject {
 	public BracketTypeResponse getBracketType() {
 		checkProvided();
 		return bracketType;
+	}
+
+	/**
+	 * The Event that this phase belongs to
+	 */
+	public EventResponse getEvent() {
+		checkProvided();
+		return event;
 	}
 
 	/**
@@ -119,6 +137,14 @@ public class PhaseResponse extends AbstractGGResponseObject {
 	}
 
 	/**
+	 * The relative order of this phase within an event
+	 */
+	public IntResponse getPhaseOrder() {
+		checkProvided();
+		return phaseOrder;
+	}
+
+	/**
 	 * Paginated seeds for this phase
 	 */
 	public SeedConnectionResponse getSeeds() {
@@ -132,6 +158,14 @@ public class PhaseResponse extends AbstractGGResponseObject {
 	public SetConnectionResponse getSets() {
 		checkProvided();
 		return sets;
+	}
+
+	/**
+	 * State of the phase
+	 */
+	public ActivityStateResponse getState() {
+		checkProvided();
+		return state;
 	}
 
 	public ListResponse<WaveResponse> getWaves() {
