@@ -1,6 +1,9 @@
 # gg-java
 Java wrapper for the [smash.gg](https://smash.gg) [GraphQL API](https://developer.smash.gg/docs/intro)
 
+## Current status
+This is unmaintained at the moment. It should work, but it isn't completely up-to-date with the API (and there are some library changes I'd want to make). I'm open to work on this a bit again if you want to use this. In that case please open an issue.
+
 ## Download
 This repo is published as a snapshot on Sonatype OSS. You can download it [here](https://oss.sonatype.org/content/repositories/snapshots/com/github/gpluscb/gg-java/).
 
