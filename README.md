@@ -89,7 +89,7 @@ client.query(testQuery, testVariables)
 
 ### Rate limiting
 The [rate limiting](https://developer.smash.gg/docs/rate-limits) is handled automatically and you should never run into one.
-If you still do, a message will be printed to `System.err` and the request will retry ater a back-off.
+If you still do, a message will be printed to `System.err` and the request will retry after a back-off.
 
 You can still specify custom rate limits if you want to.
 For example if you want to adhere to a 80/40s bucket:
@@ -105,8 +105,8 @@ The docs can be found on the github-pages site [here](https://gpluscb.github.io/
 
 ## TODO
 * More efficient way to add variables
-* Better Exceptions (keep stack trace context)
+* Better Error/Exception handling
 * More/better documentation
-* Proper configurable logging
+* Proper configurable logging / allow ratelimit handler
 * Generally better code structure (whatever that means)
 * Builder for GraphQL queries, later specific to the project for more tight syntax and less room for illegal queries
